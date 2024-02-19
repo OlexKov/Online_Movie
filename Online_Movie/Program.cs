@@ -1,7 +1,4 @@
-using DataAccess.Data;
-using DataAccess.Data.Entities;
 using DataAccess.Data.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Online_Movie.Exstensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,13 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 var connStr = builder.Configuration.GetConnectionString("LocalDb")!;
 builder.Services.AddDbContext(connStr);
-builder.Services.AddIdentity<User, IdentityRole>(options =>
-{
-	options.SignIn.RequireConfirmedAccount = false;
-})
-			   .AddDefaultTokenProviders()
-			   .AddEntityFrameworkStores<OnlineMovieDBContext>();
-
+builder.Services.AddRepositories();
+builder.Services.AddIdentityUser();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -27,7 +19,6 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
 	var serviceProvider = scope.ServiceProvider;
-
 	serviceProvider.SeedRoles().Wait();
 	serviceProvider.SeedAdmin().Wait();
 }
@@ -40,6 +31,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

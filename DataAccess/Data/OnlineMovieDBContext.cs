@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Data
 {
-    public class OnlineMovieDBContext : IdentityDbContext<User>
+    internal class OnlineMovieDBContext : IdentityDbContext<User>
 	{
 		public OnlineMovieDBContext(DbContextOptions options) : base(options) 
 		{
@@ -33,26 +33,26 @@ namespace DataAccess.Data
 
 		}
 
-		public DbSet<Country> Countries { get; set; }
+		//public DbSet<Country> Countries { get; set; }
 
-		public DbSet<StafRole> StafRoles { get; set; }
+		//public DbSet<StafRole> StafRoles { get; set; }
 
-		public DbSet<Genre> Genres { get; set; }
+		//public DbSet<Genre> Genres { get; set; }
 
-		public DbSet<Quality> Qualities { get; set; }
+		//public DbSet<Quality> Qualities { get; set; }
 
-		public DbSet<Staf> Stafs { get; set; }
+		//public DbSet<Staf> Stafs { get; set; }
 
-		public DbSet<Image> Images { get; set; }
+		//public DbSet<Image> Images { get; set; }
 
-		public DbSet<Movie> Movies { get; set; }
+		//public DbSet<Movie> Movies { get; set; }
 
-		public DbSet<StafMovie> StafMovies { get; set; }
+		//public DbSet<StafMovie> StafMovies { get; set; }
 
-		public DbSet<UserMovie> UserMovies { get; set; }
+		//public DbSet<UserMovie> UserMovies { get; set; }
 
-		public DbSet<MovieImage> MovieImages { get; set; }
+		//public DbSet<MovieImage> MovieImages { get; set; }
 
-		public DbSet<MovieGenre> MovieGenres { get; set; }
+		//public DbSet<MovieGenre> MovieGenres { get; set; }
 	}
 }
