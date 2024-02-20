@@ -40,14 +40,14 @@ namespace DataAccess.Data
 				}
 			);
 
-			CreateUser(new DateTime(1998, 1, 12), ADMIN_ID, "Admin@gmail.com", true, "Петро", "Левак", ADMIN_ROLE_ID, "Admin_1", modelBuilder);
-			CreateUser(new DateTime(1988, 10, 14), USER2_ID, "User1@gmail.com", true, "Iван", "Калита", USER_ROLE_ID, "User_1", modelBuilder);
-			CreateUser(new DateTime(2000, 11, 5), USER3_ID, "User2@gmail.com", true, "Петро", "Дякуленко", USER_ROLE_ID, "User_2", modelBuilder);
-			CreateUser(new DateTime(1999, 7, 7), USER4_ID, "User3@gmail.com", true, "Олег", "Панасенко", USER_ROLE_ID, "User_3", modelBuilder);
-			CreateUser(new DateTime(2001, 6, 9), USER5_ID, "User4@gmail.com", true, "Тимофій", "Гнатенко", USER_ROLE_ID, "User_4", modelBuilder);
+			CreateUser(1,new DateTime(1998, 1, 12), ADMIN_ID, "Admin@gmail.com", true, "Петро", "Левак", ADMIN_ROLE_ID, "Admin_1", modelBuilder);
+			CreateUser(1,new DateTime(1988, 10, 14), USER2_ID, "User1@gmail.com", true, "Iван", "Калита", USER_ROLE_ID, "User_1", modelBuilder);
+			CreateUser(2,new DateTime(2000, 11, 5), USER3_ID, "User2@gmail.com", true, "Петро", "Дякуленко", USER_ROLE_ID, "User_2", modelBuilder);
+			CreateUser(3,new DateTime(1999, 7, 7), USER4_ID, "User3@gmail.com", true, "Олег", "Панасенко", USER_ROLE_ID, "User_3", modelBuilder);
+			CreateUser(2,new DateTime(2001, 6, 9), USER5_ID, "User4@gmail.com", true, "Тимофій", "Гнатенко", USER_ROLE_ID, "User_4", modelBuilder);
 		}
 
-		private static void CreateUser(DateTime birthdate, string userId, string email, bool emailConfirmed, string name, string surname, string roleId, string password, ModelBuilder modelBuilder)
+		private static void CreateUser(int premiumId,DateTime birthdate, string userId, string email, bool emailConfirmed, string name, string surname, string roleId, string password, ModelBuilder modelBuilder)
 		{
 			var appUser = new User
 			{
@@ -58,7 +58,8 @@ namespace DataAccess.Data
 				Surname = surname,
 				UserName = email,
 				NormalizedUserName = email.ToUpper(),
-				Birthdate = birthdate
+				Birthdate = birthdate,
+				PremiumId = premiumId
 			};
 			PasswordHasher<User> ph = new();
 			appUser.PasswordHash = ph.HashPassword(appUser, password);

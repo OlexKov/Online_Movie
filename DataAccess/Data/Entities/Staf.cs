@@ -13,10 +13,9 @@ namespace DataAccess.Data.Entities
 		public string? ImageName { get; set; }
 		public Country Country { get; set; }
 		public int CountryId { get; set; }
-		public StafRole StafRole { get; set; }
-		public int StafRoleId { get; set; }
 		public DateTime Birthdate { get; set; }
 		public bool IsOscar { get; set; }
 		public IEnumerable<StafMovie> StafMovies { get; set; } = new HashSet<StafMovie>();
+		public IEnumerable<StafStafRole> StafStafRoles { get; set; } = new HashSet<StafStafRole>();
 	}
 }

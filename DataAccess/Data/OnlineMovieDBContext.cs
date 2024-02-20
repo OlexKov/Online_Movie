@@ -28,6 +28,8 @@ namespace DataAccess.Data
 			modelBuilder.ApplyConfiguration<MovieImage>(new MovieImageConfig());
 			modelBuilder.ApplyConfiguration<UserMovie>(new UserMovieConfig());
 			modelBuilder.ApplyConfiguration<Quality>(new QualityConfig());
+			modelBuilder.ApplyConfiguration<Premium>(new PremiumConfig());
+			modelBuilder.ApplyConfiguration<Feedback>(new FeedbackConfig());
 			DefaultUsers.Initialize(modelBuilder);
 			DefaultData.Initialize(modelBuilder);
 

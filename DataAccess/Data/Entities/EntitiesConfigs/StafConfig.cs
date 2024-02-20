@@ -20,9 +20,6 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasOne(x => x.Country)
 				   .WithMany(x => x.Stafs)
 				   .HasForeignKey(x => x.CountryId);
-			builder.HasOne(x => x.StafRole)
-				   .WithMany(x => x.Stafs)
-				   .HasForeignKey(x=>x.StafRoleId);
 			builder.ToTable(t => t.HasCheckConstraint("Name_check", "[Name] <> ''"));
 			builder.ToTable(t => t.HasCheckConstraint("Surname_check", "[Surname] <> ''"));
 		}

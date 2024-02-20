@@ -17,8 +17,13 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasOne(x => x.Country)
 				   .WithMany(x => x.Movies)
 				   .HasForeignKey(x => x.CountryId);
+			builder.HasOne(x => x.Premium)
+				   .WithMany(x => x.Movies)
+				   .HasForeignKey(x=>x.PremiumId);
 			builder.ToTable(t => t.HasCheckConstraint("Name_check", "[Name] <> ''"));
 			builder.ToTable(t => t.HasCheckConstraint("OriginalName_check", "[OriginalName] <> ''"));
+			builder.ToTable(t => t.HasCheckConstraint("MovieUrl_check", "[MovieUrl] <> ''"));
+			
 		}
 	}
 }

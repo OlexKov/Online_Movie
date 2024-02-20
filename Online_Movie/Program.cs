@@ -1,4 +1,4 @@
-using DataAccess.Data.Extensions;
+using DataAccess.Extensions;
 using Online_Movie.Exstensions;
 
 var builder = WebApplication.CreateBuilder(args);
