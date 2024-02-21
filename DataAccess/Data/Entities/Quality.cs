@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DataAccess.Data.Entities
 {
-	public class Quality : NameBaseEntity
+    public class Quality : NameBaseEntity
 	{
 		public IEnumerable<Movie> Movies { get; set; } = new HashSet<Movie>();
 	}

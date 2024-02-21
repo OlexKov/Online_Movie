@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using DataAccess.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
+
 
 namespace DataAccess.Repositories
 {
@@ -44,38 +46,75 @@ namespace DataAccess.Repositories
 			}
 		}
 
-		public async virtual Task<IEnumerable<TEntity>> GetAsync(
-			Expression<Func<TEntity, bool>>? filter = null,
-			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-			string includeProperties = "")
+		public async virtual Task<IEnumerable<TResult>> GetAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
+																	Expression<Func<TEntity, bool>> predicate = null,
+																	Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+																	Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+																	bool disableTracking = true)
 		{
 			IQueryable<TEntity> query = dbSet;
-
-			if (filter != null)
+			if (disableTracking)
 			{
-				query = query.Where(filter);
+				query = query.AsNoTracking();
 			}
 
-			foreach (var includeProperty in includeProperties.Split
-				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+			if (include != null)
 			{
-				query = query.Include(includeProperty);
+				query = include(query);
+			}
+
+			if (predicate != null)
+			{
+				query = query.Where(predicate);
 			}
 
 			if (orderBy != null)
 			{
-				return await orderBy(query).ToListAsync();
+				return await orderBy(query).Select(selector).ToListAsync();
 			}
 			else
 			{
-				return await query.ToListAsync();
+				return await query.Select(selector).ToListAsync();
 			}
 		}
 
 		public virtual TEntity? GetByID(object id) => dbSet.Find(id);
-		
-		public async virtual Task<TEntity?> GetByIDAsync(object id) => await dbSet.FindAsync(id);
-		
+
+		public virtual async Task<TEntity?> GetByIDAsync(object id) =>  await dbSet.FindAsync(id);
+
+		public async Task<TResult> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector ,
+										  Expression<Func<TEntity, bool>> predicate = null,
+										  Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+										  bool disableTracking = true)
+		{
+			IQueryable<TEntity> query = dbSet;
+			if (disableTracking)
+			{
+				query = query.AsNoTracking();
+			}
+
+			if (include != null)
+			{
+				query = include(query);
+			}
+
+			if (predicate != null)
+			{
+				query = query.Where(predicate);
+			}
+
+			if (orderBy != null)
+			{
+				return await orderBy(query).Select(selector).FirstOrDefaultAsync();
+			}
+			else
+			{
+				return await query.Select(selector).FirstOrDefaultAsync();
+			}
+		}
+
+
 		public virtual void Insert(TEntity entity) => dbSet.Add(entity);
 		
 		public async virtual Task InsertAsync(TEntity entity) => await dbSet.AddAsync(entity);
@@ -112,5 +151,7 @@ namespace DataAccess.Repositories
 		public void Save() => context.SaveChanges();
 		
 		public async Task SaveAsync() => await context.SaveChangesAsync();
+
+		
 	}
 }

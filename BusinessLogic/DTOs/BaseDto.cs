@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.Entities
+namespace BusinessLogic.DTOs
 {
-	public abstract class BaseEntity 
+	public abstract class BaseDto
 	{
 		public int Id { get; set; }
 	}

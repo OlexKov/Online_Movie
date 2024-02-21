@@ -11,7 +11,6 @@ namespace DataAccess.Data.Entities
 		public string OriginalName { get; set; }
 		public DateTime Date { get; set; }
 		public string Description { get; set; }
-		public double Rating { get; set; }
 		public Quality Quality { get; set; }
 		public int QualityId { get; set; }
 		public Country Country { get; set; }

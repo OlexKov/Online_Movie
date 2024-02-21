@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.Entities
+namespace BusinessLogic.DTOs
 {
-	public abstract class BaseEntity 
+	public abstract class NameBaseDto :BaseDto
 	{
-		public int Id { get; set; }
+		public string? Name { get; set; }
 	}
 }
