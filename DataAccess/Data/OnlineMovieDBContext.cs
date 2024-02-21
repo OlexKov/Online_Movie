@@ -11,8 +11,8 @@ namespace DataAccess.Data
 	{
 		public OnlineMovieDBContext(DbContextOptions options) : base(options) 
 		{
-			Database.EnsureDeleted();
-			Database.EnsureCreated();
+			//Database.EnsureDeleted();
+			//Database.EnsureCreated();
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

@@ -5,10 +5,10 @@ namespace BusinessLogic.Interfaces
 {
 	public interface IStafService
 	{
-		Task<StafDto> Get(int id);
-		Task<IEnumerable<StafDto>> Get(IEnumerable<int> ids);
-		Task<IEnumerable<StafDto>> GetAll();
-		Task<IEnumerable<StafRoleDto>> GetRoles(int id);
-		Task<IEnumerable<MovieDto>> GetMovies(int id);
+		Task<StafDto> GetAsync(int id);
+		Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids);
+		Task<IEnumerable<StafDto>> GetAllAsync();
+		Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id);
+		Task<IEnumerable<MovieDto>> GetMoviesAsync(int id);
 	}
 }

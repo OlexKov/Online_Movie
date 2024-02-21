@@ -24,7 +24,7 @@ namespace BusinessLogic.Services
 			this.mapper = mapper;
 		}
 
-		public async Task<StafDto> Get(int id)
+		public async Task<StafDto> GetAsync(int id)
 		{
 			return mapper.Map<StafDto>(await stafs.FirstOrDefaultAsync(selector:x=>x,
 				                                                       predicate: x=>x.Id == id,
@@ -32,20 +32,22 @@ namespace BusinessLogic.Services
 																	       .Include(x=>x.Country)));
 		}
 
-		public async Task<IEnumerable<StafDto>> Get(IEnumerable<int> ids)
+		public async Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids)
 		{
 			return mapper.Map<IEnumerable<StafDto>>(await stafs.GetAsync(selector: x => x,
 																		 predicate: x => ids.Any(z=>z == x.Id),
-																		 include: staf => staf.Include(x => x.Country)));
+																		 include: staf => staf
+																		          .Include(x => x.Country)));
 		}
 
-		public async Task<IEnumerable<StafDto>> GetAll()
+		public async Task<IEnumerable<StafDto>> GetAllAsync()
 		{
 			return mapper.Map<IEnumerable<StafDto>>( await stafs.GetAsync(selector:x=>x,
-				                                                          include:staf=>staf.Include(x=>x.Country)));
+				                                                          include:staf=>staf
+																		          .Include(x=>x.Country)));
 		}
 
-		public async Task<IEnumerable<MovieDto>> GetMovies(int id)
+		public async Task<IEnumerable<MovieDto>> GetMoviesAsync(int id)
 		{
 			return mapper.Map<IEnumerable<MovieDto>>(await stafMovies.GetAsync(selector:x=> x.Movie,
 				                                                                predicate:x=>x.StafId == id, 
@@ -58,7 +60,7 @@ namespace BusinessLogic.Services
 																						 .ThenInclude(x=>x.Premium)));
 		}
 
-		public async Task<IEnumerable<StafRoleDto>> GetRoles(int id)
+		public async Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id)
 		{
 			return mapper.Map<IEnumerable<StafRoleDto>>(await roles.GetAsync(selector:x =>x.StafRole,
 				                                                              predicate: x => x.StafId == id));
