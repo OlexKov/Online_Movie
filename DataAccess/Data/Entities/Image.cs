@@ -9,6 +9,6 @@ namespace DataAccess.Data.Entities
 {
     public class Image : NameBaseEntity
 	{
-		public IEnumerable<MovieImage> MovieImages { get; set; } = new HashSet<MovieImage>();
+		public ICollection<MovieImage> MovieImages { get; set; } = new HashSet<MovieImage>();
 	}
 }

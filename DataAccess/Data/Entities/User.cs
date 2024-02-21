@@ -10,7 +10,7 @@ namespace DataAccess.Data.Entities
 		public DateTime PremiumDate { get; set; }
 		public Premium Premium { get; set; }
 		public int PremiumId { get; set; }
-		public IEnumerable<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
-		public IEnumerable<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
+		public ICollection<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
+		public ICollection<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
 	}
 }

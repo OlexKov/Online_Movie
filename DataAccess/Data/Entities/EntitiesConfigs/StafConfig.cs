@@ -13,7 +13,7 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.Property(x => x.Surname)
 				   .HasMaxLength(256);
 			builder.Property(x=>x.ImageName)
-				   .HasDefaultValue("nofoto.png");
+				   .HasDefaultValue("nophoto.jpeg");
 			builder.Property(x => x.Description);
 			builder.Property(x => x.ImageName)
 				   .HasMaxLength(256);

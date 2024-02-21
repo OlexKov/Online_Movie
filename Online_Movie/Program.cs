@@ -1,6 +1,9 @@
 using BusinessLogic;
 using DataAccess.Extensions;
 using Online_Movie.Exstensions;
+using Online_Movie;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 var connStr = builder.Configuration.GetConnectionString("LocalDb")!;
@@ -14,6 +17,10 @@ builder.Services.AddAutoMapper();
 builder.Services.AddFluentValidator();
 builder.Services.AddCustomServices();
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+	options.SuppressModelStateInvalidFilter = true;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -39,6 +46,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 

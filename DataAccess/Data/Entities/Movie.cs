@@ -20,10 +20,10 @@ namespace DataAccess.Data.Entities
 		public string? TrailerUrl { get; set; }
 		public Premium Premium { get; set; }
 		public int PremiumId { get; set; }
-		public IEnumerable<StafMovie> StafMovies { get; set; } = new HashSet<StafMovie>();
-		public IEnumerable<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
-		public IEnumerable<MovieImage> MovieImages { get; set; } = new HashSet<MovieImage>();
-		public IEnumerable<MovieGenre> MovieGenres { get; set; } = new HashSet<MovieGenre>();
-		public IEnumerable<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
+		public ICollection<StafMovie> StafMovies { get; set; } = new HashSet<StafMovie>();
+		public ICollection<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
+		public ICollection<MovieImage> MovieImages { get; set; } = new HashSet<MovieImage>();
+		public ICollection<MovieGenre> MovieGenres { get; set; } = new HashSet<MovieGenre>();
+		public ICollection<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
 	}
 }

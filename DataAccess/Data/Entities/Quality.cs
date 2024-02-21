@@ -9,6 +9,6 @@ namespace DataAccess.Data.Entities
 {
     public class Quality : NameBaseEntity
 	{
-		public IEnumerable<Movie> Movies { get; set; } = new HashSet<Movie>();
+		public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();
 	}
 }

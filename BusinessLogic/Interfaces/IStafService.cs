@@ -1,5 +1,6 @@
 ﻿
 using BusinessLogic.DTOs;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Interfaces
 {
@@ -10,5 +11,8 @@ namespace BusinessLogic.Interfaces
 		Task<IEnumerable<StafDto>> GetAllAsync();
 		Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id);
 		Task<IEnumerable<MovieDto>> GetMoviesAsync(int id);
+		Task UpdateAsync(StafModel staf);
+		Task DeleteAsync(int id);
+		Task CreateAsync(StafModel staf);
 	}
 }
