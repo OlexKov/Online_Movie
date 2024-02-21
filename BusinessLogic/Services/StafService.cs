@@ -9,6 +9,7 @@ using DataAccess.Repositories.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace BusinessLogic.Services
@@ -21,6 +22,28 @@ namespace BusinessLogic.Services
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<StafModel> validator;
+
+		private async Task<Staf> setData(StafModel staf, bool update)
+		{
+			validator.ValidateAndThrow(staf);
+			var stafEdit = mapper.Map<Staf>(staf);
+			if (update)
+			{
+				stafEdit.StafMovies.Clear();
+				stafEdit.StafStafRoles.Clear();
+			}
+			foreach (var item in staf.Movies)
+				stafEdit.StafMovies.Add(new StafMovie() { StafId = stafEdit.Id, MovieId = item });
+			foreach (var item in staf.Roles)
+				stafEdit.StafStafRoles.Add(new StafStafRole() { StafId = stafEdit.Id, StafRoleId = item });
+			if (staf.ImageFile != null)
+			{
+				stafEdit.ImageName = await imageService.SaveImageAsync(staf.ImageFile);
+				if (update && staf.ImageName != "nophoto.jpeg")
+					imageService.DeleteImageByName(staf.ImageName);
+			}
+			return stafEdit;
+		}
 
 		public StafService(IRepository<Staf> stafs, IRepository<StafMovie> stafMovies,
 			               IRepository<StafStafRole> roles, IMapper mapper,
@@ -81,21 +104,7 @@ namespace BusinessLogic.Services
 
 		public async Task UpdateAsync(StafModel staf)
 		{
-			validator.ValidateAndThrow(staf);
-			var stafEdit = mapper.Map<Staf>(staf);
-			if (staf.ImageFile != null)
-			{
-				stafEdit.ImageName = await imageService.SaveImageAsync(staf.ImageFile);
-			  if(staf.ImageName!= "nophoto.jpeg")	imageService.DeleteImageByName(staf.ImageName);
-			}
-			stafEdit.StafMovies = new HashSet<StafMovie>();
-			stafEdit.StafStafRoles = new HashSet<StafStafRole>();
-			foreach (var item in staf.Movies)
-				stafEdit.StafMovies.Add(new StafMovie() { StafId = stafEdit.Id,MovieId = item});
-			foreach (var item in staf.Roles)
-				stafEdit.StafStafRoles.Add(new StafStafRole() { StafId = stafEdit.Id, StafRoleId = item });
-
-			stafs.Update(stafEdit);
+			stafs.Update(await setData(staf, true));
 			await stafs.SaveAsync();
 		}
 
@@ -111,17 +120,7 @@ namespace BusinessLogic.Services
 
 		public async Task CreateAsync(StafModel staf)
 		{
-			validator.ValidateAndThrow(staf);
-			var stafEdit = mapper.Map<Staf>(staf);
-			if (staf.ImageFile != null)
-			{
-				stafEdit.ImageName = await imageService.SaveImageAsync(staf.ImageFile);
-			}
-			foreach (var item in staf.Movies)
-				stafEdit.StafMovies.Add(new StafMovie() { StafId = stafEdit.Id, MovieId = item });
-			foreach (var item in staf.Roles)
-				stafEdit.StafStafRoles.Add(new StafStafRole() { StafId = stafEdit.Id, StafRoleId = item });
-			await stafs.InsertAsync(stafEdit);
+			await stafs.InsertAsync(await setData(staf, false));
 			await stafs.SaveAsync();
 		}
 	}

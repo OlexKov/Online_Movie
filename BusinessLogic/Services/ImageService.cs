@@ -4,46 +4,53 @@ using DataAccess.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 
 namespace BusinessLogic.Services
 {
 	internal class ImageService : IImageService
 	{
-		private readonly IWebHostEnvironment env;
-		private readonly IConfiguration config;
 		private readonly IRepository<Image> images;
+		private readonly string sysPath;
 
 		public ImageService(IWebHostEnvironment env, IConfiguration config,IRepository<Image> images)
         {
-			this.env = env;
-			this.config = config;
 			this.images = images;
+			sysPath = Path.Combine(env.WebRootPath, config["UserImgDir"] ?? string.Empty);
 		}
-
-		
 
 		public void DeleteImageByName(string name)
 		{
-			string filePath = Path.Combine(env.WebRootPath, config["UserImgDir"] ?? string.Empty, name);
+			string filePath = Path.Combine(sysPath, name);
 			File.Delete(filePath);
 		}
 
-		public Task DeleteImegeByIdAsync(int id)
+		public async Task DeleteImegeByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
+			var image = await images.GetByIDAsync(id) ?? throw new HttpException("Image not found.", HttpStatusCode.NotFound);
+			await images.DeleteAsync(id);
+			await images.SaveAsync();
+			DeleteImageByName(image.Name);
 		}
 
-		public Task DeleteImegeRangeAsync(IEnumerable<int> ids)
+		public async Task DeleteImegeRangeAsync(IEnumerable<int> ids)
 		{
-			throw new NotImplementedException();
+			var imageNames = await images.GetAsync(selector: x => x.Name,
+															       predicate: x => ids.Any(z => z == x.Id));
+			foreach (var item in ids)
+				await images.DeleteAsync(item);
+			await images.SaveAsync();
+			foreach (var image in imageNames)
+				DeleteImageByName(image);
 		}
 		
 
 		public async Task<string> SaveImageAsync(IFormFile image)
 		{
 			string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(image.FileName);
-			string filePath = Path.Combine(env.WebRootPath, config["UserImgDir"] ?? string.Empty, fileName);
+			string filePath = Path.Combine(sysPath, fileName);
 			using Stream fileStream = new FileStream(filePath, FileMode.Create);
 			await image.CopyToAsync(fileStream);
 			return fileName;
