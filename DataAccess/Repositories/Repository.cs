@@ -46,10 +46,38 @@ namespace DataAccess.Repositories
 			}
 		}
 
+		public async virtual Task<IEnumerable<TEntity>> GetAsync(
+			Expression<Func<TEntity, bool>>? filter = null,
+			Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+			string includeProperties = "")
+		{
+			IQueryable<TEntity> query = dbSet;
+
+			if (filter != null)
+			{
+				query = query.Where(filter);
+			}
+
+			foreach (var includeProperty in includeProperties.Split
+				(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+			{
+				query = query.Include(includeProperty);
+			}
+
+			if (orderBy != null)
+			{
+				return await orderBy(query).ToListAsync();
+			}
+			else
+			{
+				return await query.ToListAsync();
+			}
+		}
+
 		public async virtual Task<IEnumerable<TResult>> GetAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
-																	Expression<Func<TEntity, bool>> predicate = null,
-																	Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-																	Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+																	Expression<Func<TEntity, bool>>? predicate = null,
+																	Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+																	Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
 																	bool disableTracking = false)
 		{
 			IQueryable<TEntity> query = dbSet;
@@ -82,10 +110,9 @@ namespace DataAccess.Repositories
 
 		public virtual async Task<TEntity?> GetByIDAsync(object id) =>  await dbSet.FindAsync(id);
 
-		public async Task<TResult> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector ,
-										  Expression<Func<TEntity, bool>> predicate = null,
-										  Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+		public async Task<TResult?> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector ,
+										  Expression<Func<TEntity, bool>>? predicate = null,
+										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
 										  bool disableTracking = false)
 		{
 			IQueryable<TEntity> query = dbSet;
@@ -103,15 +130,8 @@ namespace DataAccess.Repositories
 			{
 				query = query.Where(predicate);
 			}
-
-			if (orderBy != null)
-			{
-				return await orderBy(query).Select(selector).FirstOrDefaultAsync();
-			}
-			else
-			{
-				return await query.Select(selector).FirstOrDefaultAsync();
-			}
+			
+			return await query.Select(selector).FirstOrDefaultAsync();
 		}
 
 

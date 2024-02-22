@@ -48,7 +48,8 @@ namespace BusinessLogic.Services
 														   .Include(x=>x.MovieGenres)
 														   .Include(x=>x.StafMovies)
 														   .Include(x => x.UserMovies)
-														   .Include(x=>x.ScreenShots)) ?? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NotFoundById"), HttpStatusCode.NotFound);
+														   .Include(x=>x.ScreenShots)) 
+				                                           ?? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NotFoundById"), HttpStatusCode.NotFound);
 			
 			foreach (var item in movie.Feedbacks)
 				feedbacks.Delete(item);
@@ -100,15 +101,13 @@ namespace BusinessLogic.Services
 		public async Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id)
 		{
 			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetAsync(selector: x => x,
-				                                                                 predicate:x=>x.MovieId == id));
+			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetAsync(filter:x=>x.MovieId == id));
 		}
 
 		public async Task<IEnumerable<StafDto>> GetStafAsync(int id)
 		{
 			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafDto>>(await stafMovie.GetAsync(selector: x => x,
-																				 predicate: x => x.MovieId == id));
+			return mapper.Map<IEnumerable<StafDto>>(await stafMovie.GetAsync(filter: x => x.MovieId == id));
 		}
 
 		//public async Task<IEnumerable<MovieDto>> GetTopAsync(int count)
