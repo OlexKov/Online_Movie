@@ -2,14 +2,13 @@
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
-using BusinessLogic.Validators;
 using DataAccess.Data;
 using DataAccess.Data.Entities;
 using DataAccess.Repositories.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Net;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace BusinessLogic.Services
@@ -22,6 +21,7 @@ namespace BusinessLogic.Services
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<StafModel> validator;
+		private readonly IConfiguration configuration;
 
 		private async Task<Staf> setData(StafModel staf, bool update)
 		{
@@ -47,7 +47,7 @@ namespace BusinessLogic.Services
 
 		public StafService(IRepository<Staf> stafs, IRepository<StafMovie> stafMovies,
 			               IRepository<StafStafRole> roles, IMapper mapper,
-						   IImageService imageService,IValidator<StafModel> validator)
+						   IImageService imageService,IValidator<StafModel> validator,IConfiguration configuration)
         {
 			this.stafs = stafs;
 			this.stafMovies = stafMovies;
@@ -55,16 +55,17 @@ namespace BusinessLogic.Services
 			this.mapper = mapper;
 			this.imageService = imageService;
 			this.validator = validator;
+			this.configuration = configuration;
 		}
 
 		public async Task<StafDto> GetAsync(int id)
 		{
-			if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
+			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
 			var staf = await stafs.FirstOrDefaultAsync(selector: x => x,
 																	   predicate: x => x.Id == id,
 																	   include: staf => staf
 																		   .Include(x => x.Country));
-			return staf == null ? throw new HttpException("Staf not found.", HttpStatusCode.NotFound) : mapper.Map<StafDto>(staf);
+			return staf == null ? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NotFoundById"), HttpStatusCode.NotFound) : mapper.Map<StafDto>(staf);
 		}
 
 		public async Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids)
@@ -84,6 +85,7 @@ namespace BusinessLogic.Services
 
 		public async Task<IEnumerable<MovieDto>> GetMoviesAsync(int id)
 		{
+			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
 			return mapper.Map<IEnumerable<MovieDto>>(await stafMovies.GetAsync(selector:x=> x.Movie,
 				                                                                predicate:x=>x.StafId == id, 
 																				include: stafMovie=> stafMovie
@@ -97,22 +99,22 @@ namespace BusinessLogic.Services
 
 		public async Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id)
 		{
-			if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
+			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
 			return mapper.Map<IEnumerable<StafRoleDto>>(await roles.GetAsync(selector:x =>x.StafRole,
 				                                                              predicate: x => x.StafId == id));
 		}
 
 		public async Task UpdateAsync(StafModel staf)
 		{
+			if (staf == null) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NullValue"), HttpStatusCode.InternalServerError);
 			stafs.Update(await setData(staf, true));
 			await stafs.SaveAsync();
 		}
 
 		public async Task DeleteAsync(int id)
 		{
-			if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
-			var staf = await stafs.GetByIDAsync(id);
-			if (staf == null) throw new HttpException("Staf not found.", HttpStatusCode.NotFound);
+			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
+			var staf = await stafs.GetByIDAsync(id) ?? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NotFoundById"), HttpStatusCode.NotFound);
 			await stafs.DeleteAsync(id);
 			await stafs.SaveAsync();
 			imageService.DeleteImageByName(staf.ImageName);

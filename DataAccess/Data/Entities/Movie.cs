@@ -22,7 +22,7 @@ namespace DataAccess.Data.Entities
 		public int PremiumId { get; set; }
 		public ICollection<StafMovie> StafMovies { get; set; } = new HashSet<StafMovie>();
 		public ICollection<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
-		public ICollection<MovieImage> MovieImages { get; set; } = new HashSet<MovieImage>();
+		public ICollection<Image> ScreenShots { get; set; } = new HashSet<Image>();
 		public ICollection<MovieGenre> MovieGenres { get; set; } = new HashSet<MovieGenre>();
 		public ICollection<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
 	}

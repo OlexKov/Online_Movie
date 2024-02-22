@@ -16,9 +16,9 @@ namespace DataAccess.Repositories.Interfaces
 			string includeProperties = "");
 
 		Task<IEnumerable<TResult>> GetAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
-																	Expression<Func<TEntity, bool>> predicate = null,
-																	Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-																	Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+																	Expression<Func<TEntity, bool>>? predicate = null,
+																	Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+																	Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
 																	bool disableTracking = true);
 
 		TEntity? GetByID(object id);

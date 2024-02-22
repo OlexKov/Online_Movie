@@ -19,8 +19,9 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 				   .OnDelete(DeleteBehavior.NoAction);
 			builder.HasOne(x => x.Staf)
 				   .WithMany(x => x.StafStafRoles)
-				   .HasForeignKey(x => x.StafId);
-				  
+				   .HasForeignKey(x => x.StafId)
+			       .OnDelete(DeleteBehavior.NoAction);
+
 		}
 	}
 }

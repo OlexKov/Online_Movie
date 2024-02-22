@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BusinessLogic
 {
@@ -25,6 +26,10 @@ namespace BusinessLogic
 			// enable client-side validation
 			//services.AddFluentValidationClientsideAdapters();
 			// Load an assembly reference rather than using a marker type.
+			services.Configure<ApiBehaviorOptions>(options =>
+			{
+				options.SuppressModelStateInvalidFilter = true;
+			});
 			services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 		}
 
@@ -32,6 +37,7 @@ namespace BusinessLogic
 		{
 			services.AddScoped<IStafService, StafService>();
 			services.AddScoped<IImageService, ImageService>();
+			services.AddScoped<IMovieService, MovieService>();
 		}
 	}
 }

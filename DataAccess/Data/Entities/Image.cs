@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace DataAccess.Data.Entities
 {
     public class Image : NameBaseEntity
 	{
-		public ICollection<MovieImage> MovieImages { get; set; } = new HashSet<MovieImage>();
+		public  Movie Movie { get; set; }
+		public int MovieId { get; set; }
 	}
 }

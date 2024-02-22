@@ -50,7 +50,7 @@ namespace DataAccess.Repositories
 																	Expression<Func<TEntity, bool>> predicate = null,
 																	Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
 																	Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
-																	bool disableTracking = true)
+																	bool disableTracking = false)
 		{
 			IQueryable<TEntity> query = dbSet;
 			if (disableTracking)
@@ -86,7 +86,7 @@ namespace DataAccess.Repositories
 										  Expression<Func<TEntity, bool>> predicate = null,
 										  Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
 										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
-										  bool disableTracking = true)
+										  bool disableTracking = false)
 		{
 			IQueryable<TEntity> query = dbSet;
 			if (disableTracking)
@@ -151,7 +151,5 @@ namespace DataAccess.Repositories
 		public void Save() => context.SaveChanges();
 		
 		public async Task SaveAsync() => await context.SaveChangesAsync();
-
-		
 	}
 }

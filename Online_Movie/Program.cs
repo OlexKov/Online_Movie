@@ -16,12 +16,6 @@ builder.Services.AddIdentityUser();
 builder.Services.AddAutoMapper();
 builder.Services.AddFluentValidator();
 builder.Services.AddCustomServices();
-
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-	options.SuppressModelStateInvalidFilter = true;
-});
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
