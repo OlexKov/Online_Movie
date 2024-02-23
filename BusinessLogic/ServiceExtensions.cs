@@ -26,10 +26,6 @@ namespace BusinessLogic
 			// enable client-side validation
 			//services.AddFluentValidationClientsideAdapters();
 			// Load an assembly reference rather than using a marker type.
-			services.Configure<ApiBehaviorOptions>(options =>
-			{
-				options.SuppressModelStateInvalidFilter = true;
-			});
 			services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 		}
 

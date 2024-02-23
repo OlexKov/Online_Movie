@@ -12,6 +12,7 @@ builder.Services.AddDbContext(connStr);
 builder.Services.AddRepositories();
 builder.Services.AddIdentityUser();
 builder.Services.AddAutoMapper();
+builder.Services.DisableGlobalValidation();
 builder.Services.AddFluentValidator();
 builder.Services.AddCustomServices();
 builder.Services.AddEndpointsApiExplorer();

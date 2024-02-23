@@ -1,4 +1,4 @@
-﻿using DataAccess.Data.Entities;
+﻿using BusinessLogic.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Online_Movie.Exstensions

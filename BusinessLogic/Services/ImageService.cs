@@ -1,6 +1,5 @@
-﻿using BusinessLogic.Interfaces;
-using DataAccess.Data.Entities;
-using DataAccess.Repositories.Interfaces;
+﻿using BusinessLogic.Data.Entities;
+using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

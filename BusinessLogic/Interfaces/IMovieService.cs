@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.Models;
-using DataAccess.Data.Entities;
 
 
 namespace BusinessLogic.Interfaces

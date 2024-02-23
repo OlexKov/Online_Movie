@@ -1,14 +1,14 @@
-﻿using DataAccess.Data.Entities;
-using DataAccess.Repositories.Interfaces;
-using DataAccess.Repositories;
+﻿using DataAccess.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DataAccess.Data;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Data.Entities;
 
 namespace DataAccess.Extensions
 {
-    public static class DataAccessExtension
+	public static class DataAccessExtension
     {
         public static void AddDbContext(this IServiceCollection services, string connectionString)
         {

@@ -1,8 +1,9 @@
-﻿using DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore.Query;
+using DataAccess.Data;
+using BusinessLogic.Interfaces;
+
 
 
 namespace DataAccess.Repositories

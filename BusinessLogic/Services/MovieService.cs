@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
+using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
-using DataAccess.Data.Entities;
-using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System.Net;
 
 namespace BusinessLogic.Services

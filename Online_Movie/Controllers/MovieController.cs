@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
