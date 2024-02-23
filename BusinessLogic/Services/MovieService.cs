@@ -2,6 +2,7 @@
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using BusinessLogic.Resources;
 using DataAccess.Data.Entities;
 using DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -18,21 +19,20 @@ namespace BusinessLogic.Services
 		private readonly IRepository<MovieGenre> movieGenre;
 		private readonly IRepository<UserMovie> userMovie;
 		private readonly IMapper mapper;
-		private readonly IConfiguration configuration;
+		
 		private readonly IImageService imageService;
 		
 
 		public MovieService(IRepository<Movie> movies, IRepository<Feedback> feedbacks,
 			                IRepository<StafMovie> stafMovie, IRepository<UserMovie> userMovie,
 							IRepository<MovieGenre> movieGenre, IMapper mapper,
-							IConfiguration configuration,IImageService imageService)
+							IImageService imageService)
 		{
 			this.movies = movies;
 			this.feedbacks = feedbacks;
 			this.stafMovie = stafMovie;
 			this.movieGenre = movieGenre;
 			this.mapper = mapper;
-			this.configuration = configuration;
 			this.imageService = imageService;
 			this.userMovie = userMovie;
 		}
@@ -40,7 +40,7 @@ namespace BusinessLogic.Services
 
 		public async Task DeleteAsync(int id)
 		{
-			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
 			var movie = await movies.FirstOrDefaultAsync(selector:x=>x,
 				                                           predicate: x=>x.Id == id,
 														   include:item=>item
@@ -49,7 +49,7 @@ namespace BusinessLogic.Services
 														   .Include(x=>x.StafMovies)
 														   .Include(x => x.UserMovies)
 														   .Include(x=>x.ScreenShots)) 
-				                                           ?? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NotFoundById"), HttpStatusCode.NotFound);
+				                                           ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
 			
 			foreach (var item in movie.Feedbacks)
 				feedbacks.Delete(item);
@@ -88,25 +88,25 @@ namespace BusinessLogic.Services
 		public async Task<MovieDto> GetByIdAsync(int id)
 		{
 			return id < 0
-				? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest)
+				? throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest)
 				: mapper.Map<MovieDto>(await movies.FirstOrDefaultAsync(selector: x => x,
 																		 predicate:x => x.Id == id,
 																		 include: item => item
 																		  .Include(x => x.Country)
 																		  .Include(x => x.Quality)
 																		  .Include(x => x.Premium)) 
-				                                                          ?? throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NotFoundById"), HttpStatusCode.NotFound));
+				                                                          ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound));
 		}
 
 		public async Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id)
 		{
-			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
 			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetAsync(filter:x=>x.MovieId == id));
 		}
 
 		public async Task<IEnumerable<StafDto>> GetStafAsync(int id)
 		{
-			if (id < 0) throw new HttpException(configuration.GetValue<string>("HttpExceptionMessages:NegativeId"), HttpStatusCode.BadRequest);
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
 			return mapper.Map<IEnumerable<StafDto>>(await stafMovie.GetAsync(filter: x => x.MovieId == id));
 		}
 
