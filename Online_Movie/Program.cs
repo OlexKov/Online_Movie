@@ -1,9 +1,7 @@
 using BusinessLogic;
 using DataAccess.Extensions;
 using Online_Movie.Exstensions;
-using Online_Movie;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var connStr = builder.Configuration.GetConnectionString("LocalDb")!;

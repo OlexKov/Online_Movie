@@ -1,9 +1,10 @@
 ﻿using BusinessLogic;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Text.Json;
 
-internal class GlobalExceptionHandlerMiddleware
+public class GlobalExceptionHandlerMiddleware
 {
 	private readonly RequestDelegate _next;
 
@@ -24,7 +25,7 @@ internal class GlobalExceptionHandlerMiddleware
 		}
 		catch (ValidationException validationError)
 		{
-			await CreateResponse(context, HttpStatusCode.BadRequest, validationError.Message);
+			await CreateResponse(context, HttpStatusCode.BadRequest, validationError.Errors);
 		}
 		catch (KeyNotFoundException error)
 		{
@@ -32,7 +33,7 @@ internal class GlobalExceptionHandlerMiddleware
 		}
 		catch (Exception error)
 		{
-			await CreateResponse(context, HttpStatusCode.InternalServerError, error?.Message);
+			await CreateResponse(context, HttpStatusCode.InternalServerError, error.Message);
 		}
 	}
 
@@ -40,9 +41,15 @@ internal class GlobalExceptionHandlerMiddleware
 								HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
 								string message = "Unknown error type!")
 	{
+		await CreateResponse(context, statusCode, (object)message);
+	}
+	private async Task CreateResponse(HttpContext context,
+								HttpStatusCode statusCode,
+								object errors )
+	{
 		context.Response.ContentType = "application/json";
 		context.Response.StatusCode = (int)statusCode;
-		var result = JsonSerializer.Serialize(new { message });
+		var result = JsonSerializer.Serialize(errors);
 		await context.Response.WriteAsync(result);
 	}
 }
