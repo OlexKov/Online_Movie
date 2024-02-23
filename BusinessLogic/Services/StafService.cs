@@ -7,6 +7,7 @@ using BusinessLogic.Resources;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Threading.Tasks.Dataflow;
 
 
 namespace BusinessLogic.Services
@@ -19,17 +20,28 @@ namespace BusinessLogic.Services
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<StafModel> validator;
-		
 
+		private async Task<Staf> deleteStafDependencies(int id)
+		{
+			var currentStaf = await stafs.FirstOrDefaultAsync(selector: x => x,
+																	   predicate: x => x.Id == id,
+																	   include: item => item
+																	   .Include(x => x.StafMovies)
+																	   .Include(x => x.StafStafRoles))
+																	   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound); ;
+			foreach (var item in currentStaf.StafStafRoles)
+				roles.Delete(item);
+			foreach (var item in currentStaf.StafMovies)
+				stafMovies.Delete(item);
+			return currentStaf;
+		}
 		private async Task<Staf> setData(StafModel staf, bool update)
 		{
 			validator.ValidateAndThrow(staf);
 			var stafEdit = mapper.Map<Staf>(staf);
 			if (update)
-			{
-				stafEdit.StafMovies.Clear();
-				stafEdit.StafStafRoles.Clear();
-			}
+				await deleteStafDependencies(staf.Id);
+			
 			foreach (var item in staf.Movies)
 				stafEdit.StafMovies.Add(new StafMovie() { StafId = stafEdit.Id, MovieId = item });
 			foreach (var item in staf.Roles)
@@ -37,7 +49,7 @@ namespace BusinessLogic.Services
 			if (staf.ImageFile != null)
 			{
 				stafEdit.ImageName = await imageService.SaveImageAsync(staf.ImageFile);
-				if (update && staf.ImageName != "nophoto.jpeg")
+				if (update && staf.ImageName != null && staf.ImageName != "nophoto.jpeg")
 					imageService.DeleteImageByName(staf.ImageName);
 			}
 			return stafEdit;
@@ -62,8 +74,9 @@ namespace BusinessLogic.Services
 			var staf = await stafs.FirstOrDefaultAsync(selector: x => x,
 																	   predicate: x => x.Id == id,
 																	   include: staf => staf
-																		   .Include(x => x.Country));
-			return staf == null ? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound) : mapper.Map<StafDto>(staf);
+																	   .Include(x => x.Country))
+																	   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
+			return  mapper.Map<StafDto>(staf);
 		}
 
 		public async Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids)
@@ -112,10 +125,10 @@ namespace BusinessLogic.Services
 		public async Task DeleteAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			var staf = await stafs.GetByIDAsync(id) ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
-			await stafs.DeleteAsync(id);
+			var staf = await deleteStafDependencies(id);
+			stafs.Delete(staf);
 			await stafs.SaveAsync();
-			imageService.DeleteImageByName(staf.ImageName);
+			imageService.DeleteImageByName(staf.ImageName ?? "");
 		}
 
 		public async Task CreateAsync(StafModel staf)

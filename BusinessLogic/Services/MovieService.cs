@@ -46,32 +46,27 @@ namespace BusinessLogic.Services
 														   .Include(x=>x.MovieGenres)
 														   .Include(x=>x.StafMovies)
 														   .Include(x => x.UserMovies)
-														   .Include(x=>x.ScreenShots)) 
+														   .Include(x=>x.ScreenShots)
+														   ) 
 				                                           ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
-			
+
 			foreach (var item in movie.Feedbacks)
 				feedbacks.Delete(item);
-			
-			foreach (var item in movie.StafMovies)
-				 stafMovie.Delete(item);
-			
-			foreach (var item in movie.MovieGenres)
-			   	 movieGenre.Delete(item);
-			
-			foreach (var item in movie.UserMovies)
-				 userMovie.Delete(item);
-			
 
-			//movie.StafMovies.Clear();
-			//movie.MovieGenres.Clear();
-			//movie.Feedbacks.Clear();
-			//movie.UserMovies.Clear();
-			//await movies.SaveAsync();
-			await movies.DeleteAsync(id);
+			foreach (var item in movie.StafMovies)
+				stafMovie.Delete(item);
+
+			foreach (var item in movie.MovieGenres)
+				movieGenre.Delete(item);
+
+			foreach (var item in movie.UserMovies)
+				userMovie.Delete(item);
+			
+			movies.Delete(movie);
 			await movies.SaveAsync();
 			foreach (var item in movie.ScreenShots)
 				imageService.DeleteImageByName(item.Name);
-			imageService.DeleteImageByName(movie.Poster);
+			imageService.DeleteImageByName(movie.Poster ?? "");
 		}
 
 		public async Task<IEnumerable<MovieDto>> GetAllAsync()

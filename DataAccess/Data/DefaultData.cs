@@ -59,6 +59,10 @@ namespace DataAccess.Data
 			new() { Id = 1, MovieId = 1, GenreId = 18 },
 			new() { Id = 2, MovieId = 1, GenreId = 4 },
 			new() { Id = 3, MovieId = 1, GenreId = 2 },
+			new() { Id = 4, MovieId = 2, GenreId = 1 },
+			new() { Id = 5, MovieId = 2, GenreId = 7 },
+			new() { Id = 6, MovieId = 2, GenreId = 2 },
+
 		];
 
 
