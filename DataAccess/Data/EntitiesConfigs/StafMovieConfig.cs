@@ -12,11 +12,11 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasOne(x => x.Movie)
 				   .WithMany(x => x.StafMovies)
 				   .HasForeignKey(x=>x.MovieId)
-				   .OnDelete(DeleteBehavior.NoAction);
+				   .OnDelete(DeleteBehavior.Cascade);
 			builder.HasOne(x => x.Staf)
 				   .WithMany(x => x.StafMovies)
 				   .HasForeignKey(x => x.StafId)
-			       .OnDelete(DeleteBehavior.NoAction);
+			       .OnDelete(DeleteBehavior.ClientCascade);
 
 		}
 	}

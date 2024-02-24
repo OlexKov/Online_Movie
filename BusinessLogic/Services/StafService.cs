@@ -7,7 +7,6 @@ using BusinessLogic.Resources;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using System.Threading.Tasks.Dataflow;
 
 
 namespace BusinessLogic.Services
@@ -21,19 +20,15 @@ namespace BusinessLogic.Services
 		private readonly IImageService imageService;
 		private readonly IValidator<StafModel> validator;
 
-		private async Task<Staf> deleteStafDependencies(int id)
+		private async Task deleteStafDependencies(int id)
 		{
-			var currentStaf = await stafs.FirstOrDefaultAsync(selector: x => x,
-																	   predicate: x => x.Id == id,
-																	   include: item => item
-																	   .Include(x => x.StafMovies)
-																	   .Include(x => x.StafStafRoles))
-																	   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound); ;
-			foreach (var item in currentStaf.StafStafRoles)
+     		var movies = await stafMovies.GetAsync(x => x.StafId == id, includeProperties: "Movie");
+			var stafRoles = await roles.GetAsync(x => x.StafId == id, includeProperties: "StafRole");
+
+			foreach (var item in stafRoles)
 				roles.Delete(item);
-			foreach (var item in currentStaf.StafMovies)
-				stafMovies.Delete(item);
-			return currentStaf;
+			foreach (var item in movies)
+	        stafMovies.Delete(item);
 		}
 		private async Task<Staf> setData(StafModel staf, bool update)
 		{
@@ -125,7 +120,12 @@ namespace BusinessLogic.Services
 		public async Task DeleteAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			var staf = await deleteStafDependencies(id);
+			var staf = await stafs.FirstOrDefaultAsync(selector: x => x,
+																	   predicate: x => x.Id == id,
+																	   include: item => item
+																	   .Include(x => x.StafMovies)
+																	   .Include(x => x.StafStafRoles))
+																	   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound); ;
 			stafs.Delete(staf);
 			await stafs.SaveAsync();
 			imageService.DeleteImageByName(staf.ImageName ?? "");

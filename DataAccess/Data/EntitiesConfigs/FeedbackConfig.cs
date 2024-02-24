@@ -14,11 +14,11 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasOne(x => x.Movie)
 				   .WithMany(x => x.Feedbacks)
 				   .HasForeignKey(x => x.MovieId)
-				   .OnDelete(DeleteBehavior.NoAction);
+				   .OnDelete(DeleteBehavior.Cascade);
 			builder.HasOne(x => x.User)
 				   .WithMany(x => x.Feedbacks)
 				   .HasForeignKey(x => x.UserId)
-				   .OnDelete(DeleteBehavior.NoAction);
+				   .OnDelete(DeleteBehavior.ClientCascade);
 			builder.ToTable(t => t.HasCheckConstraint("Text_check", "[Text] <> ''"));
 		}
 	}

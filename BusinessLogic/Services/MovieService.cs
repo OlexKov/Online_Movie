@@ -49,19 +49,23 @@ namespace BusinessLogic.Services
 														   .Include(x=>x.ScreenShots)
 														   ) 
 				                                           ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
+			//movie.Feedbacks.Clear();
+			//movie.StafMovies.Clear();
+			//movie.MovieGenres.Clear();
+			//movie.UserMovies.Clear();
+			//await movies.SaveAsync();
+			//foreach (var item in movie.Feedbacks)
+			//	feedbacks.Delete(item);
 
-			foreach (var item in movie.Feedbacks)
-				feedbacks.Delete(item);
+			//foreach (var item in movie.StafMovies)
+			//	stafMovie.Delete(item);
 
-			foreach (var item in movie.StafMovies)
-				stafMovie.Delete(item);
+			//foreach (var item in movie.MovieGenres)
+			//	movieGenre.Delete(item);
 
-			foreach (var item in movie.MovieGenres)
-				movieGenre.Delete(item);
+			//foreach (var item in movie.UserMovies)
+			//	userMovie.Delete(item);
 
-			foreach (var item in movie.UserMovies)
-				userMovie.Delete(item);
-			
 			movies.Delete(movie);
 			await movies.SaveAsync();
 			foreach (var item in movie.ScreenShots)

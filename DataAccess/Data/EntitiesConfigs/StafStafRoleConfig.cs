@@ -17,11 +17,11 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasOne(x => x.StafRole)
 				   .WithMany(x => x.StafStafRoles)
 				   .HasForeignKey(x => x.StafRoleId)
-				   .OnDelete(DeleteBehavior.NoAction);
+				   .OnDelete(DeleteBehavior.Cascade);
 			builder.HasOne(x => x.Staf)
 				   .WithMany(x => x.StafStafRoles)
 				   .HasForeignKey(x => x.StafId)
-			       .OnDelete(DeleteBehavior.NoAction);
+			       .OnDelete(DeleteBehavior.ClientCascade);
 
 		}
 	}

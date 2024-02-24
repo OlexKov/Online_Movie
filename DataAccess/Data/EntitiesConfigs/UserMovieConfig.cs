@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BusinessLogic.Data.Entities;
 
 namespace DataAccess.Data.Entities.EntitiesConfigs
@@ -17,11 +12,11 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasOne(x => x.User)
 				   .WithMany(x => x.UserMovies)
 				   .HasForeignKey(x=>x.UserId)
-				   .OnDelete(DeleteBehavior.NoAction); ;
+				   .OnDelete(DeleteBehavior.ClientCascade); ;
 			builder.HasOne(x => x.Movie)
 				   .WithMany(x => x.UserMovies)
 				   .HasForeignKey(x => x.MovieId)
-				   .OnDelete(DeleteBehavior.NoAction);
+				   .OnDelete(DeleteBehavior.Cascade);
 
 		}
 	}
