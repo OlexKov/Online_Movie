@@ -1,21 +1,15 @@
-using BusinessLogic;
-using DataAccess.Extensions;
+using BusinessLogic.ModuleRegistration;
 using Online_Movie.Exstensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var connStr = builder.Configuration.GetConnectionString("LocalDb")!;
 // Add services to the container.
-
 builder.Services.AddControllers();
-builder.Services.AddDbContext(connStr);
-builder.Services.AddRepositories();
-builder.Services.AddIdentityUser();
-builder.Services.AddAutoMapper();
-builder.Services.DisableGlobalValidation();
-builder.Services.AddFluentValidator();
-builder.Services.AddCustomServices();
+
+builder.Services.RegisterModules(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
