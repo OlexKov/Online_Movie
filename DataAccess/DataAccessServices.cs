@@ -18,7 +18,9 @@ namespace DataAccess
 		{
 			services.AddDbContext<OnlineMovieDBContext>(opts =>
 			opts.UseSqlServer(configuration.GetConnectionString("LocalDb")!));
+
 			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 			services.AddIdentity<User, IdentityRole>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;

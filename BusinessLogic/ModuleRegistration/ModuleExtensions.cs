@@ -8,16 +8,13 @@ namespace BusinessLogic.ModuleRegistration
 {
 	public static class ModuleExtensions
 	{
-		static readonly List<IModule> registeredModules = new ();
+		
 
 		public static IServiceCollection RegisterModules(this IServiceCollection services, IConfiguration configuration)
 		{
 			var modules = DiscoverModules();
 			foreach (var module in modules)
-			{
 				module.RegisterModule(services, configuration);
-				registeredModules.Add(module);
-			}
 			return services;
 		}
 
