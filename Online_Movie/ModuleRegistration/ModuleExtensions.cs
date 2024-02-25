@@ -1,14 +1,12 @@
 ﻿using BusinessLogic.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 using System.Reflection;
 
-namespace BusinessLogic.ModuleRegistration
+namespace Online_Movie.ModuleRegistration
 {
 	public static class ModuleExtensions
 	{
-		
 
 		public static IServiceCollection RegisterModules(this IServiceCollection services, IConfiguration configuration)
 		{

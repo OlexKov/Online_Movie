@@ -1,5 +1,5 @@
-using BusinessLogic.ModuleRegistration;
 using Online_Movie.Exstensions;
+using Online_Movie.ModuleRegistration;
 
 
 var builder = WebApplication.CreateBuilder(args);

@@ -25,8 +25,11 @@ namespace BusinessLogic
 			services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 			services.AddScoped<IStafService, StafService>();
+
 			services.AddScoped<IImageService, ImageService>();
+
 			services.AddScoped<IMovieService, MovieService>();
+
 			return services;
 		}
 	}
