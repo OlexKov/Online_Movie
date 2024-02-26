@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Interfaces;
+﻿using AutoMapper;
+using BusinessLogic.Interfaces;
 using BusinessLogic.Services;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,7 @@ namespace BusinessLogic
 
 			//services.AddSingleton(provider => new MapperConfiguration(cfg =>
 			//{
-			//	cfg.AddProfile(new ProductProfile(provider.CreateScope().ServiceProvider.GetService<IFileService>()));
+			//	cfg.AddProfile(new StaftProfile(provider.CreateScope().ServiceProvider.GetService<IFileService>()));
 
 			//}).CreateMapper());
 
