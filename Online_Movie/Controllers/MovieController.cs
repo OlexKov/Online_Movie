@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
@@ -13,9 +14,9 @@ namespace Online_Movie.Controllers
 		public MovieController(IMovieService movieService)
         {
 			this.movieService = movieService;
-			
 		}
 
+		[Authorize]
 		[HttpGet]
 		public async Task<IActionResult> GetAll()
 		{

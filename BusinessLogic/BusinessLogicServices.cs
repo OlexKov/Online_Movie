@@ -31,6 +31,8 @@ namespace BusinessLogic
 
 			services.AddScoped<IMovieService, MovieService>();
 
+			services.AddScoped<IAccountsService, AccountsService>();
+
 			return services;
 		}
 	}
