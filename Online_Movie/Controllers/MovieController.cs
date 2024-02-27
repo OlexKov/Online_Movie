@@ -29,14 +29,14 @@ namespace Online_Movie.Controllers
 		[HttpPut]
 		public async Task<IActionResult> Update([FromForm] MovieModel movie)
 		{
-			//await stafService.UpdateAsync(staf);
+			await movieService.UpdateAsync(movie);
 			return Ok();
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> Create([FromForm] MovieModel movie)
 		{
-			//await stafService.CreateAsync(staf);
+			await movieService.CreateAsync(movie);
 			return Ok();
 		}
 

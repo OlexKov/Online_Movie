@@ -38,5 +38,23 @@ namespace Online_Movie.Controllers
 			await accountsService.Logout();
 			return Ok();
 		}
+
+		[HttpPost("fogot")]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> FogotPassword(string email)
+		{
+			
+			return Ok();
+		}
+
+		[HttpPost("reset")]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ResetPassword()
+		{
+
+			return Ok();
+		}
 	}
 }

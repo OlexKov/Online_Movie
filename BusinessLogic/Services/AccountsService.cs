@@ -3,13 +3,12 @@ using BusinessLogic.Data.Entities;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using NETCore.MailKit.Core;
+using System.Data;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
 
 
 namespace BusinessLogic.Services
@@ -20,16 +19,19 @@ namespace BusinessLogic.Services
 		private readonly SignInManager<User> signInManager;
 		private readonly IMapper mapper;
 		private readonly IValidator<RegisterModel> registerValidator;
+		private readonly IEmailService emailService;
 
 		public AccountsService(UserManager<User> userManager,
 								SignInManager<User> signInManager,
 								IMapper mapper,
-								IValidator<RegisterModel> registerValidator)
+								IValidator<RegisterModel> registerValidator,
+								IEmailService emailService)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
 			this.mapper = mapper;
 			this.registerValidator = registerValidator;
+			this.emailService = emailService;
 		}
 
 		public async Task Register(RegisterModel model)
@@ -42,7 +44,7 @@ namespace BusinessLogic.Services
 			var user = mapper.Map<User>(model);
 
 			var result = await userManager.CreateAsync(user, model.Password);
-
+			await userManager.AddToRoleAsync(user, "User");
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
@@ -58,6 +60,18 @@ namespace BusinessLogic.Services
 		}
 
 		public async Task Logout() =>await signInManager.SignOutAsync();
+
 		
+		public async Task<ResetPasswordModel> ResetPasswordRequest(string email)
+		{
+			var user = await userManager.FindByEmailAsync(email);
+			if (user == null) return null;
+			throw new NotImplementedException();
+		}
+
+		public async Task ResetPassword(ResetPasswordModel model)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

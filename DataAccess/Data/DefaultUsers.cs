@@ -53,6 +53,7 @@ namespace DataAccess.Data
 				Surname = surname,
 				UserName = email,
 				NormalizedUserName = email.ToUpper(),
+				NormalizedEmail = email.ToUpper(),
 				Birthdate = birthdate,
 				PremiumId = premiumId
 			};

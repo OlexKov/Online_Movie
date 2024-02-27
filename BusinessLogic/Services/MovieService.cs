@@ -4,6 +4,7 @@ using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
@@ -13,25 +14,61 @@ namespace BusinessLogic.Services
 	{
 		private readonly IRepository<Movie> movies;
 		private readonly IRepository<Feedback> feedbacks;
-		private readonly IRepository<StafMovie> stafMovie;
-		private readonly IRepository<MovieGenre> movieGenre;
+		private readonly IRepository<StafMovie> stafMovies;
+		private readonly IRepository<MovieGenre> movieGenres;
 		private readonly IRepository<UserMovie> userMovie;
 		private readonly IMapper mapper;
-		
 		private readonly IImageService imageService;
+		private readonly IValidator<MovieModel> validator;
+
+
+		private async Task deleteMovieDependencies(int id)
+		{
+			var stafs = await stafMovies.GetAsync(x => x.MovieId == id, includeProperties: "Staf");
+			var genres = await movieGenres.GetAsync(x => x.MovieId == id, includeProperties: "Genre");
 		
+			foreach (var item in stafs)
+				stafMovies.Delete(item);
+			foreach (var item in genres)
+				movieGenres.Delete(item);
+		}
+
+		private async Task<Movie> setData(MovieModel movieModel, bool update)
+		{
+			validator.ValidateAndThrow(movieModel);
+			var movie = mapper.Map<Movie>(movieModel);
+			if (update)
+				await deleteMovieDependencies(movie.Id);
+
+			foreach (var id in movieModel.Stafs)
+				movie.StafMovies.Add(new () { MovieId = movie.Id, StafId = id });
+			foreach (var id in movieModel.Genres)
+				movie.MovieGenres.Add(new() { MovieId = movie.Id, GenreId = id });
+			foreach (var item in movieModel.Screens)
+				movie.ScreenShots.Add(new() { MovieId = movie.Id, Name = await imageService.SaveImageAsync(item) });
+			
+			if (movieModel.PosterFile != null)
+			{
+				movie.Poster = await imageService.SaveImageAsync(movieModel.PosterFile);
+				if (update && movieModel.Poster != null && movieModel.Poster != "nophoto.jpeg")
+					imageService.DeleteImageByName(movieModel.Poster);
+			}
+			return movie;
+		}
+
 
 		public MovieService(IRepository<Movie> movies, IRepository<Feedback> feedbacks,
 			                IRepository<StafMovie> stafMovie, IRepository<UserMovie> userMovie,
 							IRepository<MovieGenre> movieGenre, IMapper mapper,
-							IImageService imageService)
+							IImageService imageService, IValidator<MovieModel> validator)
 		{
 			this.movies = movies;
 			this.feedbacks = feedbacks;
-			this.stafMovie = stafMovie;
-			this.movieGenre = movieGenre;
+			this.stafMovies = stafMovie;
+			this.movieGenres = movieGenre;
 			this.mapper = mapper;
 			this.imageService = imageService;
+			this.validator = validator;
 			this.userMovie = userMovie;
 		}
 	
@@ -49,23 +86,6 @@ namespace BusinessLogic.Services
 														   .Include(x=>x.ScreenShots)
 														   ) 
 				                                           ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
-			//movie.Feedbacks.Clear();
-			//movie.StafMovies.Clear();
-			//movie.MovieGenres.Clear();
-			//movie.UserMovies.Clear();
-			//await movies.SaveAsync();
-			//foreach (var item in movie.Feedbacks)
-			//	feedbacks.Delete(item);
-
-			//foreach (var item in movie.StafMovies)
-			//	stafMovie.Delete(item);
-
-			//foreach (var item in movie.MovieGenres)
-			//	movieGenre.Delete(item);
-
-			//foreach (var item in movie.UserMovies)
-			//	userMovie.Delete(item);
-
 			movies.Delete(movie);
 			await movies.SaveAsync();
 			foreach (var item in movie.ScreenShots)
@@ -104,7 +124,7 @@ namespace BusinessLogic.Services
 		public async Task<IEnumerable<StafDto>> GetStafAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafDto>>(await stafMovie.GetAsync(filter: x => x.MovieId == id));
+			return mapper.Map<IEnumerable<StafDto>>(await stafMovies.GetAsync(filter: x => x.MovieId == id));
 		}
 
 		//public async Task<IEnumerable<MovieDto>> GetTopAsync(int count)
@@ -121,14 +141,17 @@ namespace BusinessLogic.Services
 		//																           .Include(x => x.Premium)));
 		//}
 
-		public Task CreateAsync(MovieModel movie)
+		public async Task CreateAsync(MovieModel movie)
 		{
-			throw new NotImplementedException();
+			await movies.InsertAsync(await setData(movie, false));
+			await movies.SaveAsync();
+
 		}
 
-		public Task UpdateAsync(MovieModel movie)
+		public async Task UpdateAsync(MovieModel movie)
 		{
-			throw new NotImplementedException();
+			movies.Update(await setData(movie, true));
+			await movies.SaveAsync();
 		}
 
 		public async Task<double> GetRatingAsync(int id) => (await GetFeedbacksAsync(id)).Average(x => x.Rating);
