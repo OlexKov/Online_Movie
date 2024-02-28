@@ -7,6 +7,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using NETCore.MailKit.Core;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
 
@@ -22,6 +23,7 @@ namespace BusinessLogic.Services
 		private readonly IValidator<ResetPasswordModel> resetModelValidator;
 		private readonly IEmailService emailService;
 		private readonly IJwtService jwtService;
+	
 
 		public AccountsService(UserManager<User> userManager,
 								SignInManager<User> signInManager,
@@ -61,13 +63,13 @@ namespace BusinessLogic.Services
 			if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
 				throw new HttpException(Errors.InvalidRegData, HttpStatusCode.BadRequest);
 
-			await signInManager.SignInAsync(user, true);
+			///await signInManager.SignInAsync(user, true);
+
 			return new() { Token = jwtService.CreateToken(jwtService.GetClaims(user)) };
 		}
-		
+
 
 		public async Task Logout() => await signInManager.SignOutAsync();
-
 		
 		public async Task<ResetPasswordResponse> ResetPasswordRequest(string email)
 		{

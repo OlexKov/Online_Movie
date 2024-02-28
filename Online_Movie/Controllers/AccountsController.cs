@@ -28,6 +28,7 @@ namespace Online_Movie.Controllers
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginModel model) => Ok(await accountsService.Login(model));
 
+		//[Authorize]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("logout")]
 		public async Task<IActionResult> Logout()

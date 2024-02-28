@@ -50,7 +50,6 @@ namespace BusinessLogic.Services
 				claims: claims,
 				expires: DateTime.UtcNow.AddMinutes(jwtOpts.Lifetime),
 				signingCredentials: credentials);
-
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
