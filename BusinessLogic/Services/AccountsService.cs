@@ -2,8 +2,8 @@
 using BusinessLogic.Data.Entities;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using BusinessLogic.Resources;
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using NETCore.MailKit.Core;
 using System.Data;
@@ -13,7 +13,7 @@ using System.Net;
 
 namespace BusinessLogic.Services
 {
-    internal class AccountsService : IAccountsService
+	internal class AccountsService : IAccountsService
 	{
 		private readonly UserManager<User> userManager;
 		private readonly SignInManager<User> signInManager;
@@ -42,7 +42,7 @@ namespace BusinessLogic.Services
 			registerValidator.ValidateAndThrow(model);
 
 			if (await userManager.FindByEmailAsync(model.Email) != null)
-				throw new HttpException("Email is already exists.", HttpStatusCode.BadRequest);
+				throw new HttpException(Errors.EmailExists, HttpStatusCode.BadRequest);
 
 			var user = mapper.Map<User>(model);
 
@@ -57,7 +57,7 @@ namespace BusinessLogic.Services
 			var user = await userManager.FindByEmailAsync(model.Email);
 
 			if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
-				throw new HttpException("Invalid login or password.", HttpStatusCode.BadRequest);
+				throw new HttpException(Errors.InvalidRegData, HttpStatusCode.BadRequest);
 
 			await signInManager.SignInAsync(user, true);
 		}
@@ -81,7 +81,8 @@ namespace BusinessLogic.Services
 		public async Task ResetPassword(ResetPasswordModel model)
 		{
 			resetModelValidator.ValidateAndThrow(model);
-			var user = await userManager.FindByIdAsync(model.UserId);
+			var user = await userManager.FindByIdAsync(model.UserId) 
+				?? throw new HttpException(Errors.NotFoundById,HttpStatusCode.NotFound);
 			var result = await userManager.ResetPasswordAsync(user,model.Token,model.Password);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);

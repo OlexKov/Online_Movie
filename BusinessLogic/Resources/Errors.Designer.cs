@@ -61,6 +61,24 @@ namespace BusinessLogic.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Email is already exists..
+        /// </summary>
+        internal static string EmailExists {
+            get {
+                return ResourceManager.GetString("EmailExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid login or password..
+        /// </summary>
+        internal static string InvalidRegData {
+            get {
+                return ResourceManager.GetString("InvalidRegData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Id can not be negative..
         /// </summary>
         internal static string NegativeId {
