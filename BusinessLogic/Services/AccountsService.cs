@@ -19,18 +19,21 @@ namespace BusinessLogic.Services
 		private readonly SignInManager<User> signInManager;
 		private readonly IMapper mapper;
 		private readonly IValidator<RegisterModel> registerValidator;
+		private readonly IValidator<ResetPasswordModel> resetModelValidator;
 		private readonly IEmailService emailService;
 
 		public AccountsService(UserManager<User> userManager,
 								SignInManager<User> signInManager,
 								IMapper mapper,
 								IValidator<RegisterModel> registerValidator,
+								IValidator<ResetPasswordModel> resetModelValidator,
 								IEmailService emailService)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
 			this.mapper = mapper;
 			this.registerValidator = registerValidator;
+			this.resetModelValidator = resetModelValidator;
 			this.emailService = emailService;
 		}
 
@@ -62,16 +65,26 @@ namespace BusinessLogic.Services
 		public async Task Logout() =>await signInManager.SignOutAsync();
 
 		
-		public async Task<ResetPasswordModel> ResetPasswordRequest(string email)
+		public async Task<ResetPasswordResponse> ResetPasswordRequest(string email)
 		{
+			ResetPasswordResponse rModel = new(); 
 			var user = await userManager.FindByEmailAsync(email);
-			if (user == null) return null;
-			throw new NotImplementedException();
+			if (user != null)
+			{
+				rModel.Token = await userManager.GeneratePasswordResetTokenAsync(user);
+				rModel.UserId = user.Id;
+				await emailService.SendAsync(email,"Reset password",  $"\"Для сброса пароля пройдите по ссылке: <a href='#'>Reset password</a>\"",true);
+			}
+			return rModel;
 		}
 
 		public async Task ResetPassword(ResetPasswordModel model)
 		{
-			throw new NotImplementedException();
+			resetModelValidator.ValidateAndThrow(model);
+			var user = await userManager.FindByIdAsync(model.UserId);
+			var result = await userManager.ResetPasswordAsync(user,model.Token,model.Password);
+			if (!result.Succeeded)
+				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
 	}
 }

@@ -40,20 +40,18 @@ namespace Online_Movie.Controllers
 		}
 
 		[HttpPost("fogot")]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
+		
 		public async Task<IActionResult> FogotPassword(string email)
 		{
-			
-			return Ok();
+			var token = await accountsService.ResetPasswordRequest(email);
+			return Ok(token);
 		}
 
 		[HttpPost("reset")]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ResetPassword()
+		
+		public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
 		{
-
+			await accountsService.ResetPassword(model);
 			return Ok();
 		}
 	}
