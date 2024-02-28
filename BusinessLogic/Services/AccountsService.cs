@@ -21,13 +21,14 @@ namespace BusinessLogic.Services
 		private readonly IValidator<RegisterModel> registerValidator;
 		private readonly IValidator<ResetPasswordModel> resetModelValidator;
 		private readonly IEmailService emailService;
+		private readonly IJwtService jwtService;
 
 		public AccountsService(UserManager<User> userManager,
 								SignInManager<User> signInManager,
 								IMapper mapper,
 								IValidator<RegisterModel> registerValidator,
 								IValidator<ResetPasswordModel> resetModelValidator,
-								IEmailService emailService)
+								IEmailService emailService,IJwtService jwtService)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
@@ -35,6 +36,7 @@ namespace BusinessLogic.Services
 			this.registerValidator = registerValidator;
 			this.resetModelValidator = resetModelValidator;
 			this.emailService = emailService;
+			this.jwtService = jwtService;
 		}
 
 		public async Task Register(RegisterModel model)
@@ -52,7 +54,7 @@ namespace BusinessLogic.Services
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
 
-		public async Task Login(LoginModel model)
+		public async Task<LoginJwtResponse> Login(LoginModel model)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
 
@@ -60,9 +62,11 @@ namespace BusinessLogic.Services
 				throw new HttpException(Errors.InvalidRegData, HttpStatusCode.BadRequest);
 
 			await signInManager.SignInAsync(user, true);
+			return new() { Token = jwtService.CreateToken(jwtService.GetClaims(user)) };
 		}
+		
 
-		public async Task Logout() =>await signInManager.SignOutAsync();
+		public async Task Logout() => await signInManager.SignOutAsync();
 
 		
 		public async Task<ResetPasswordResponse> ResetPasswordRequest(string email)
@@ -86,6 +90,20 @@ namespace BusinessLogic.Services
 			var result = await userManager.ResetPasswordAsync(user,model.Token,model.Password);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+		}
+
+		public async Task Delete(User user)
+		{
+			if(user == null) throw new HttpException(Errors.NullReference, HttpStatusCode.BadRequest);
+			var result = await userManager.DeleteAsync(user);
+			if(!result.Succeeded) throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+		}
+
+		public async Task Delete(string email)
+		{
+			var user = await userManager.FindByEmailAsync(email) 
+				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.BadRequest);
+			await Delete(user);
 		}
 	}
 }

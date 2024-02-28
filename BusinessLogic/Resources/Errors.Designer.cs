@@ -70,6 +70,15 @@ namespace BusinessLogic.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid gwt settings..
+        /// </summary>
+        internal static string InvalidGwtSettings {
+            get {
+                return ResourceManager.GetString("InvalidGwtSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid login or password..
         /// </summary>
         internal static string InvalidRegData {
@@ -93,6 +102,15 @@ namespace BusinessLogic.Resources {
         internal static string NotFoundById {
             get {
                 return ResourceManager.GetString("NotFoundById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Value cannot be null.
+        /// </summary>
+        internal static string NullReference {
+            get {
+                return ResourceManager.GetString("NullReference", resourceCulture);
             }
         }
     }

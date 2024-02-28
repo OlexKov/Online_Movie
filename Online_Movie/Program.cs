@@ -32,9 +32,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseAuthorization();
-
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

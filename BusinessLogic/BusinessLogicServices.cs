@@ -51,6 +51,7 @@ namespace BusinessLogic
 				});
 			});
 
+			services.AddScoped<IJwtService, JwtService>();
 			return services;
 		}
 	}

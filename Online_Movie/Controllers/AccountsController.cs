@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,13 +26,9 @@ namespace Online_Movie.Controllers
 		}
 
 		[HttpPost("login")]
-		public async Task<IActionResult> Login(LoginModel model)
-		{
-			await accountsService.Login(model);
-			return Ok();
-		}
+		public async Task<IActionResult> Login([FromBody] LoginModel model) => Ok(await accountsService.Login(model));
 
-		[Authorize]
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("logout")]
 		public async Task<IActionResult> Logout()
 		{
@@ -40,18 +37,20 @@ namespace Online_Movie.Controllers
 		}
 
 		[HttpPost("fogot")]
+		public async Task<IActionResult> FogotPassword([FromRoute] string email) => Ok(await accountsService.ResetPasswordRequest(email));
 		
-		public async Task<IActionResult> FogotPassword(string email)
-		{
-			var token = await accountsService.ResetPasswordRequest(email);
-			return Ok(token);
-		}
 
 		[HttpPost("reset")]
-		
-		public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
 		{
 			await accountsService.ResetPassword(model);
+			return Ok();
+		}
+
+		[HttpDelete("{*email}")]
+		public async Task<IActionResult> Delete([FromRoute]string email)
+		{
+			await accountsService.Delete(email);
 			return Ok();
 		}
 	}

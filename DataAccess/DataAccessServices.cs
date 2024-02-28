@@ -20,6 +20,8 @@ namespace DataAccess
 
 			services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+
+
 			services.AddIdentity<User, IdentityRole>(options =>
 			{
 				options.SignIn.RequireConfirmedAccount = false;

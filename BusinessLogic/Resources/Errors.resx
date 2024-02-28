@@ -120,6 +120,9 @@
   <data name="EmailExists" xml:space="preserve">
     <value>Email is already exists.</value>
   </data>
+  <data name="InvalidGwtSettings" xml:space="preserve">
+    <value>Invalid gwt settings.</value>
+  </data>
   <data name="InvalidRegData" xml:space="preserve">
     <value>Invalid login or password.</value>
   </data>
@@ -128,5 +131,8 @@
   </data>
   <data name="NotFoundById" xml:space="preserve">
     <value>Element not found. Wrong Id.</value>
+  </data>
+  <data name="NullReference" xml:space="preserve">
+    <value>Value cannot be null</value>
   </data>
 </root>
