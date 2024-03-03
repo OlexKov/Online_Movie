@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
 {
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class StafController : ControllerBase
@@ -17,14 +18,15 @@ namespace Online_Movie.Controllers
 			this.stafService = stafService;
 		}
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> GetAll() => Ok(await stafService.GetAllAsync());
-		
 
+		[AllowAnonymous]
 		[HttpGet("{id:int}")]
 		public async Task<IActionResult> Get([FromRoute]int id) =>Ok(await stafService.GetAsync(id));
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+		[Authorize(Roles = "Admin")]
 		[HttpPut]
 		public async Task<IActionResult> Update([FromForm] StafModel staf)
 		{
@@ -32,7 +34,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+		[Authorize(Roles = "Admin")]
 		[HttpPost]
 		public async Task<IActionResult> Create([FromForm] StafModel staf)
 		{
@@ -40,7 +42,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+		[Authorize(Roles = "Admin")]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute]int id)
 		{

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
 {
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AccountsController : ControllerBase
@@ -18,6 +19,7 @@ namespace Online_Movie.Controllers
 			this.accountsService = accountsService;
 		}
 
+		[AllowAnonymous]
 		[HttpPost("register")]
 		public async Task<IActionResult> Register([FromBody] RegisterModel model)
 		{
@@ -25,10 +27,10 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[AllowAnonymous]
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginModel model) => Ok(await accountsService.Login(model));
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("logout")]
 		public async Task<IActionResult> Logout()
 		{
@@ -36,10 +38,10 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[AllowAnonymous]
 		[HttpPost("fogot")]
 		public async Task<IActionResult> FogotPassword([FromRoute] string email) => Ok(await accountsService.ResetPasswordRequest(email));
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("reset")]
 		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
 		{
@@ -47,7 +49,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Admin")]
+		[Authorize(Roles = "Admin")]
 		[HttpDelete("{*email}")]
 		public async Task<IActionResult> Delete([FromRoute]string email)
 		{
