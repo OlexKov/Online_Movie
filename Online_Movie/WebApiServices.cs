@@ -1,11 +1,10 @@
 ﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
-using BusinessLogic.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using System.Text;
 
 namespace Online_Movie
@@ -21,7 +20,7 @@ namespace Online_Movie
 
 			var jwtOpts = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()!;
 
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme )
 				.AddJwtBearer(o =>
 				{
 					o.TokenValidationParameters = new TokenValidationParameters
@@ -32,11 +31,16 @@ namespace Online_Movie
 						ValidateIssuerSigningKey = true,
 						ValidIssuer = jwtOpts.Issuer,
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOpts.Key)),
-						ClockSkew = TimeSpan.Zero
+						ClockSkew = TimeSpan.Zero,
+						SaveSigninToken = true,
 					};
 				});
 
-			services.AddAuthorization();
+			services.AddAuthorization(opts => {
+
+				opts.DefaultPolicy = new AuthorizationPolicyBuilder(opts.DefaultPolicy)
+					  .RequireAuthenticatedUser().Build();
+			} ); 
 
 			services.AddSwaggerGen(setup =>
 			{

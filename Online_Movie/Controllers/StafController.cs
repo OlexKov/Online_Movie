@@ -1,5 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
@@ -22,6 +24,7 @@ namespace Online_Movie.Controllers
 		[HttpGet("{id:int}")]
 		public async Task<IActionResult> Get([FromRoute]int id) =>Ok(await stafService.GetAsync(id));
 
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 		[HttpPut]
 		public async Task<IActionResult> Update([FromForm] StafModel staf)
 		{
@@ -29,6 +32,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 		[HttpPost]
 		public async Task<IActionResult> Create([FromForm] StafModel staf)
 		{
@@ -36,6 +40,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute]int id)
 		{

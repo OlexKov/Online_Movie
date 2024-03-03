@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Data.Entities;
+using BusinessLogic.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,15 +22,15 @@ namespace DataAccess.Data
 			modelBuilder.Entity<IdentityRole>().HasData(
 				new IdentityRole
 				{
-					Name = "Admin",
-					NormalizedName = "ADMIN",
+					Name = Roles.Admin,
+					NormalizedName = Roles.Admin.ToUpper(),
 					Id = ADMIN_ROLE_ID,
 					ConcurrencyStamp = ADMIN_ROLE_ID,
 				},
 				new IdentityRole
 				{
-					Name = "User",
-					NormalizedName = "USER",
+					Name = Roles.User,
+					NormalizedName = Roles.User.ToUpper(),
 					Id = USER_ROLE_ID,
 					ConcurrencyStamp = USER_ROLE_ID,
 				}

@@ -1,14 +1,9 @@
 ﻿using BusinessLogic.Data.Entities;
+using BusinessLogic.Helpers;
 using Microsoft.AspNetCore.Identity;
 
 namespace Online_Movie.Exstensions
 {
-
-	public enum Roles
-	{
-		User,
-		Admin
-	}
 
 	public static class Seeder
 	{
@@ -16,7 +11,7 @@ namespace Online_Movie.Exstensions
 		{
 			var roleManager = app.GetRequiredService<RoleManager<IdentityRole>>();
 
-			foreach (var role in Enum.GetNames(typeof(Roles)))
+			foreach (var role in Roles.Get())
 			{
 				if (!await roleManager.RoleExistsAsync(role))
 				{

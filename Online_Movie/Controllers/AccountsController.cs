@@ -28,7 +28,6 @@ namespace Online_Movie.Controllers
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginModel model) => Ok(await accountsService.Login(model));
 
-		//[Authorize]
 		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("logout")]
 		public async Task<IActionResult> Logout()
@@ -39,8 +38,8 @@ namespace Online_Movie.Controllers
 
 		[HttpPost("fogot")]
 		public async Task<IActionResult> FogotPassword([FromRoute] string email) => Ok(await accountsService.ResetPasswordRequest(email));
-		
 
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[HttpPost("reset")]
 		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
 		{
@@ -48,6 +47,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Admin")]
 		[HttpDelete("{*email}")]
 		public async Task<IActionResult> Delete([FromRoute]string email)
 		{

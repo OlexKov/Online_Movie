@@ -2,6 +2,7 @@
 using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Resources;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,22 +15,24 @@ namespace BusinessLogic.Services
 	internal class JwtService : IJwtService
 	{
 		private readonly IConfiguration configuration;
+		private readonly UserManager<User> userManager;
 
-		public JwtService(IConfiguration configuration)
+		public JwtService(IConfiguration configuration,UserManager<User> userManager)
 		{
 			this.configuration = configuration;
+			this.userManager = userManager;
 		}
 
 		public IEnumerable<Claim> GetClaims(User user)
 		{
 			var claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.NameIdentifier, user.Id),
-				new Claim(ClaimTypes.Name, user.UserName),
+				new (ClaimTypes.NameIdentifier, user.Id),
+				new (ClaimTypes.Name, user.UserName),
 			};
 
-			//var roles = userManager.GetRolesAsync(user).Result;
-			//claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
+			var roles = userManager.GetRolesAsync(user).Result;
+			claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
 
 			return claims;
 		}
