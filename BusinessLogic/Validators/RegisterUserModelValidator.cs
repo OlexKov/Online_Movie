@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Validators
 {
-	public class RegisterModelValidator : AbstractValidator<RegisterModel>
+	public class RegisterUserModelValidator : AbstractValidator<RegisterUserModel>
 	{
 		private readonly string notBeEmpty = "{PropertyName} not be empty";
-		public RegisterModelValidator()
+		public RegisterUserModelValidator()
         {
 			RuleFor(x => x.Birthdate)
 					.NotEmpty().WithMessage(notBeEmpty)

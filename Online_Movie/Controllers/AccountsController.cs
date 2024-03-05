@@ -1,9 +1,13 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic;
+using BusinessLogic.Helpers;
+using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net;
 
 namespace Online_Movie.Controllers
 {
@@ -21,7 +25,7 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		[HttpPost("register")]
-		public async Task<IActionResult> Register([FromBody] RegisterModel model)
+		public async Task<IActionResult> Register([FromBody] RegisterUserModel model)
 		{
 			await accountsService.Register(model);
 			return Ok();
@@ -29,12 +33,12 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		[HttpPost("login")]
-		public async Task<IActionResult> Login([FromBody] LoginModel model) => Ok(await accountsService.Login(model));
+		public async Task<IActionResult> Login([FromBody] AuthRequest model) => Ok(await accountsService.Login(model));
 
 		[HttpPost("logout")]
-		public async Task<IActionResult> Logout()
+		public async Task<IActionResult> Logout([FromBody] AuthResponse tokens)
 		{
-			await accountsService.Logout();
+			await accountsService.Logout(tokens);
 			return Ok();
 		}
 
@@ -49,7 +53,11 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = "Admin")]
+		[AllowAnonymous]
+		[HttpPost("refreshTokens")]
+		public IActionResult RefreshTokens([FromBody] AuthResponse tokens ) => Ok(accountsService.RefreshTokens(tokens));
+		
+		[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("{*email}")]
 		public async Task<IActionResult> Delete([FromRoute]string email)
 		{

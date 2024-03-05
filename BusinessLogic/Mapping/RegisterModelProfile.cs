@@ -9,7 +9,7 @@ namespace BusinessLogic.Mapping
 	{
         public RegisterModelProfile()
         {
-			CreateMap<RegisterModel, User>()
+			CreateMap<RegisterUserModel, User>()
 				.ForMember(x => x.UserName, opts => opts.MapFrom(s => s.Email));
 		}
     }

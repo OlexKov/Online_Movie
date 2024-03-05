@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using BusinessLogic.Data.Entities;
+using BusinessLogic.Entities;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using NETCore.MailKit.Core;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,31 +20,58 @@ namespace BusinessLogic.Services
 	internal class AccountsService : IAccountsService
 	{
 		private readonly UserManager<User> userManager;
-		private readonly SignInManager<User> signInManager;
 		private readonly IMapper mapper;
-		private readonly IValidator<RegisterModel> registerValidator;
+		private readonly IValidator<RegisterUserModel> registerValidator;
 		private readonly IValidator<ResetPasswordModel> resetModelValidator;
 		private readonly IEmailService emailService;
 		private readonly IJwtService jwtService;
-	
+		private readonly IRepository<RefreshToken> tokenRepository;
+		private readonly int refreshTokenLifeTime;
+
+		private async Task<string> CreateRefreshToken(string userId)
+		{
+			var refeshToken = jwtService.CreateRefreshToken();
+
+			var refreshTokenEntity = new RefreshToken
+			{
+				Token = refeshToken,
+				UserId = userId,
+				CreationDate = DateTime.UtcNow // Now vs UtcNow
+			};
+
+			await tokenRepository.InsertAsync(refreshTokenEntity);
+			await tokenRepository.SaveAsync();
+
+			return refeshToken;
+		}
 
 		public AccountsService(UserManager<User> userManager,
-								SignInManager<User> signInManager,
 								IMapper mapper,
-								IValidator<RegisterModel> registerValidator,
+								IValidator<RegisterUserModel> registerValidator,
 								IValidator<ResetPasswordModel> resetModelValidator,
-								IEmailService emailService,IJwtService jwtService)
+								IEmailService emailService, IJwtService jwtService,
+								IRepository<RefreshToken> tokenRepository, IConfiguration configuration)
 		{
 			this.userManager = userManager;
-			this.signInManager = signInManager;
 			this.mapper = mapper;
 			this.registerValidator = registerValidator;
 			this.resetModelValidator = resetModelValidator;
 			this.emailService = emailService;
 			this.jwtService = jwtService;
+			this.tokenRepository = tokenRepository;
+			refreshTokenLifeTime = configuration.GetSection(nameof(JwtOptions)).GetValue<int>("RefreshTokenLifeTimeDays");
 		}
 
-		public async Task Register(RegisterModel model)
+		public async Task<RefreshToken> GetRefreshToken(string rToken)
+		{
+			var token = await tokenRepository.FirstOrDefaultAsync(selector: x => x,
+															  predicate: x => x.Token == rToken);
+			if(token == null || token.CreationDate.AddDays(refreshTokenLifeTime) > DateTime.UtcNow)
+				   throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
+			return token;
+		}
+
+		public async Task Register(RegisterUserModel model)
 		{
 			registerValidator.ValidateAndThrow(model);
 
@@ -56,20 +86,27 @@ namespace BusinessLogic.Services
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
 
-		public async Task<LoginJwtResponse> Login(LoginModel model)
+		public async Task<AuthResponse> Login(AuthRequest model)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
 
 			if (user == null || !await userManager.CheckPasswordAsync(user, model.Password))
 				throw new HttpException(Errors.InvalidRegData, HttpStatusCode.BadRequest);
 
-			///await signInManager.SignInAsync(user, true);
-
-			return new() { Token = jwtService.CreateToken(jwtService.GetClaims(user)) };
+			return new()
+			{
+				AccessToken = jwtService.CreateToken(await jwtService.GetClaimsAsync(user)),
+				RefreshToken =  await CreateRefreshToken(user.Id)
+			};
 		}
 
 
-		public async Task Logout() => await signInManager.SignOutAsync();
+		public async Task Logout(AuthResponse tokens)
+		{
+			var rToken = GetRefreshToken(tokens.RefreshToken);
+			await tokenRepository.DeleteAsync(rToken);
+			await tokenRepository.SaveAsync();
+		}
 		
 		public async Task<ResetPasswordResponse> ResetPasswordRequest(string email)
 		{
@@ -106,6 +143,24 @@ namespace BusinessLogic.Services
 			var user = await userManager.FindByEmailAsync(email) 
 				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.BadRequest);
 			await Delete(user);
+		}
+
+		public async Task<AuthResponse> RefreshTokens(AuthResponse tokens)
+		{
+			var refrestToken = await GetRefreshToken(tokens.RefreshToken);
+			var claims = jwtService.GetClaimsFromExpiredToken(tokens.AccessToken);
+			var newAccessToken = jwtService.CreateToken(claims);
+			var newRefreshToken = jwtService.CreateRefreshToken();
+			refrestToken.Token = newRefreshToken;
+			tokenRepository.Update(refrestToken);
+			await tokenRepository.SaveAsync();
+			var userTokens = new AuthResponse()
+			{
+				AccessToken = newAccessToken,
+				RefreshToken = newRefreshToken
+			};
+
+			return userTokens;
 		}
 	}
 }

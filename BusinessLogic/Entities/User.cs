@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BusinessLogic.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLogic.Data.Entities
 {
@@ -12,5 +13,6 @@ namespace BusinessLogic.Data.Entities
 		public int PremiumId { get; set; }
 		public ICollection<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
 		public ICollection<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
+		public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
 	}
 }

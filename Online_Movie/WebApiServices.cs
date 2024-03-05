@@ -38,7 +38,7 @@ namespace Online_Movie
 
 			services.AddAuthorization(opts => {
 
-				opts.DefaultPolicy = new AuthorizationPolicyBuilder(opts.DefaultPolicy)
+				opts.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
 					  .RequireAuthenticatedUser().Build();
 			} ); 
 

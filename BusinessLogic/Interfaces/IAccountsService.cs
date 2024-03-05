@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Data.Entities;
+using BusinessLogic.Entities;
 using BusinessLogic.Models;
 
 namespace BusinessLogic.Interfaces
@@ -7,10 +8,12 @@ namespace BusinessLogic.Interfaces
 	{
 		Task<ResetPasswordResponse> ResetPasswordRequest(string email);
 		Task ResetPassword(ResetPasswordModel model);
-		Task Register(RegisterModel model);
+		Task Register(RegisterUserModel model);
 		Task Delete(User user);
 		Task Delete(string email);
-		Task<LoginJwtResponse> Login(LoginModel model);
-		Task Logout();
+		Task<AuthResponse> Login(AuthRequest model);
+		Task Logout(AuthResponse tokens);
+		Task<RefreshToken> GetRefreshToken(string rToken);
+		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
 	}
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-	public class RegisterModel
+	public class RegisterUserModel
 	{
 		public string Name { get; set; }
 		public string Surname { get; set; }

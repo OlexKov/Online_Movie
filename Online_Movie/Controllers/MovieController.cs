@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Helpers;
+using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,7 @@ namespace Online_Movie.Controllers
 		[HttpGet("{id:int}")]
 		public async Task<IActionResult> Get([FromRoute] int id) => Ok(await movieService.GetByIdAsync(id));
 
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Roles.Admin)]
 		[HttpPut]
 		public async Task<IActionResult> Update([FromForm] MovieModel movie)
 		{
@@ -37,7 +38,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Roles.Admin)]
 		[HttpPost]
 		public async Task<IActionResult> Create([FromForm] MovieModel movie)
 		{
@@ -45,7 +46,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{

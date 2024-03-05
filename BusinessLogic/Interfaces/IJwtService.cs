@@ -5,7 +5,11 @@ namespace BusinessLogic.Interfaces
 {
 	public interface IJwtService
 	{
-		IEnumerable<Claim> GetClaims(User user);
+		Task<IEnumerable<Claim>> GetClaimsAsync(User user);
 		string CreateToken(IEnumerable<Claim> claims);
+
+		string CreateRefreshToken();
+		IEnumerable<Claim> GetClaimsFromExpiredToken(string token);
+
 	}
 }

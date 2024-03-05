@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-	public class LoginJwtResponse
+	public class AuthResponse
 	{
-		public string Token { get; set; }
+		public string AccessToken { get; set; } = null!;
+		public string RefreshToken { get; set; } = null!;
 	}
 }

@@ -4,6 +4,7 @@
     {
 		public string Issuer { get; set; }
 		public string Key { get; set; }
-		public int Lifetime { get; set; } // minutes
+		public int AccessTokenLifeTimeMinutes { get; set; }
+		public int RefreshTokenLifeTimeDays { get; set; }
 	}
 }
