@@ -4,8 +4,8 @@ using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
+using BusinessLogic.Specifications;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace BusinessLogic.Services
@@ -16,7 +16,6 @@ namespace BusinessLogic.Services
 		private readonly IRepository<Feedback> feedbacks;
 		private readonly IRepository<StafMovie> stafMovies;
 		private readonly IRepository<MovieGenre> movieGenres;
-		private readonly IRepository<UserMovie> userMovie;
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<MovieModel> validator;
@@ -24,9 +23,9 @@ namespace BusinessLogic.Services
 
 		private async Task deleteMovieDependencies(int id)
 		{
-			var stafs = await stafMovies.GetAsync(x => x.MovieId == id, includeProperties: "Staf");
-			var genres = await movieGenres.GetAsync(x => x.MovieId == id, includeProperties: "Genre");
-		
+			var stafs = await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id));
+			var genres = await movieGenres.GetListBySpec(new MovieGenreSpecs.GetByMovieId(id));
+
 			foreach (var item in stafs)
 				stafMovies.Delete(item);
 			foreach (var item in genres)
@@ -58,7 +57,7 @@ namespace BusinessLogic.Services
 
 
 		public MovieService(IRepository<Movie> movies, IRepository<Feedback> feedbacks,
-			                IRepository<StafMovie> stafMovie, IRepository<UserMovie> userMovie,
+			                IRepository<StafMovie> stafMovie,
 							IRepository<MovieGenre> movieGenre, IMapper mapper,
 							IImageService imageService, IValidator<MovieModel> validator)
 		{
@@ -69,23 +68,14 @@ namespace BusinessLogic.Services
 			this.mapper = mapper;
 			this.imageService = imageService;
 			this.validator = validator;
-			this.userMovie = userMovie;
 		}
 	
 
 		public async Task DeleteAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			var movie = await movies.FirstOrDefaultAsync(selector:x=>x,
-				                                           predicate: x=>x.Id == id,
-														   include:item=>item
-														   .Include(x=>x.Feedbacks)
-														   .Include(x=>x.MovieGenres)
-														   .Include(x=>x.StafMovies)
-														   .Include(x => x.UserMovies)
-														   .Include(x=>x.ScreenShots)
-														   ) 
-				                                           ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
+			var movie = await movies.GetItemBySpec(new MovieSpecs.GetByIdIncCollections(id)) 
+				                          ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
 			movies.Delete(movie);
 			await movies.SaveAsync();
 			foreach (var item in movie.ScreenShots)
@@ -93,38 +83,27 @@ namespace BusinessLogic.Services
 			imageService.DeleteImageByName(movie.Poster ?? "");
 		}
 
-		public async Task<IEnumerable<MovieDto>> GetAllAsync()
-		{
-			return mapper.Map<IEnumerable<MovieDto>>(await movies.GetAsync(selector: x => x,
-															  include: item => item
-																	   .Include(x => x.Country)
-																	   .Include(x => x.Quality)
-																	   .Include(x => x.Premium)));
-		}
+		public async Task<IEnumerable<MovieDto>> GetAllAsync() => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.GetAll()));
+		
 
 		public async Task<MovieDto> GetByIdAsync(int id)
 		{
 			return id < 0
 				? throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest)
-				: mapper.Map<MovieDto>(await movies.FirstOrDefaultAsync(selector: x => x,
-																		 predicate:x => x.Id == id,
-																		 include: item => item
-																		  .Include(x => x.Country)
-																		  .Include(x => x.Quality)
-																		  .Include(x => x.Premium)) 
-				                                                          ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound));
+				: mapper.Map<MovieDto>(await movies.GetItemBySpec(new MovieSpecs.GetByIdInc(id)) 
+				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound));
 		}
 
 		public async Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetAsync(filter:x=>x.MovieId == id));
+			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetListBySpec(new FeedbacsSpecs.GetByMovieId(id)));
 		}
 
 		public async Task<IEnumerable<StafDto>> GetStafAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafDto>>(await stafMovies.GetAsync(filter: x => x.MovieId == id));
+			return mapper.Map<IEnumerable<StafDto>>(await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id)));
 		}
 
 		//public async Task<IEnumerable<MovieDto>> GetTopAsync(int count)

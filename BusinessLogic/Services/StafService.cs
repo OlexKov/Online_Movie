@@ -4,6 +4,7 @@ using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
+using BusinessLogic.Specifications;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -22,8 +23,8 @@ namespace BusinessLogic.Services
 
 		private async Task deleteStafDependencies(int id)
 		{
-     		var movies = await stafMovies.GetAsync(x => x.StafId == id, includeProperties: "Movie");
-			var stafRoles = await roles.GetAsync(x => x.StafId == id, includeProperties: "StafRole");
+     		var movies = await stafMovies.GetListBySpec(new StafMovieSpecs.GetByStafId(id));
+			var stafRoles = await roles.GetListBySpec(new StafStafRolesSpecs.GetByStafId(id));
 
 			foreach (var item in stafRoles)
 				roles.Delete(item);
@@ -66,48 +67,31 @@ namespace BusinessLogic.Services
 		public async Task<StafDto> GetAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			var staf = await stafs.FirstOrDefaultAsync(selector: x => x,
-																	   predicate: x => x.Id == id,
-																	   include: staf => staf
-																	   .Include(x => x.Country))
-																	   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
+			var staf = await stafs.GetItemBySpec(new StafSpecs.GetById(id))
+									   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
 			return  mapper.Map<StafDto>(staf);
 		}
 
 		public async Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids)
 		{
-			return mapper.Map<IEnumerable<StafDto>>(await stafs.GetAsync(selector: x => x,
-																		 predicate: x => ids.Any(z=>z == x.Id),
-																		 include: staf => staf
-																		          .Include(x => x.Country)));
+			return mapper.Map<IEnumerable<StafDto>>(await stafs.GetListBySpec(new StafSpecs.GetByIds(ids)));
 		}
 
 		public async Task<IEnumerable<StafDto>> GetAllAsync()
 		{
-			return mapper.Map<IEnumerable<StafDto>>( await stafs.GetAsync(selector:x=>x,
-				                                                          include:staf=>staf
-																		          .Include(x=>x.Country)));
+			return mapper.Map<IEnumerable<StafDto>>( await stafs.GetListBySpec(new StafSpecs.GetAll()));
 		}
 
 		public async Task<IEnumerable<MovieDto>> GetMoviesAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<MovieDto>>(await stafMovies.GetAsync(selector:x=> x.Movie,
-				                                                                predicate:x=>x.StafId == id, 
-																				include: stafMovie=> stafMovie
-																						 .Include(x=>x.Movie)
-																						 .ThenInclude(x=>x.Country)
-																						 .Include(x => x.Movie)
-																						 .ThenInclude(x=>x.Quality)
-																						 .Include(x => x.Movie)
-																						 .ThenInclude(x=>x.Premium)));
+			return mapper.Map<IEnumerable<MovieDto>>(await stafMovies.GetListBySpec(new StafMovieSpecs.GetMovieByStafIdInc(id)));
 		}
 
 		public async Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafRoleDto>>(await roles.GetAsync(selector:x =>x.StafRole,
-				                                                              predicate: x => x.StafId == id));
+			return mapper.Map<IEnumerable<StafRoleDto>>(await roles.GetListBySpec(new StafStafRolesSpecs.GetByStafIdInc(id)));
 		}
 
 		public async Task UpdateAsync(StafModel staf)
@@ -120,12 +104,8 @@ namespace BusinessLogic.Services
 		public async Task DeleteAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			var staf = await stafs.FirstOrDefaultAsync(selector: x => x,
-																	   predicate: x => x.Id == id,
-																	   include: item => item
-																	   .Include(x => x.StafMovies)
-																	   .Include(x => x.StafStafRoles))
-																	   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound); ;
+			var staf = await stafs.GetItemBySpec(new StafSpecs.GetByIdIncCol(id))
+									   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
 			stafs.Delete(staf);
 			await stafs.SaveAsync();
 			imageService.DeleteImageByName(staf.ImageName ?? "");

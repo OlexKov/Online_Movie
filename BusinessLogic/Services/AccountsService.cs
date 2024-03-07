@@ -5,6 +5,7 @@ using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
+using BusinessLogic.Specifications;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -64,8 +65,7 @@ namespace BusinessLogic.Services
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
 		{
-			var token = await tokenRepository.FirstOrDefaultAsync(selector: x => x,
-															  predicate: x => x.Token == rToken);
+			var token = await tokenRepository.GetItemBySpec(new RefreshTokenSpecs.GetTokenByValue(rToken));
 			if(token == null || token.CreationDate.AddDays(refreshTokenLifeTime) > DateTime.UtcNow)
 				   throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
 			return token;

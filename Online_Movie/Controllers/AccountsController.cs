@@ -55,7 +55,7 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		[HttpPost("refreshTokens")]
-		public IActionResult RefreshTokens([FromBody] AuthResponse tokens ) => Ok(accountsService.RefreshTokens(tokens));
+		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokens(tokens));
 		
 		[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("{*email}")]

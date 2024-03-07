@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Data.Entities;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Specifications;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -36,13 +37,12 @@ namespace BusinessLogic.Services
 
 		public async Task DeleteImegeRangeAsync(IEnumerable<int> ids)
 		{
-			var imageNames = await images.GetAsync(selector: x => x.Name,
-															       predicate: x => ids.Any(z => z == x.Id));
+			var imageNames = await images.GetListBySpec(new ImageSpecs.GetByIds(ids));
 			foreach (var item in ids)
 				await images.DeleteAsync(item);
 			await images.SaveAsync();
 			foreach (var image in imageNames)
-				DeleteImageByName(image);
+				DeleteImageByName(image.Name);
 		}
 		
 
