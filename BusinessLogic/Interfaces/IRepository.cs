@@ -5,13 +5,7 @@ namespace BusinessLogic.Interfaces
 {
 	public interface IRepository<TEntity> where TEntity : class
 	{
-		
 		Task<TEntity?> GetByIDAsync(object id);
-		Task<TResult?> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector,
-										  Expression<Func<TEntity, bool>>? predicate = null,
-										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-										  bool disableTracking = true);
-	
 		Task InsertAsync(TEntity entity);
 		void Delete(object id);
 		Task DeleteAsync(object id);

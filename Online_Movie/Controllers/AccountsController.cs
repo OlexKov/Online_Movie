@@ -1,13 +1,9 @@
-﻿using BusinessLogic;
-using BusinessLogic.Helpers;
+﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Net;
 
 namespace Online_Movie.Controllers
 {

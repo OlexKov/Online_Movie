@@ -22,33 +22,6 @@ namespace DataAccess.Repositories
 		}
 
 		public virtual async Task<TEntity?> GetByIDAsync(object id) =>  await dbSet.FindAsync(id);
-
-		public async Task<TResult?> FirstOrDefaultAsync<TResult>(Expression<Func<TEntity, TResult>> selector ,
-										  Expression<Func<TEntity, bool>>? predicate = null,
-										  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-										  bool disableTracking = false)
-		{
-			IQueryable<TEntity> query = dbSet;
-			if (disableTracking)
-			{
-				query = query.AsNoTracking();
-			}
-
-			if (include != null)
-			{
-				query = include(query);
-			}
-
-			if (predicate != null)
-			{
-				query = query.Where(predicate);
-			}
-			
-			return await query.Select(selector).FirstOrDefaultAsync();
-		}
-
-
-		
 		
 		public async virtual Task InsertAsync(TEntity entity) => await dbSet.AddAsync(entity);
 		
