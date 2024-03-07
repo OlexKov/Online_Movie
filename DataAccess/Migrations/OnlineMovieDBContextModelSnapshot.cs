@@ -1201,7 +1201,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime?>("PremiumDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PremiumId")
+                    b.Property<int?>("PremiumId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -1238,17 +1238,17 @@ namespace DataAccess.Migrations
                             Id = "f66e492517d7414495e988c4c50fd107",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "e284bf76-38fe-46ab-9f93-a698543a7409",
+                            ConcurrencyStamp = "24befc4a-1c60-40b3-9142-c91896ab699b",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Петро",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHXP7osJyhN/ugrGaGCFZZ3wmyW0ZU5lWqF+5sOlvGmhm4RaZwykErN90qNAkE2ECw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEM408ec0BGXPrJ0T22qMBJOj5uhoMqUPNlxasyo+PfGIzfLy9SJsprXv2yPtALRaw==",
                             PhoneNumberConfirmed = false,
                             PremiumId = 1,
-                            SecurityStamp = "75b007c1-c76d-4c96-93f1-bbc07dda217b",
+                            SecurityStamp = "18847c8a-2c84-46aa-965f-c84432d5db89",
                             Surname = "Левак",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -1258,17 +1258,17 @@ namespace DataAccess.Migrations
                             Id = "d1901b2435594da2a255db13fc57509b",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "6bb5873d-c68e-4294-8992-4832e1a17ef7",
+                            ConcurrencyStamp = "3822b4f2-24d4-483b-8b84-7e4f946f6ee4",
                             Email = "User1@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Iван",
                             NormalizedEmail = "USER1@GMAIL.COM",
                             NormalizedUserName = "USER1@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENky/yM+9alis+QMn/0EQKE0Gq/04qnolfYlCvH1Jzn/UaaDRdyXyBHWOhZxAVtogA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBdwCPNjuj0pLPKnDJ4s8Rw0uWL226YJ9o6SUxJRNPk57niu0zI/df7EZYj97gvSDw==",
                             PhoneNumberConfirmed = false,
                             PremiumId = 1,
-                            SecurityStamp = "00f1188c-f6f3-44e7-bec6-0082be1ab1f6",
+                            SecurityStamp = "9def664b-cfb0-48ef-ad7e-7c6603cbf492",
                             Surname = "Калита",
                             TwoFactorEnabled = false,
                             UserName = "User1@gmail.com"
@@ -1278,17 +1278,17 @@ namespace DataAccess.Migrations
                             Id = "c86dc56aedf549f6afe5ceb4d414ebf1",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "ce4f141f-3246-44fe-8197-e4f9afea1d10",
+                            ConcurrencyStamp = "c12d65f8-af00-49ba-8bb2-aafaa14b8ed0",
                             Email = "User2@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Петро",
                             NormalizedEmail = "USER2@GMAIL.COM",
                             NormalizedUserName = "USER2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFfGiyYJ5bACBOvzpzrqNFVWI2c627qMyCbARXdW0w6kvWfIXQ2fFBKM1rZ4GsAQvg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMu43Gw1v31sf9InJBm4xQjAvh+SETeBBjLNjcSNBRh4RDxiApEF6vxkXYXzu1etcg==",
                             PhoneNumberConfirmed = false,
                             PremiumId = 2,
-                            SecurityStamp = "5c96deb1-3e5e-43de-a9d4-a1c9d7cae483",
+                            SecurityStamp = "d68edbd9-cff8-48a2-9fee-3690ba6c5e8e",
                             Surname = "Дякуленко",
                             TwoFactorEnabled = false,
                             UserName = "User2@gmail.com"
@@ -1298,17 +1298,17 @@ namespace DataAccess.Migrations
                             Id = "028582c83a914a45b330b5234f4131fb",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "ca175946-711d-4998-bdee-b329a90f7a68",
+                            ConcurrencyStamp = "2095341e-9424-4074-abb5-31aa574d05bf",
                             Email = "User3@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Олег",
                             NormalizedEmail = "USER3@GMAIL.COM",
                             NormalizedUserName = "USER3@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEl9MvAHrzICGf5F7EhZgoGaGwTNpz/QbNl5Qqtmz62kGOIC7Xmll7KQV25R/sKZVQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEN6ldrdKlTCPqzlvODVS6ALPOi0LgF7nT4v4X9Kr6aJWr1UlOY7U0a4owr6fX5TOg==",
                             PhoneNumberConfirmed = false,
                             PremiumId = 3,
-                            SecurityStamp = "58692209-718c-471a-b3ba-4b2d248ae778",
+                            SecurityStamp = "318980e2-83ea-448b-ba17-1cd1cfd94479",
                             Surname = "Панасенко",
                             TwoFactorEnabled = false,
                             UserName = "User3@gmail.com"
@@ -1318,17 +1318,17 @@ namespace DataAccess.Migrations
                             Id = "eb05f9548a2c4cf8adcc2be7305fc732",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "f68b6e5c-57a5-400a-9147-fc7b329eb7cb",
+                            ConcurrencyStamp = "057304d3-6429-4241-8290-deab9bf2f4f2",
                             Email = "User4@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Тимофій",
                             NormalizedEmail = "USER4@GMAIL.COM",
                             NormalizedUserName = "USER4@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI/TfINZnhcZAuoyJFWb5q4+UbwHNLpFFJLc50NP2ePvWlRhqr3joQiuctPCiIKP5A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENgQ+huKVFA2WxScMYgiGQbkUXrwWR8oGYDTmQ4dCUupt+McWjoa54mxMIfwwLjn5w==",
                             PhoneNumberConfirmed = false,
                             PremiumId = 2,
-                            SecurityStamp = "f049c194-4c7f-4ba0-b5ee-5c8c2fbc3c9f",
+                            SecurityStamp = "def641e1-83cd-443f-8ab8-5d7c5fa6c990",
                             Surname = "Гнатенко",
                             TwoFactorEnabled = false,
                             UserName = "User4@gmail.com"
@@ -1694,9 +1694,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("BusinessLogic.Data.Entities.Premium", "Premium")
                         .WithMany("Users")
-                        .HasForeignKey("PremiumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PremiumId");
 
                     b.Navigation("Premium");
                 });

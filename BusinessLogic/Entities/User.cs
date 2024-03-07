@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Entities;
+﻿
+using BusinessLogic.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLogic.Data.Entities
@@ -9,8 +10,8 @@ namespace BusinessLogic.Data.Entities
 		public string Surname { get; set; }
 		public DateTime Birthdate { get; set; }
 		public DateTime? PremiumDate { get; set; }
-		public Premium Premium { get; set; }
-		public int PremiumId { get; set; }
+		public Premium? Premium { get; set; }
+		public int? PremiumId { get; set; }
 		public ICollection<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();
 		public ICollection<Feedback> Feedbacks { get; set; } = new HashSet<Feedback>();
 		public ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();

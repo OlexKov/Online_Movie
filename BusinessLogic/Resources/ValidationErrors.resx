@@ -117,28 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EmailExists" xml:space="preserve">
-    <value>Email is already exists.</value>
+  <data name="BirthdateError" xml:space="preserve">
+    <value>{PropertyName} must be less than today.</value>
   </data>
-  <data name="InvalidGwtSettings" xml:space="preserve">
-    <value>Invalid gwt settings.</value>
+  <data name="CollectionEmptyError" xml:space="preserve">
+    <value />
   </data>
-  <data name="InvalidRegData" xml:space="preserve">
-    <value>Invalid login or password.</value>
+  <data name="GreaterEqualZeroError" xml:space="preserve">
+    <value>{PropertyName} must be greater or equal zero.</value>
   </data>
-  <data name="InvalidToken" xml:space="preserve">
-    <value>Invalid access or refresh token</value>
+  <data name="GreaterZeroError" xml:space="preserve">
+    <value>{PropertyName} must be greater zero.</value>
   </data>
-  <data name="NegativeId" xml:space="preserve">
-    <value>Id can not be negative.</value>
+  <data name="ImageEmptyError" xml:space="preserve">
+    <value>{PropertyName} not be empty then image path is empty</value>
   </data>
-  <data name="NotFoundById" xml:space="preserve">
-    <value>Element not found. Wrong Id.</value>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid password.</value>
   </data>
-  <data name="NullReference" xml:space="preserve">
-    <value>Value cannot be null</value>
+  <data name="InvalidUrl" xml:space="preserve">
+    <value>Invalid {PropertyName} URL.</value>
   </data>
-  <data name="UserNotFound" xml:space="preserve">
-    <value>User not found.</value>
+  <data name="NotEmpty" xml:space="preserve">
+    <value>{PropertyName} not be empty.</value>
+  </data>
+  <data name="NotMatchPasswordsError" xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
+  <data name="StartUppercaseError" xml:space="preserve">
+    <value>{PropertyName} must start with uppercase leter</value>
+  </data>
+  <data name="SymbolsCountError" xml:space="preserve">
+    <value>{PropertyName} length must greater</value>
   </data>
 </root>

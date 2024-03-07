@@ -33,6 +33,8 @@ namespace BusinessLogic
 
 			services.AddScoped<IMovieService, MovieService>();
 
+			services.AddScoped<IUserService, UserService>();
+
 			services.AddScoped<IAccountsService, AccountsService>();
 
 			services.AddMailKit(optionBuilder =>

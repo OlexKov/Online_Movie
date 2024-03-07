@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.DTOs;
-using BusinessLogic.Models;
+using BusinessLogic.ModelDto;
 
 
 namespace BusinessLogic.Interfaces

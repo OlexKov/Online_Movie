@@ -3,7 +3,7 @@ using BusinessLogic.Data.Entities;
 using BusinessLogic.Entities;
 using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
+using BusinessLogic.ModelDto;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
@@ -159,7 +159,6 @@ namespace BusinessLogic.Services
 				AccessToken = newAccessToken,
 				RefreshToken = newRefreshToken
 			};
-
 			return userTokens;
 		}
 	}

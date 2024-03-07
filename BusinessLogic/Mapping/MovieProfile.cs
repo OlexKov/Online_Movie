@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
-using BusinessLogic.Models;
+using BusinessLogic.ModelDto;
 
 namespace BusinessLogic.Mapping
 {

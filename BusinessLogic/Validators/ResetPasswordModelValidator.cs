@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.ModelDto;
+using BusinessLogic.Resources;
 using FluentValidation;
 
 namespace BusinessLogic.Validators
@@ -9,15 +10,15 @@ namespace BusinessLogic.Validators
         {
             RuleFor(x=>x.UserId)
                 .NotEmpty()
-				.WithMessage("UserId cannot be empty.");
+				.WithMessage(ValidationErrors.NotEmpty);
 			RuleFor(x => x.Password)
-                .MinimumLength(6).WithMessage("Password must contain minimum 6 symbols.")
-                .Matches("").WithMessage("Invalid password.");
+                .MinimumLength(6).WithMessage($"{ValidationErrors.SymbolsCountError} 6 symbols")
+                .Matches("").WithMessage(ValidationErrors.InvalidPassword);
             RuleFor(x => x.ConfirmPassword)
                 .Must((model, fild) => model.Password == fild)
-                .WithMessage("Passwords do not match");
+                .WithMessage(ValidationErrors.NotMatchPasswordsError);
             RuleFor(x => x.Token)
-                .NotEmpty().WithMessage("Token cannot be empty.");
+                .NotEmpty().WithMessage(ValidationErrors.NotEmpty);
         }
 
     }

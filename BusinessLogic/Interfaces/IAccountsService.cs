@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Data.Entities;
 using BusinessLogic.Entities;
-using BusinessLogic.Models;
+using BusinessLogic.ModelDto;
 
 namespace BusinessLogic.Interfaces
 {

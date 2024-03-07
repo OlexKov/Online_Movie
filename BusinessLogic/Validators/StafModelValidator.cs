@@ -1,5 +1,7 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.ModelDto;
+using BusinessLogic.Resources;
 using FluentValidation;
+using MimeKit.Cryptography;
 
 
 
@@ -7,28 +9,29 @@ namespace BusinessLogic.Validators
 {
 	public class StafModelValidator : AbstractValidator<StafModel>
 	{
-		private readonly string notBeEmpty = "{PropertyName} not be empty";
-        public StafModelValidator()
+		public StafModelValidator()
         {
             RuleFor(x => x.Id)
-				 .NotNull().WithMessage(notBeEmpty)
-				 .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must be greater or equal zero");
+				 .NotNull().WithMessage(ValidationErrors.NotEmpty)
+				 .GreaterThanOrEqualTo(0).WithMessage(ValidationErrors.GreaterEqualZeroError);
             RuleFor(x=>x.Birthdate)
-                .NotEmpty().WithMessage(notBeEmpty)
-                .LessThan(DateTime.Now).WithMessage("{PropertyName} must be less than today");
+                .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+                .LessThan(DateTime.Now).WithMessage(ValidationErrors.BirthdateError);
             RuleFor(x => x.Name)
-                 .NotEmpty().WithMessage(notBeEmpty)
-                 .Matches(@"^\p{Lu}.*").WithMessage("{PropertyName} must start with uppercase leter");
+                 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+                 .Matches(@"^\p{Lu}.*").WithMessage(ValidationErrors.StartUppercaseError);
 			RuleFor(x => x.Surname)
-				 .NotEmpty().WithMessage(notBeEmpty)
-				 .Matches(@"^\p{Lu}.*").WithMessage("{PropertyName} must start with uppercase leter");
+				 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+				 .Matches(@"^\p{Lu}.*").WithMessage(ValidationErrors.StartUppercaseError);
 			RuleFor(x => x.Description)
-				 .NotEmpty().WithMessage(notBeEmpty)
-				 .MinimumLength(20).WithMessage("{PropertyName} length must greater 20 symbols");
+				 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+				 .MinimumLength(20).WithMessage($"{ValidationErrors.SymbolsCountError} 20 symbols");
 		    RuleFor(x => x.ImageFile)
-				  .NotNull().When(x => String.IsNullOrEmpty(x.ImageName), ApplyConditionTo.CurrentValidator).WithMessage("{PropertyName} not be empty then ImageName is empty");
+				  .NotNull()
+				  .When(x => String.IsNullOrEmpty(x.ImageName), ApplyConditionTo.CurrentValidator)
+				  .WithMessage(ValidationErrors.ImageEmptyError);
 			RuleFor(x => x.IsOscar)
-							 .NotNull().WithMessage(notBeEmpty);
+							 .NotNull().WithMessage(ValidationErrors.NotEmpty);
 		}
     }
 }

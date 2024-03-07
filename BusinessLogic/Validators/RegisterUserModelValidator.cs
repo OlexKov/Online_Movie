@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.ModelDto;
+using BusinessLogic.Resources;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -10,24 +11,23 @@ namespace BusinessLogic.Validators
 {
 	public class RegisterUserModelValidator : AbstractValidator<RegisterUserModel>
 	{
-		private readonly string notBeEmpty = "{PropertyName} not be empty";
 		public RegisterUserModelValidator()
         {
 			RuleFor(x => x.Birthdate)
-					.NotEmpty().WithMessage(notBeEmpty)
-					.LessThan(DateTime.Now).WithMessage("{PropertyName} must be less than today");
+					.NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+					.LessThan(DateTime.Now).WithMessage(ValidationErrors.BirthdateError);
 			RuleFor(x => x.Name)
-					 .NotEmpty().WithMessage(notBeEmpty)
-					 .Matches(@"^\p{Lu}.*").WithMessage("{PropertyName} must start with uppercase leter");
+					 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+					 .Matches(@"^\p{Lu}.*").WithMessage(ValidationErrors.StartUppercaseError);
 			RuleFor(x => x.Surname)
-					 .NotEmpty().WithMessage(notBeEmpty)
-					 .Matches(@"^\p{Lu}.*").WithMessage("{PropertyName} must start with uppercase leter");
+					 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+					 .Matches(@"^\p{Lu}.*").WithMessage(ValidationErrors.StartUppercaseError);
 			RuleFor(x => x.Email)
-					 .NotEmpty().WithMessage(notBeEmpty)
+					 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
 					 .EmailAddress();
 			RuleFor(x => x.PremiumId)
-				     .NotNull().WithMessage(notBeEmpty)
-				     .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must be greater zero");
+				     .NotNull().WithMessage(ValidationErrors.NotEmpty)
+				     .GreaterThanOrEqualTo(0).WithMessage(ValidationErrors.GreaterZeroError);
 		}
         
 	}

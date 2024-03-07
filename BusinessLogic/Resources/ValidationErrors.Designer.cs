@@ -22,14 +22,14 @@ namespace BusinessLogic.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Errors {
+    internal class ValidationErrors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Errors() {
+        internal ValidationErrors() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BusinessLogic.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BusinessLogic.Resources.Errors", typeof(Errors).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BusinessLogic.Resources.ValidationErrors", typeof(ValidationErrors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,74 +61,101 @@ namespace BusinessLogic.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Email is already exists..
+        ///   Ищет локализованную строку, похожую на {PropertyName} must be less than today..
         /// </summary>
-        internal static string EmailExists {
+        internal static string BirthdateError {
             get {
-                return ResourceManager.GetString("EmailExists", resourceCulture);
+                return ResourceManager.GetString("BirthdateError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invalid gwt settings..
+        ///   Ищет локализованную строку, похожую на .
         /// </summary>
-        internal static string InvalidGwtSettings {
+        internal static string CollectionEmptyError {
             get {
-                return ResourceManager.GetString("InvalidGwtSettings", resourceCulture);
+                return ResourceManager.GetString("CollectionEmptyError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invalid login or password..
+        ///   Ищет локализованную строку, похожую на {PropertyName} must be greater or equal zero..
         /// </summary>
-        internal static string InvalidRegData {
+        internal static string GreaterEqualZeroError {
             get {
-                return ResourceManager.GetString("InvalidRegData", resourceCulture);
+                return ResourceManager.GetString("GreaterEqualZeroError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Invalid access or refresh token.
+        ///   Ищет локализованную строку, похожую на {PropertyName} must be greater zero..
         /// </summary>
-        internal static string InvalidToken {
+        internal static string GreaterZeroError {
             get {
-                return ResourceManager.GetString("InvalidToken", resourceCulture);
+                return ResourceManager.GetString("GreaterZeroError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Id can not be negative..
+        ///   Ищет локализованную строку, похожую на {PropertyName} not be empty then image path is empty.
         /// </summary>
-        internal static string NegativeId {
+        internal static string ImageEmptyError {
             get {
-                return ResourceManager.GetString("NegativeId", resourceCulture);
+                return ResourceManager.GetString("ImageEmptyError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Element not found. Wrong Id..
+        ///   Ищет локализованную строку, похожую на Invalid password..
         /// </summary>
-        internal static string NotFoundById {
+        internal static string InvalidPassword {
             get {
-                return ResourceManager.GetString("NotFoundById", resourceCulture);
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Value cannot be null.
+        ///   Ищет локализованную строку, похожую на Invalid {PropertyName} URL..
         /// </summary>
-        internal static string NullReference {
+        internal static string InvalidUrl {
             get {
-                return ResourceManager.GetString("NullReference", resourceCulture);
+                return ResourceManager.GetString("InvalidUrl", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на User not found..
+        ///   Ищет локализованную строку, похожую на {PropertyName} not be empty..
         /// </summary>
-        internal static string UserNotFound {
+        internal static string NotEmpty {
             get {
-                return ResourceManager.GetString("UserNotFound", resourceCulture);
+                return ResourceManager.GetString("NotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Passwords do not match..
+        /// </summary>
+        internal static string NotMatchPasswordsError {
+            get {
+                return ResourceManager.GetString("NotMatchPasswordsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {PropertyName} must start with uppercase leter.
+        /// </summary>
+        internal static string StartUppercaseError {
+            get {
+                return ResourceManager.GetString("StartUppercaseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {PropertyName} length must greater.
+        /// </summary>
+        internal static string SymbolsCountError {
+            get {
+                return ResourceManager.GetString("SymbolsCountError", resourceCulture);
             }
         }
     }

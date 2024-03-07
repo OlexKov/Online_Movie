@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
+using BusinessLogic.ModelDto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

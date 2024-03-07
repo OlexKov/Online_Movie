@@ -2,7 +2,7 @@
 using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
-using BusinessLogic.Models;
+using BusinessLogic.ModelDto;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;

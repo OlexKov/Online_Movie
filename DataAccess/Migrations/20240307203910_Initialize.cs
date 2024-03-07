@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initialize : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -155,7 +155,7 @@ namespace DataAccess.Migrations
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Birthdate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PremiumDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PremiumId = table.Column<int>(type: "int", nullable: false),
+                    PremiumId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -178,8 +178,7 @@ namespace DataAccess.Migrations
                         name: "FK_AspNetUsers_Premium_PremiumId",
                         column: x => x.PremiumId,
                         principalTable: "Premium",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -591,11 +590,11 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthdate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PremiumDate", "PremiumId", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "028582c83a914a45b330b5234f4131fb", 0, new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "ca175946-711d-4998-bdee-b329a90f7a68", "User3@gmail.com", true, false, null, "Олег", "USER3@GMAIL.COM", "USER3@GMAIL.COM", "AQAAAAIAAYagAAAAEEl9MvAHrzICGf5F7EhZgoGaGwTNpz/QbNl5Qqtmz62kGOIC7Xmll7KQV25R/sKZVQ==", null, false, null, 3, "58692209-718c-471a-b3ba-4b2d248ae778", "Панасенко", false, "User3@gmail.com" },
-                    { "c86dc56aedf549f6afe5ceb4d414ebf1", 0, new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "ce4f141f-3246-44fe-8197-e4f9afea1d10", "User2@gmail.com", true, false, null, "Петро", "USER2@GMAIL.COM", "USER2@GMAIL.COM", "AQAAAAIAAYagAAAAEFfGiyYJ5bACBOvzpzrqNFVWI2c627qMyCbARXdW0w6kvWfIXQ2fFBKM1rZ4GsAQvg==", null, false, null, 2, "5c96deb1-3e5e-43de-a9d4-a1c9d7cae483", "Дякуленко", false, "User2@gmail.com" },
-                    { "d1901b2435594da2a255db13fc57509b", 0, new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "6bb5873d-c68e-4294-8992-4832e1a17ef7", "User1@gmail.com", true, false, null, "Iван", "USER1@GMAIL.COM", "USER1@GMAIL.COM", "AQAAAAIAAYagAAAAENky/yM+9alis+QMn/0EQKE0Gq/04qnolfYlCvH1Jzn/UaaDRdyXyBHWOhZxAVtogA==", null, false, null, 1, "00f1188c-f6f3-44e7-bec6-0082be1ab1f6", "Калита", false, "User1@gmail.com" },
-                    { "eb05f9548a2c4cf8adcc2be7305fc732", 0, new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "f68b6e5c-57a5-400a-9147-fc7b329eb7cb", "User4@gmail.com", true, false, null, "Тимофій", "USER4@GMAIL.COM", "USER4@GMAIL.COM", "AQAAAAIAAYagAAAAEI/TfINZnhcZAuoyJFWb5q4+UbwHNLpFFJLc50NP2ePvWlRhqr3joQiuctPCiIKP5A==", null, false, null, 2, "f049c194-4c7f-4ba0-b5ee-5c8c2fbc3c9f", "Гнатенко", false, "User4@gmail.com" },
-                    { "f66e492517d7414495e988c4c50fd107", 0, new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "e284bf76-38fe-46ab-9f93-a698543a7409", "Admin@gmail.com", true, false, null, "Петро", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEHXP7osJyhN/ugrGaGCFZZ3wmyW0ZU5lWqF+5sOlvGmhm4RaZwykErN90qNAkE2ECw==", null, false, null, 1, "75b007c1-c76d-4c96-93f1-bbc07dda217b", "Левак", false, "Admin@gmail.com" }
+                    { "028582c83a914a45b330b5234f4131fb", 0, new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "2095341e-9424-4074-abb5-31aa574d05bf", "User3@gmail.com", true, false, null, "Олег", "USER3@GMAIL.COM", "USER3@GMAIL.COM", "AQAAAAIAAYagAAAAEEN6ldrdKlTCPqzlvODVS6ALPOi0LgF7nT4v4X9Kr6aJWr1UlOY7U0a4owr6fX5TOg==", null, false, null, 3, "318980e2-83ea-448b-ba17-1cd1cfd94479", "Панасенко", false, "User3@gmail.com" },
+                    { "c86dc56aedf549f6afe5ceb4d414ebf1", 0, new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "c12d65f8-af00-49ba-8bb2-aafaa14b8ed0", "User2@gmail.com", true, false, null, "Петро", "USER2@GMAIL.COM", "USER2@GMAIL.COM", "AQAAAAIAAYagAAAAEMu43Gw1v31sf9InJBm4xQjAvh+SETeBBjLNjcSNBRh4RDxiApEF6vxkXYXzu1etcg==", null, false, null, 2, "d68edbd9-cff8-48a2-9fee-3690ba6c5e8e", "Дякуленко", false, "User2@gmail.com" },
+                    { "d1901b2435594da2a255db13fc57509b", 0, new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "3822b4f2-24d4-483b-8b84-7e4f946f6ee4", "User1@gmail.com", true, false, null, "Iван", "USER1@GMAIL.COM", "USER1@GMAIL.COM", "AQAAAAIAAYagAAAAEBdwCPNjuj0pLPKnDJ4s8Rw0uWL226YJ9o6SUxJRNPk57niu0zI/df7EZYj97gvSDw==", null, false, null, 1, "9def664b-cfb0-48ef-ad7e-7c6603cbf492", "Калита", false, "User1@gmail.com" },
+                    { "eb05f9548a2c4cf8adcc2be7305fc732", 0, new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "057304d3-6429-4241-8290-deab9bf2f4f2", "User4@gmail.com", true, false, null, "Тимофій", "USER4@GMAIL.COM", "USER4@GMAIL.COM", "AQAAAAIAAYagAAAAENgQ+huKVFA2WxScMYgiGQbkUXrwWR8oGYDTmQ4dCUupt+McWjoa54mxMIfwwLjn5w==", null, false, null, 2, "def641e1-83cd-443f-8ab8-5d7c5fa6c990", "Гнатенко", false, "User4@gmail.com" },
+                    { "f66e492517d7414495e988c4c50fd107", 0, new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "24befc4a-1c60-40b3-9142-c91896ab699b", "Admin@gmail.com", true, false, null, "Петро", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEEM408ec0BGXPrJ0T22qMBJOj5uhoMqUPNlxasyo+PfGIzfLy9SJsprXv2yPtALRaw==", null, false, null, 1, "18847c8a-2c84-46aa-965f-c84432d5db89", "Левак", false, "Admin@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
