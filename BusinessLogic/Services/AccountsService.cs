@@ -66,13 +66,8 @@ namespace BusinessLogic.Services
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
 		{
 			var token = await tokenRepository.GetItemBySpec(new RefreshTokenSpecs.GetTokenByValue(rToken));
-			if (token != null)
-			{
-				var endDate = token.CreationDate.AddDays(refreshTokenLifeTime);
-				var today = DateTime.UtcNow;
-				if(endDate < today)
-				    throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
-			}
+			if(token == null || token.CreationDate.AddDays(refreshTokenLifeTime) < DateTime.UtcNow)
+				   throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
 			return token;
 		}
 
