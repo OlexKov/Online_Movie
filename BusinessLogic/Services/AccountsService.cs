@@ -4,6 +4,7 @@ using BusinessLogic.Entities;
 using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
@@ -27,6 +28,7 @@ namespace BusinessLogic.Services
 		private readonly IEmailService emailService;
 		private readonly IJwtService jwtService;
 		private readonly IRepository<RefreshToken> tokenRepository;
+		private readonly IValidator<EditUserModel> userModelValidator;
 		private readonly int refreshTokenLifeTime;
 
 		private async Task<string> CreateRefreshToken(string userId)
@@ -51,7 +53,8 @@ namespace BusinessLogic.Services
 								IValidator<RegisterUserModel> registerValidator,
 								IValidator<ResetPasswordModel> resetModelValidator,
 								IEmailService emailService, IJwtService jwtService,
-								IRepository<RefreshToken> tokenRepository, IConfiguration configuration)
+								IRepository<RefreshToken> tokenRepository, IConfiguration configuration,
+								IValidator<EditUserModel> userModelValidator)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -60,6 +63,7 @@ namespace BusinessLogic.Services
 			this.emailService = emailService;
 			this.jwtService = jwtService;
 			this.tokenRepository = tokenRepository;
+			this.userModelValidator = userModelValidator;
 			refreshTokenLifeTime = configuration.GetSection(nameof(JwtOptions)).GetValue<int>("RefreshTokenLifeTimeDays");
 		}
 
@@ -81,7 +85,7 @@ namespace BusinessLogic.Services
 			var user = mapper.Map<User>(model);
 
 			var result = await userManager.CreateAsync(user, model.Password);
-			await userManager.AddToRoleAsync(user, "User");
+			await userManager.AddToRoleAsync(user, model.Role);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
@@ -160,6 +164,20 @@ namespace BusinessLogic.Services
 				RefreshToken = newRefreshToken
 			};
 			return userTokens;
+		}
+
+		public async Task Edit(EditUserModel model)
+		{
+			userModelValidator.ValidateAndThrow(model);
+
+			var user = await userManager.FindByIdAsync(model.Id) 
+				 ?? throw new HttpException(Errors.EmailExists, HttpStatusCode.BadRequest);
+			user.Name = model.Name;
+			user.Surname = model.Surname;
+			user.Birthdate = model.Birthdate;
+			var result = await userManager.UpdateAsync(user);
+			if (!result.Succeeded)
+				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,10 +55,17 @@ namespace Online_Movie.Controllers
 		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokens(tokens));
 		
 		[Authorize(Roles = Roles.Admin)]
-		[HttpDelete("{*email}")]
+		[HttpDelete("delete/{*email}")]
 		public async Task<IActionResult> Delete([FromRoute]string email)
 		{
 			await accountsService.Delete(email);
+			return Ok();
+		}
+
+		[HttpPut("edit")]
+		public async Task<IActionResult> Edit([FromBody] EditUserModel user)
+		{
+			await accountsService.Edit(user);
 			return Ok();
 		}
 	}

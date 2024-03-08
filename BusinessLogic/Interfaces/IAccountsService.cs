@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Data.Entities;
 using BusinessLogic.Entities;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Interfaces
 {
@@ -15,5 +16,6 @@ namespace BusinessLogic.Interfaces
 		Task Logout(AuthResponse tokens);
 		Task<RefreshToken> GetRefreshToken(string rToken);
 		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
+		Task Edit(EditUserModel user);
 	}
 }

@@ -1,8 +1,6 @@
-﻿using BusinessLogic.Helpers;
-using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
@@ -18,7 +16,7 @@ namespace Online_Movie.Controllers
 			this.userService = userService;
 		}
 
-		[HttpPost("addtofavourite/{id:int}")]
+		[HttpPost("addremovefavourite/{id:int}")]
 		public async Task<IActionResult> AddRemoveFavourite([FromRoute] int id)
 		{
 			await userService.AddRemoveFavourite(User.Identity!.Name!, id);

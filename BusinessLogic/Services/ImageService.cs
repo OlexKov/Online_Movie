@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Data.Entities;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace BusinessLogic.Services
 
 		public async Task DeleteImegeByIdAsync(int id)
 		{
-			if (id < 0) throw new HttpException("Id can not be negative.", HttpStatusCode.BadRequest);
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
 			var image = await images.GetByIDAsync(id) ?? throw new HttpException("Image not found.", HttpStatusCode.NotFound);
 			await images.DeleteAsync(id);
 			await images.SaveAsync();
