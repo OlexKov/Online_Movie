@@ -20,31 +20,31 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet]
+		[HttpGet("getall")]
 		public async Task<IActionResult> GetAll()
 		{
 			return Ok(await movieService.GetAllAsync());
 		}
 
 		[AllowAnonymous]
-		[HttpGet("{id:int}")]
+		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute] int id) => Ok(await movieService.GetByIdAsync(id));
 
-		[HttpPut]
+		[HttpPut("update")]
 		public async Task<IActionResult> Update([FromForm] MovieModel movie)
 		{
 			await movieService.UpdateAsync(movie);
 			return Ok();
 		}
 
-		[HttpPost]
+		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromForm] MovieModel movie)
 		{
 			await movieService.CreateAsync(movie);
 			return Ok();
 		}
 
-		[HttpDelete("{id:int}")]
+		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
 			await movieService.DeleteAsync(id);

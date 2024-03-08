@@ -20,15 +20,15 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet]
+		[HttpGet("getall")]
 		public async Task<IActionResult> GetAll() => Ok(await stafService.GetAllAsync());
 
 		[AllowAnonymous]
-		[HttpGet("{id:int}")]
+		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute]int id) =>Ok(await stafService.GetAsync(id));
 
 		[Authorize(Roles = Roles.Admin)]
-		[HttpPut]
+		[HttpPut("update")]
 		public async Task<IActionResult> Update([FromForm] StafModel staf)
 		{
 			await stafService.UpdateAsync(staf);
@@ -36,7 +36,7 @@ namespace Online_Movie.Controllers
 		}
 
 		[Authorize(Roles = Roles.Admin)]
-		[HttpPost]
+		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromForm] StafModel staf)
 		{
 			await stafService.CreateAsync(staf);
@@ -44,7 +44,7 @@ namespace Online_Movie.Controllers
 		}
 
 		[Authorize(Roles = Roles.Admin)]
-		[HttpDelete("{id:int}")]
+		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute]int id)
 		{
 			await stafService.DeleteAsync(id);

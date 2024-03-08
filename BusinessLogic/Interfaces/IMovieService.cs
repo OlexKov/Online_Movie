@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DTOs;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 
 
 namespace BusinessLogic.Interfaces
@@ -15,5 +16,6 @@ namespace BusinessLogic.Interfaces
 		Task UpdateAsync(MovieModel movie);
 		Task CreateAsync(MovieModel movie);
 		Task DeleteAsync(int id);
+		Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter);
 	}
 }

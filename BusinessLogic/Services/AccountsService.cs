@@ -29,8 +29,6 @@ namespace BusinessLogic.Services
 		private readonly IJwtService jwtService;
 		private readonly IRepository<RefreshToken> tokenRepository;
 		private readonly IValidator<EditUserModel> userModelValidator;
-		private readonly int refreshTokenLifeTime;
-
 		private async Task<string> CreateRefreshToken(string userId)
 		{
 			var refeshToken = jwtService.CreateRefreshToken();
@@ -53,7 +51,7 @@ namespace BusinessLogic.Services
 								IValidator<RegisterUserModel> registerValidator,
 								IValidator<ResetPasswordModel> resetModelValidator,
 								IEmailService emailService, IJwtService jwtService,
-								IRepository<RefreshToken> tokenRepository, IConfiguration configuration,
+								IRepository<RefreshToken> tokenRepository,
 								IValidator<EditUserModel> userModelValidator)
 		{
 			this.userManager = userManager;
@@ -64,13 +62,13 @@ namespace BusinessLogic.Services
 			this.jwtService = jwtService;
 			this.tokenRepository = tokenRepository;
 			this.userModelValidator = userModelValidator;
-			refreshTokenLifeTime = configuration.GetSection(nameof(JwtOptions)).GetValue<int>("RefreshTokenLifeTimeDays");
+			
 		}
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
 		{
 			var token = await tokenRepository.GetItemBySpec(new RefreshTokenSpecs.GetTokenByValue(rToken));
-			if(token == null || token.CreationDate.AddDays(refreshTokenLifeTime) < DateTime.UtcNow)
+			if(token == null || token.CreationDate < jwtService.GetLastValidTokenDate())
 				   throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
 			return token;
 		}
@@ -178,6 +176,18 @@ namespace BusinessLogic.Services
 			var result = await userManager.UpdateAsync(user);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+		}
+
+		public async Task RemoveExpiredRefreshTokens()
+		{
+			var lastDate = jwtService.GetLastValidTokenDate();
+			var expiredTokens = await tokenRepository.GetListBySpec(new RefreshTokenSpecs.ByDate(lastDate));
+
+			foreach (var i in expiredTokens)
+			{
+				tokenRepository.Delete(i);
+			}
+			await tokenRepository.SaveAsync();
 		}
 	}
 }

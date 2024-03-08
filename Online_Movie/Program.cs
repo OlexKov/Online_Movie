@@ -1,3 +1,5 @@
+using Hangfire;
+using Online_Movie;
 using Online_Movie.Exstensions;
 using Online_Movie.ModuleRegistration;
 
@@ -11,6 +13,8 @@ builder.Services.RegisterModules(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 
@@ -37,6 +41,10 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/dash");
+
+JobConfigurator.AddJobs();
 
 app.MapControllers();
 

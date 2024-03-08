@@ -17,5 +17,6 @@ namespace BusinessLogic.Interfaces
 		Task<RefreshToken> GetRefreshToken(string rToken);
 		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
 		Task Edit(EditUserModel user);
+		Task RemoveExpiredRefreshTokens();
 	}
 }

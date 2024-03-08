@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using BusinessLogic.Data.Entities;
+using BusinessLogic.Models;
 
 
 namespace BusinessLogic.Specifications
@@ -41,7 +42,24 @@ namespace BusinessLogic.Specifications
 					.Include(x => x.Premium);
 			}
 		}
-		
-		
+
+		public class Find : Specification<Movie>
+		{
+			public Find(MovieFindFilterModel movieFilter)
+			{
+				 
+				Query
+					.Where(x=>x.Name == null || x.Name == movieFilter.Name
+					               && x.OriginalName == null || x.OriginalName == movieFilter.OriginalName
+								   && movieFilter.Year.Count == 0 || movieFilter.Year.Contains(x.Date.Year)
+								   && movieFilter.Quality.Count == 0 || movieFilter.Quality.Contains(x.QualityId)
+								   && movieFilter.Country.Count == 0 || movieFilter.Quality.Contains(x.CountryId))
+					.Include(x => x.Country)
+					.Include(x => x.Quality)
+					.Include(x => x.Premium);
+			}
+		}
+
+
 	}
 }

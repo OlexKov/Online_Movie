@@ -89,5 +89,8 @@ namespace BusinessLogic.Services
 
 			return jwtSecurityToken.Claims;
 		}
+
+		public DateTime GetLastValidTokenDate() => DateTime.UtcNow.AddDays(jwtOpts.RefreshTokenLifeTimeDays);
+		
 	}
 }

@@ -3,6 +3,7 @@ using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
@@ -134,6 +135,10 @@ namespace BusinessLogic.Services
 		}
 
 		public async Task<double> GetRatingAsync(int id) => (await GetFeedbacksAsync(id)).Average(x => x.Rating);
-				
+
+		public async Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter)
+		{
+			throw new Exception();
+		}
 	}
 }

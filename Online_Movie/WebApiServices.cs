@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +70,12 @@ namespace Online_Movie
 				});
 
 			});
+			services.AddHangfire(config =>
+			{
+				config.UseSqlServerStorage(configuration.GetConnectionString("LocalDb"));
+			});
 
+			services.AddHangfireServer();
 			return services;
 		}
 	}

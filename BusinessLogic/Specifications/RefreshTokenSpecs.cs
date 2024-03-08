@@ -14,5 +14,12 @@ namespace BusinessLogic.Specifications
 		{
 			public GetTokenByValue(string token) => Query.Where(x => x.Token == token);
 		}
+		public class ByDate : Specification<RefreshToken>
+		{
+			public ByDate(DateTime date)
+			{
+				Query.Where(x => x.CreationDate < date);
+			}
+		}
 	}
 }
