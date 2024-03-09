@@ -3,8 +3,6 @@ using BusinessLogic.Data.Entities;
 using BusinessLogic.Models;
 using System.Linq.Expressions;
 
-
-
 namespace BusinessLogic.Specifications
 {
 	public static class MovieSpecs
@@ -47,6 +45,7 @@ namespace BusinessLogic.Specifications
 
 		public class Find : Specification<Movie>
 		{
+
 			public Find(MovieFindFilterModel movieFilter)
 			{
 				 
@@ -58,8 +57,7 @@ namespace BusinessLogic.Specifications
 			}
 			private Expression<Func<Movie, bool>> advertFilter(MovieFindFilterModel movieFilter)
 			{
-				Expression<Func<Movie, bool>> TmpExpr;
-				Expression<Func<Movie, bool>> ResultExp = x=>true;
+				Expression<Func<Movie, bool>> ResultExp = x => true;
 				Expression<Func<Movie, bool>> NameExpr = x => x.Name == movieFilter.Name;
 				Expression<Func<Movie, bool>> OrNameExpr = x => x.OriginalName == movieFilter.OriginalName;
 				Expression<Func<Movie, bool>> YearExpr = x => movieFilter.Years.Contains(x.Date.Year);
@@ -80,14 +78,14 @@ namespace BusinessLogic.Specifications
 					ResultExp = ResultExp.AndAlso(QualityExpr);
 				if (movieFilter.Countries != null && movieFilter.Countries.Count != 0)
 					ResultExp = ResultExp.AndAlso(CountryExpr);
-				if (movieFilter.Stafs != null || movieFilter.Stafs.Count != 0)
+				if (movieFilter.Stafs != null && movieFilter.Stafs.Count != 0)
 				{
 					if (movieFilter.AllStafs)
 						ResultExp = ResultExp.AndAlso(AllStafExpr);
 					else
 						ResultExp = ResultExp.AndAlso(StafExpr);
 				}
-				if (movieFilter.Genres != null || movieFilter.Genres.Count != 0)
+				if (movieFilter.Genres != null && movieFilter.Genres.Count != 0)
 				{
 					if (movieFilter.AllGenres)
 						ResultExp = ResultExp.AndAlso(AllGenresExpr);
