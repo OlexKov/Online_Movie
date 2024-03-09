@@ -9,8 +9,8 @@ namespace BusinessLogic
 {
 	public static class ExCombine
 	{
-		public static Expression<Func<TValue, TResult>> Combine<TValue, TResult>(
-					this Expression<Func<TValue, TResult>> left,
+		public static Expression<Func<TValue, TResult>> CombineExpr<TValue, TResult>(
+					Expression<Func<TValue, TResult>> left,
 					Expression<Func<TValue, TResult>> right,
 					Func<Expression, Expression, BinaryExpression> combination)
 		{
@@ -21,6 +21,13 @@ namespace BusinessLogic
 			// combine via && / || etc and create a new lambda
 			return Expression.Lambda<Func<TValue, TResult>>(
 				combination(left.Body, newRight), left.Parameters);
+		}
+		public static Expression<Func<TValue, TResult>> Combine<TValue, TResult>(
+					this Expression<Func<TValue, TResult>> left,
+					Expression<Func<TValue, TResult>> right,
+					Func<Expression, Expression, BinaryExpression> combination)
+		{
+			return CombineExpr(left, right, combination);
 		}
 		internal class SwapVisitor : ExpressionVisitor
 		{

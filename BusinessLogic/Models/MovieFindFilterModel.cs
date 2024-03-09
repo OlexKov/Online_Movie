@@ -8,8 +8,8 @@ namespace BusinessLogic.Models
 {
 	public class MovieFindFilterModel
 	{
-		public string? Name { get; set; }
-		public string? OriginalName { get; set; }
+		public string Name { get; set; }
+		public string OriginalName { get; set; }
 		public List<int> Years { get; set; } = [];
 		public List<int> Qualities { get; set; } = [];
 		public List<int> Countries { get; set; } = [];

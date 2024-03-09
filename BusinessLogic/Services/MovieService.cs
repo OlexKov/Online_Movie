@@ -20,8 +20,7 @@ namespace BusinessLogic.Services
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<MovieModel> validator;
-		private readonly IValidator<MovieFindFilterModel> filterValidator;
-
+		
 		private async Task deleteMovieDependencies(int id)
 		{
 			var stafs = await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id));
@@ -60,8 +59,7 @@ namespace BusinessLogic.Services
 		public MovieService(IRepository<Movie> movies, IRepository<Feedback> feedbacks,
 			                IRepository<StafMovie> stafMovie,
 							IRepository<MovieGenre> movieGenre, IMapper mapper,
-							IImageService imageService, IValidator<MovieModel> validator,
-							IValidator<MovieFindFilterModel> filterValidator)
+							IImageService imageService, IValidator<MovieModel> validator)
 		{
 			this.movies = movies;
 			this.feedbacks = feedbacks;
@@ -70,7 +68,7 @@ namespace BusinessLogic.Services
 			this.mapper = mapper;
 			this.imageService = imageService;
 			this.validator = validator;
-			this.filterValidator = filterValidator;
+			
 		}
 	
 
