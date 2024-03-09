@@ -65,7 +65,11 @@ namespace BusinessLogic.Specifications
 				Expression<Func<Movie, bool>> YearExpr = x => movieFilter.Years.Contains(x.Date.Year);
 				Expression<Func<Movie, bool>> QualityExpr = x => movieFilter.Qualities.Contains(x.QualityId);
 				Expression<Func<Movie, bool>> CountryExpr = x =>  movieFilter.Countries.Contains(x.CountryId);
-				
+				Expression<Func<Movie, bool>> AllStafExpr = x => movieFilter.Stafs.All(z => x.StafMovies.Any(y => y.StafId == z));
+				Expression<Func<Movie, bool>> StafExpr = x => x.StafMovies.Any(x => movieFilter.Stafs.Contains(x.StafId));
+				Expression<Func<Movie, bool>> AllGenresExpr = x => movieFilter.Genres.All(z => x.MovieGenres.Any(y => y.GenreId == z));
+				Expression<Func<Movie, bool>> GenresExpr = x => x.MovieGenres.Any(x => movieFilter.Genres.Contains(x.GenreId));
+
 				if (!string.IsNullOrEmpty(movieFilter.Name))
 					ResultExp = ResultExp.AndAlso(NameExpr);
 				if (!string.IsNullOrEmpty(movieFilter.OriginalName))
@@ -79,18 +83,16 @@ namespace BusinessLogic.Specifications
 				if (movieFilter.Stafs != null || movieFilter.Stafs.Count != 0)
 				{
 					if (movieFilter.AllStafs)
-						TmpExpr = x => movieFilter.Stafs.All(z => x.StafMovies.Any(y => y.StafId == z));
+						ResultExp = ResultExp.AndAlso(AllStafExpr);
 					else
-						TmpExpr = x => x.StafMovies.Any(x => movieFilter.Stafs.Contains(x.StafId));
-					ResultExp = ResultExp.AndAlso(TmpExpr);
+						ResultExp = ResultExp.AndAlso(StafExpr);
 				}
 				if (movieFilter.Genres != null || movieFilter.Genres.Count != 0)
 				{
 					if (movieFilter.AllGenres)
-						TmpExpr = x => movieFilter.Genres.All(z => x.MovieGenres.Any(y=>y.GenreId == z));
+						ResultExp = ResultExp.AndAlso(AllGenresExpr);
 					else
-						TmpExpr = x => x.MovieGenres.Any(x => movieFilter.Genres.Contains(x.GenreId));
-					ResultExp = ResultExp.AndAlso(TmpExpr);
+						ResultExp = ResultExp.AndAlso(GenresExpr);
 				}
 
 				return ResultExp;
