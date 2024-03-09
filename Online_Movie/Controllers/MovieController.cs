@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,5 +52,11 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[AllowAnonymous]
+		[HttpPost("find")]
+		public async Task<IActionResult> Find([FromForm] MovieFindFilterModel movieFilter)
+		{
+			return Ok(await movieService.FindAsync(movieFilter));
+		}
 	}
 }

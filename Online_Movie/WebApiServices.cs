@@ -4,6 +4,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -18,6 +19,8 @@ namespace Online_Movie
 			{
 				options.SuppressModelStateInvalidFilter = true;
 			});
+
+			services.Configure<HtmlHelperOptions>(o => o.ClientValidationEnabled = false);
 
 			var jwtOpts = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()!;
 

@@ -14,7 +14,7 @@ namespace Online_Movie
 			RecurringJob.AddOrUpdate<IAccountsService>(
 				nameof(RemoveExpiredRefreshTokensJob),
 				service => service.RemoveExpiredRefreshTokens(),
-				Cron.Minutely);
+				Cron.Weekly);
 		}
 	}
 }
