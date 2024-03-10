@@ -32,6 +32,5 @@ namespace Online_Movie.Controllers
 			var prem = await userService.GetPremium(User.Identity!.Name!);
 			return Ok(prem);
 		}
-
 	}
 }

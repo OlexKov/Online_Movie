@@ -1,5 +1,7 @@
 ﻿using Ardalis.Specification;
 using BusinessLogic.Data.Entities;
+using BusinessLogic.Models;
+using System.Linq.Expressions;
 
 namespace BusinessLogic.Specifications
 {
@@ -13,5 +15,16 @@ namespace BusinessLogic.Specifications
 		{
 			public GetByUserId(string id) => Query.Where(x => x.UserId == id);
 		}
+		public class GetAll : Specification<Feedback>
+		{
+			public GetAll()
+			{
+				Query
+					.Include(x=>x.User)
+					.Include(x=>x.Movie);
+			}
+			
+		}
+
 	}
 }

@@ -31,6 +31,17 @@ namespace BusinessLogic.Specifications
 					.Include(x => x.Premium);
 			}
 		}
+		public class GetByIdsInc : Specification<Movie>
+		{
+			public GetByIdsInc(IEnumerable<int> ids)
+			{
+				Query
+					.Where(x => ids.Contains(x.Id))
+					.Include(x => x.Country)
+					.Include(x => x.Quality)
+					.Include(x => x.Premium);
+			}
+		}
 
 		public class GetAll : Specification<Movie>
 		{
@@ -40,6 +51,18 @@ namespace BusinessLogic.Specifications
 					.Include(x => x.Country)
 					.Include(x => x.Quality)
 					.Include(x => x.Premium);
+			}
+		}
+
+		public class GetAllIncFeedbacks : Specification<Movie>
+		{
+			public GetAllIncFeedbacks()
+			{
+				Query
+					.Include(x => x.Country)
+					.Include(x => x.Quality)
+					.Include(x => x.Premium)
+					.Include(x => x.Feedbacks);
 			}
 		}
 
@@ -95,7 +118,5 @@ namespace BusinessLogic.Specifications
 				return ResultExp;
      		}
 		}
-
-
 	}
 }

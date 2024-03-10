@@ -107,19 +107,16 @@ namespace BusinessLogic.Services
 			return mapper.Map<IEnumerable<StafDto>>(await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id)));
 		}
 
-		//public async Task<IEnumerable<MovieDto>> GetTopAsync(int count)
-		//{
-		//	var ratings = await feedbacks.GetAsync(selector:x=>x);
-		//	var res = ratings.GroupBy(x => x.MovieId)
-		//		                                               .Select(x=>  new {Id = x.Key,rating = x.Average(z=>z.Rating)})
-		//												       .OrderByDescending(x=>x.rating).Take(count);
-		//	return mapper.Map<IEnumerable<MovieDto>>(await movies.GetAsync(selector:x=>x,
-		//		                                                           predicate:x=> res.Any(z=>z.Id == x.Id),
-		//																   include: item=>item
-		//																		   .Include(x => x.Country)
-		//																           .Include(x => x.Quality)
-		//																           .Include(x => x.Premium)));
-		//}
+		public async Task<IEnumerable<MovieDto>> GetTopAsync(int count)
+		{
+			var topMovies = (await movies.GetListBySpec(new MovieSpecs.GetAllIncFeedbacks()))
+							   .Select(x => new { movie = x, avarege = x.Feedbacks.Average(z => z.Rating) })
+							   .OrderByDescending(x => x.avarege)
+							   .Take(count)
+							   .Select(x => x.movie);
+
+			return mapper.Map<IEnumerable<MovieDto>>(topMovies);																		
+		}
 
 		public async Task CreateAsync(MovieModel movie)
 		{
@@ -136,12 +133,8 @@ namespace BusinessLogic.Services
 
 		public async Task<double> GetRatingAsync(int id) => (await GetFeedbacksAsync(id)).Average(x => x.Rating);
 
-		public async Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter)
-		{
-		//	filterValidator.ValidateAndThrow(movieFilter);
-			return mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(movieFilter)));
-		}
-
+		public async Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(movieFilter)));
+		
 
 	}
 }

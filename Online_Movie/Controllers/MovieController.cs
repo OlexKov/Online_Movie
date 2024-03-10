@@ -58,5 +58,13 @@ namespace Online_Movie.Controllers
 		{
 			return Ok(await movieService.FindAsync(movieFilter));
 		}
+
+		[AllowAnonymous]
+		[HttpGet("gettop")]
+		public async Task<IActionResult> GetTop([FromQuery] int count)
+		{
+			var topMovies = await movieService.GetTopAsync(count);
+			return Ok(topMovies);
+		}
 	}
 }
