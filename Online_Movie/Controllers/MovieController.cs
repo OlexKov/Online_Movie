@@ -31,25 +31,12 @@ namespace Online_Movie.Controllers
 		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute] int id) => Ok(await movieService.GetByIdAsync(id));
 
-		[HttpPut("update")]
-		public async Task<IActionResult> Update([FromForm] MovieModel movie)
+		[AllowAnonymous]
+		[HttpGet("gettop")]
+		public async Task<IActionResult> GetTop([FromQuery] int count)
 		{
-			await movieService.UpdateAsync(movie);
-			return Ok();
-		}
-
-		[HttpPost("create")]
-		public async Task<IActionResult> Create([FromForm] MovieModel movie)
-		{
-			await movieService.CreateAsync(movie);
-			return Ok();
-		}
-
-		[HttpDelete("delete/{id:int}")]
-		public async Task<IActionResult> Delete([FromRoute] int id)
-		{
-			await movieService.DeleteAsync(id);
-			return Ok();
+			var topMovies = await movieService.GetTopAsync(count);
+			return Ok(topMovies);
 		}
 
 		[AllowAnonymous]
@@ -59,12 +46,25 @@ namespace Online_Movie.Controllers
 			return Ok(await movieService.FindAsync(movieFilter));
 		}
 
-		[AllowAnonymous]
-		[HttpGet("gettop")]
-		public async Task<IActionResult> GetTop([FromQuery] int count)
+		[HttpPost("create")]
+		public async Task<IActionResult> Create([FromForm] MovieModel movie)
 		{
-			var topMovies = await movieService.GetTopAsync(count);
-			return Ok(topMovies);
+			await movieService.CreateAsync(movie);
+			return Ok();
 		}
-	}
+
+		[HttpPut("update")]
+		public async Task<IActionResult> Update([FromForm] MovieModel movie)
+		{
+			await movieService.UpdateAsync(movie);
+			return Ok();
+		}
+
+		[HttpDelete("delete/{id:int}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			await movieService.DeleteAsync(id);
+			return Ok();
+		}
+    }
 }

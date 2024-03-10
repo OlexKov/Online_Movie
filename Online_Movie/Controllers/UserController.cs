@@ -16,14 +16,7 @@ namespace Online_Movie.Controllers
 			this.userService = userService;
 		}
 
-		[HttpPost("addremovefavourite/{id:int}")]
-		public async Task<IActionResult> AddRemoveFavourite([FromRoute] int id)
-		{
-			await userService.AddRemoveFavourite(User.Identity!.Name!, id);
-			return Ok();
-		}
-
-		[HttpGet("getfavourits")]
+    	[HttpGet("getfavourits")]
 		public async Task<IActionResult> GetFavourits() => Ok(await userService.GetFavourits(User.Identity!.Name!));
 
 		[HttpGet("getpremium")]
@@ -31,6 +24,13 @@ namespace Online_Movie.Controllers
 		{
 			var prem = await userService.GetPremium(User.Identity!.Name!);
 			return Ok(prem);
+		}
+
+		[HttpPost("addremovefavourite/{id:int}")]
+		public async Task<IActionResult> AddRemoveFavourite([FromRoute] int id)
+		{
+			await userService.AddRemoveFavourite(User.Identity!.Name!, id);
+			return Ok();
 		}
 	}
 }

@@ -53,7 +53,15 @@ namespace Online_Movie.Controllers
 		[AllowAnonymous]
 		[HttpPost("refreshTokens")]
 		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokens(tokens));
-		
+
+
+		[HttpPut("edit")]
+		public async Task<IActionResult> Edit([FromBody] EditUserModel user)
+		{
+			await accountsService.Edit(user);
+			return Ok();
+		}
+
 		[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("delete/{*email}")]
 		public async Task<IActionResult> Delete([FromRoute]string email)
@@ -62,11 +70,6 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[HttpPut("edit")]
-		public async Task<IActionResult> Edit([FromBody] EditUserModel user)
-		{
-			await accountsService.Edit(user);
-			return Ok();
-		}
+		
 	}
 }
