@@ -7,6 +7,7 @@ namespace BusinessLogic.Specifications
 {
 	public static class MovieSpecs
 	{
+		
 		public class GetByIdIncCollections : Specification<Movie>
 		{
 			public GetByIdIncCollections(int id)
@@ -117,6 +118,20 @@ namespace BusinessLogic.Specifications
 				}
 				return ResultExp;
      		}
+    	}
+
+		
+		public class Take : Specification<Movie>
+		{
+			public Take(int skip, int count)
+			{
+				Query
+					.Skip(skip)
+					.Take(count)
+					.Include(x => x.Country)
+					.Include(x => x.Quality)
+					.Include(x => x.Premium);
+			}
 		}
 	}
 }

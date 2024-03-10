@@ -28,6 +28,10 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
+		[HttpGet("take")]
+		public async Task<IActionResult> Take([FromQuery] int skip,int count) => Ok(await movieService.TakeAsync(skip, count));
+		
+		[AllowAnonymous]
 		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute] int id) => Ok(await movieService.GetByIdAsync(id));
 
@@ -35,7 +39,7 @@ namespace Online_Movie.Controllers
 		[HttpGet("gettop")]
 		public async Task<IActionResult> GetTop([FromQuery] int count)
 		{
-			var topMovies = await movieService.GetTopAsync(count);
+			var topMovies = await movieService.GetTopByRatingAsync(count);
 			return Ok(topMovies);
 		}
 

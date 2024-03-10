@@ -107,7 +107,9 @@ namespace BusinessLogic.Services
 			return mapper.Map<IEnumerable<StafDto>>(await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id)));
 		}
 
-		public async Task<IEnumerable<MovieDto>> GetTopAsync(int count)
+		public async Task<IEnumerable<MovieDto>> TakeAsync(int skip ,int count) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Take(skip, count)));
+		
+		public async Task<IEnumerable<MovieDto>> GetTopByRatingAsync(int count)
 		{
 			var topMovies = (await movies.GetListBySpec(new MovieSpecs.GetAllIncFeedbacks()))
 							   .Select(x => new { movie = x, avarege = x.Feedbacks.Average(z => z.Rating) })
