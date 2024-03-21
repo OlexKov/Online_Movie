@@ -59,10 +59,24 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("gefeedbacks/{id:int}")]
+		[HttpGet("getfeedbacks/{id:int}")]
 		public async Task<IActionResult> GetFeedbacks([FromRoute] int id)
 		{
 			return Ok(await movieService.GetFeedbacksAsync(id));
+		}
+
+		[AllowAnonymous]
+		[HttpGet("getrating/{id:int}")]
+		public async Task<IActionResult> GetRating([FromRoute] int id)
+		{
+			return Ok(await movieService.GetRatingAsync(id));
+		}
+
+		[AllowAnonymous]
+		[HttpGet("getgenres/{id:int}")]
+		public async Task<IActionResult> GetGenres([FromRoute] int id)
+		{
+			return Ok(await movieService.GetGenresAsync(id));
 		}
 
 		[AllowAnonymous]

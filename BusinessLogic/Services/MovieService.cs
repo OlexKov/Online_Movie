@@ -56,10 +56,13 @@ namespace BusinessLogic.Services
 		}
 
 
-		public MovieService(IRepository<Movie> movies, IRepository<Feedback> feedbacks,
+		public MovieService(IRepository<Movie> movies,
+			                IRepository<Feedback> feedbacks,
 			                IRepository<StafMovie> stafMovie,
-							IRepository<MovieGenre> movieGenre, IMapper mapper,
-							IImageService imageService, IValidator<MovieModel> validator)
+							IRepository<MovieGenre> movieGenre,
+							IMapper mapper,
+							IImageService imageService,
+							IValidator<MovieModel> validator)
 		{
 			this.movies = movies;
 			this.feedbacks = feedbacks;
@@ -143,7 +146,12 @@ namespace BusinessLogic.Services
 		public async Task<double> GetRatingAsync(int id) => (await GetFeedbacksAsync(id)).Average(x => x.Rating);
 
 		public async Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(movieFilter)));
-		
 
+		public async Task<IEnumerable<GenreDto>> GetGenresAsync(int id)
+		{
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
+			return mapper.Map<IEnumerable<GenreDto>>((await  movieGenres.GetListBySpec(new MovieGenreSpecs.GetByMovieId(id)))
+				         .Select(x=>x.Genre));
+		}
 	}
 }

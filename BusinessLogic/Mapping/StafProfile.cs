@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
 namespace BusinessLogic.Mapping
 {
