@@ -21,7 +21,8 @@ namespace BusinessLogic.Specifications
 			{
 				Query
 					.Where(x => x.MovieId == id)
-					.Include(x => x.Staf);
+					.Include(x => x.Staf)
+					.ThenInclude(x=>x.Country);
 			}
 		}
 		public class GetMovieByStafIdInc : Specification<StafMovie>

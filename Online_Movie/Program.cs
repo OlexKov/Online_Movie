@@ -4,8 +4,10 @@ using Online_Movie.Exstensions;
 using Online_Movie.ModuleRegistration;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+
 builder.Services.AddControllers();
 
 builder.Services.RegisterModules(builder.Configuration);
@@ -15,6 +17,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+//Frontend test congiguration
+app.UseCors("AllowAngularOrigins");
 
 using (var scope = app.Services.CreateScope())
 {

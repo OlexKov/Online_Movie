@@ -18,5 +18,6 @@ namespace BusinessLogic.Interfaces
 		Task CreateAsync(MovieModel movie);
 		Task DeleteAsync(int id);
 		Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter);
+		Task<IEnumerable<ImageDto>> GetScreensAsync(int id);
 	}
 }

@@ -1,11 +1,16 @@
-﻿using BusinessLogic.Helpers;
+﻿using AutoMapper;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
+using BusinessLogic.Mapping;
 using BusinessLogic.Services;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
+using System;
+using System.Net.Http;
 
 namespace BusinessLogic
 {
@@ -13,14 +18,24 @@ namespace BusinessLogic
 	{
 		public IServiceCollection RegisterModule(IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+		    services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+			services.AddAutoMapper((serviceProvider, mapperConfiguration) => 
+			{
+				var request= serviceProvider?.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Request;
+				var urlStr = new Uri($"{request?.Scheme}://{request?.Host.Host}:{request?.Host.Port}/{configuration["UserImgDir"]}").AbsoluteUri;
+				mapperConfiguration.AddProfile(new MovieProfile(urlStr));
+				mapperConfiguration.AddProfile(new StafProfile(urlStr));
+				mapperConfiguration.AddProfile(new ImageProfile(urlStr));
+			},
+			AppDomain.CurrentDomain.GetAssemblies());
 
 			//services.AddSingleton(provider => new MapperConfiguration(cfg =>
 			//{
 			//	cfg.AddProfile(new StaftProfile(provider.CreateScope().ServiceProvider.GetService<IFileService>()));
 
 			//}).CreateMapper());
-
+			
 			//services.AddFluentValidationAutoValidation();
 			// enable client-side validation
 			//services.AddFluentValidationClientsideAdapters();
@@ -54,6 +69,7 @@ namespace BusinessLogic
 			});
 
 			services.AddScoped<IJwtService, JwtService>();
+
 			return services;
 		}
 	}

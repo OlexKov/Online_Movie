@@ -101,10 +101,17 @@ namespace BusinessLogic.Services
 			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetListBySpec(new FeedbacsSpecs.GetByMovieId(id)));
 		}
 
+		public async Task<IEnumerable<ImageDto>> GetScreensAsync(int id)
+		{
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
+			return await imageService.GetByMovieId(id);
+		}
+
 		public async Task<IEnumerable<StafDto>> GetStafAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafDto>>(await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id)));
+			return mapper.Map<IEnumerable<StafDto>>((await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id)))
+				         .Select(x=>x.Staf));
 		}
 
 		public async Task<IEnumerable<MovieDto>> TakeAsync(int skip ,int count) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Take(skip, count)));

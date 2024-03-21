@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Data.Entities;
+﻿using AutoMapper;
+using BusinessLogic.Data.Entities;
+using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
@@ -12,11 +14,13 @@ namespace BusinessLogic.Services
 {
 	internal class ImageService : IImageService
 	{
+		private readonly IMapper mapper;
 		private readonly IRepository<Image> images;
 		private readonly string sysPath;
 
-		public ImageService(IWebHostEnvironment env, IConfiguration config,IRepository<Image> images)
+		public ImageService(IWebHostEnvironment env,IMapper mapper, IConfiguration config,IRepository<Image> images)
         {
+			this.mapper = mapper;
 			this.images = images;
 			sysPath = Path.Combine(env.WebRootPath, config["UserImgDir"] ?? string.Empty);
 		}
@@ -25,6 +29,17 @@ namespace BusinessLogic.Services
 		{
 			string filePath = Path.Combine(sysPath, name);
 			File.Delete(filePath);
+		}
+
+		public async Task<IEnumerable<ImageDto>> GetByIds(IEnumerable<int> ids)
+		{
+			return mapper.Map<IEnumerable<ImageDto>>(await images.GetListBySpec(new ImageSpecs.GetByIds(ids)));
+		}
+
+		public async Task<IEnumerable<ImageDto>> GetByMovieId(int movieId)
+		{
+			if (movieId < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
+			return mapper.Map<IEnumerable<ImageDto>>(await images.GetListBySpec(new ImageSpecs.GetByMovieId(movieId)));
 		}
 
 		public async Task DeleteImegeByIdAsync(int id)

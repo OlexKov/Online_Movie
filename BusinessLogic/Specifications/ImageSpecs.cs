@@ -15,5 +15,10 @@ namespace BusinessLogic.Specifications
 		{
 			public GetByIds(IEnumerable<int> ids) => Query.Where(x => ids.Contains(x.Id));
 		}
+
+		public class GetByMovieId : Specification<Image>
+		{
+			public GetByMovieId(int movieId) => Query.Where(x => x.MovieId == movieId);
+		}
 	}
 }

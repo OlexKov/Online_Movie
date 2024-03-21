@@ -21,6 +21,17 @@ namespace BusinessLogic.Specifications
 					.Include(x => x.ScreenShots);
 			}
 		}
+
+		public class GetByIdIncScreenShots : Specification<Movie>
+		{
+			public GetByIdIncScreenShots(int id)
+			{
+				Query
+					.Where(x => x.Id == id)
+					.Include(x => x.ScreenShots);
+			}
+		}
+
 		public class GetByIdInc : Specification<Movie>
 		{
 			public GetByIdInc(int id)

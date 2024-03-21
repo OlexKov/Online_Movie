@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
 {
+	
 	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = Roles.Admin)]
 	[Route("api/[controller]")]
 	[ApiController]
@@ -41,6 +42,27 @@ namespace Online_Movie.Controllers
 		{
 			var topMovies = await movieService.GetTopByRatingAsync(count);
 			return Ok(topMovies);
+		}
+
+		[AllowAnonymous]
+		[HttpGet("getscreens/{id:int}")]
+		public async Task<IActionResult> GetScreens([FromRoute] int id)
+		{
+			return Ok(await movieService.GetScreensAsync(id));
+		}
+
+		[AllowAnonymous]
+		[HttpGet("getstafs/{id:int}")]
+		public async Task<IActionResult> GetStafs([FromRoute] int id)
+		{
+			return Ok(await movieService.GetStafAsync(id));
+		}
+
+		[AllowAnonymous]
+		[HttpGet("gefeedbacks/{id:int}")]
+		public async Task<IActionResult> GetFeedbacks([FromRoute] int id)
+		{
+			return Ok(await movieService.GetFeedbacksAsync(id));
 		}
 
 		[AllowAnonymous]

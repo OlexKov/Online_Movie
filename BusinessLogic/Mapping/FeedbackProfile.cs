@@ -5,11 +5,12 @@ using BusinessLogic.DTOs;
 
 namespace BusinessLogic.Mapping
 {
-	public class FeedbackProfile :Profile
+	public class FeedbackProfile : Profile
  	{
         public FeedbackProfile()
         {
-            CreateMap<Feedback, FeedbackDto>().ReverseMap();
-        }
+           CreateMap<FeedbackDto, Feedback>().ReverseMap();
+               
+		}
     }
 }

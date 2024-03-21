@@ -83,9 +83,10 @@ namespace BusinessLogic.Services
 			var user = mapper.Map<User>(model);
 
 			var result = await userManager.CreateAsync(user, model.Password);
-			await userManager.AddToRoleAsync(user, model.Role);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+			await userManager.AddToRoleAsync(user, model.Role);
+			
 		}
 
 		public async Task<AuthResponse> Login(AuthRequest model)

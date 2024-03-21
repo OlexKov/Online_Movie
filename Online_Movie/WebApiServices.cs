@@ -78,6 +78,20 @@ namespace Online_Movie
 				config.UseSqlServerStorage(configuration.GetConnectionString("LocalDb"));
 			});
 
+			//Frontend test congiguration
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAngularOrigins",
+				builder =>
+				{
+					builder.WithOrigins(
+										"http://localhost:4200"
+										)
+										.AllowAnyHeader()
+										.AllowAnyMethod();
+				});
+			});
+
 			services.AddHangfireServer();
 			return services;
 		}

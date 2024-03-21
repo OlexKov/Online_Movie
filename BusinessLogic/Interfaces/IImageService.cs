@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLogic.DTOs;
+using Microsoft.AspNetCore.Http;
 
 
 namespace BusinessLogic.Interfaces
@@ -10,5 +11,7 @@ namespace BusinessLogic.Interfaces
 		void DeleteImageByName(string name);
 		Task DeleteImegeByIdAsync(int id);
 		Task DeleteImegeRangeAsync(IEnumerable<int> ids);
+		Task<IEnumerable<ImageDto>> GetByIds(IEnumerable<int> ids);
+		Task<IEnumerable<ImageDto>> GetByMovieId(int movieId);
 	}
 }
