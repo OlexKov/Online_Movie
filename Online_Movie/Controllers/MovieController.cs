@@ -100,6 +100,7 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[AllowAnonymous]
 		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{
