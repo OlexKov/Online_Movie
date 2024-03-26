@@ -10,6 +10,9 @@ namespace BusinessLogic.Specifications
 {
 	public static class GenreSpecs
 	{
-		
+		public class GetAll : Specification<Genre>
+		{
+			public GetAll() => Query.Where(x => true);
+		}
 	}
 }

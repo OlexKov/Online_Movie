@@ -126,6 +126,9 @@
   <data name="InvalidRegData" xml:space="preserve">
     <value>Invalid login or password.</value>
   </data>
+  <data name="InvalidRequestData" xml:space="preserve">
+    <value>Invalid Request Data</value>
+  </data>
   <data name="InvalidToken" xml:space="preserve">
     <value>Invalid access or refresh token</value>
   </data>

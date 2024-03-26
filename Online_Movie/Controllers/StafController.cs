@@ -4,6 +4,7 @@ using BusinessLogic.ModelDto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Online_Movie.Controllers
 {
@@ -27,7 +28,16 @@ namespace Online_Movie.Controllers
 		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute]int id) =>Ok(await stafService.GetAsync(id));
 
-		[Authorize(Roles = Roles.Admin)]
+		[AllowAnonymous]
+		[HttpGet("getmovies/{id:int}")]
+		public async Task<IActionResult> GetMovies([FromRoute] int id) => Ok(await stafService.GetMoviesAsync(id));
+
+		[AllowAnonymous]
+		[HttpGet("getroles/{id:int}")]
+		public async Task<IActionResult> GetRoles([FromRoute] int id) => Ok(await stafService.GetRolesAsync(id));
+
+		//[Authorize(Roles = Roles.Admin)]
+		[AllowAnonymous]
 		[HttpPut("update")]
 		public async Task<IActionResult> Update([FromForm] StafModel staf)
 		{
@@ -35,7 +45,8 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
+		[AllowAnonymous]
 		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromForm] StafModel staf)
 		{
@@ -51,6 +62,5 @@ namespace Online_Movie.Controllers
 			await stafService.DeleteAsync(id);
 			return Ok();
 		}
-		
 	}
 }

@@ -88,6 +88,15 @@ namespace BusinessLogic.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Invalid Request Data.
+        /// </summary>
+        internal static string InvalidRequestData {
+            get {
+                return ResourceManager.GetString("InvalidRequestData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid access or refresh token.
         /// </summary>
         internal static string InvalidToken {

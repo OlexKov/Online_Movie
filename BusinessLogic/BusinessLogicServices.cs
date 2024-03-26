@@ -52,6 +52,8 @@ namespace BusinessLogic
 
 			services.AddScoped<IAccountsService, AccountsService>();
 
+			services.AddScoped<IDataService, DataService>();
+
 			services.AddMailKit(optionBuilder =>
 			{
 				MailSettings? settings = configuration.GetSection("UkrNetMailSettings").Get<MailSettings>();

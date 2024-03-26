@@ -15,7 +15,8 @@ namespace BusinessLogic.Mapping
                 .ForMember(x => x.Movies, opt => opt
                 .MapFrom(x => x.StafMovies
                 .Where(z => z.StafId == x.Id).Select(c => c.MovieId)));
-            CreateMap<StafModel, Staf>();
+            CreateMap<StafModel, Staf>().
+                ForMember(x => x.ImageName, opt => opt.MapFrom(x => Path.GetFileName(x.ImageName)));
 		}
     }
 }

@@ -23,32 +23,32 @@ namespace BusinessLogic.Services
 
 		private async Task deleteStafDependencies(int id)
 		{
-     		var movies = await stafMovies.GetListBySpec(new StafMovieSpecs.GetByStafId(id));
+			var stafMovies = await this.stafMovies.GetListBySpec(new StafMovieSpecs.GetByStafId(id));
 			var stafRoles = await roles.GetListBySpec(new StafStafRolesSpecs.GetByStafId(id));
 
 			foreach (var item in stafRoles)
 				roles.Delete(item);
-			foreach (var item in movies)
-	        stafMovies.Delete(item);
+			foreach (var item in stafMovies)
+				this.stafMovies.Delete(item);
 		}
-		private async Task<Staf> setData(StafModel staf, bool update)
+		private async Task<Staf> setData(StafModel stafModel, bool update)
 		{
-			validator.ValidateAndThrow(staf);
-			var stafEdit = mapper.Map<Staf>(staf);
+			validator.ValidateAndThrow(stafModel);
+			var staf = mapper.Map<Staf>(stafModel);
 			if (update)
-				await deleteStafDependencies(staf.Id);
+				await deleteStafDependencies(stafModel.Id);
 			
-			foreach (var item in staf.Movies)
-				stafEdit.StafMovies.Add(new StafMovie() { StafId = stafEdit.Id, MovieId = item });
-			foreach (var item in staf.Roles)
-				stafEdit.StafStafRoles.Add(new StafStafRole() { StafId = stafEdit.Id, StafRoleId = item });
-			if (staf.ImageFile != null)
+			foreach (var item in stafModel.Movies)
+				staf.StafMovies.Add(new StafMovie() { StafId = staf.Id, MovieId = item });
+			foreach (var item in stafModel.Roles)
+				staf.StafStafRoles.Add(new StafStafRole() { StafId = staf.Id, StafRoleId = item });
+			if (stafModel.ImageFile != null)
 			{
-				stafEdit.ImageName = await imageService.SaveImageAsync(staf.ImageFile);
-				if (update && staf.ImageName != null && staf.ImageName != "nophoto.jpeg")
+			    if (update && staf.ImageName != null && staf.ImageName != "nophoto.jpeg.jpg")
 					imageService.DeleteImageByName(staf.ImageName);
+				staf.ImageName = await imageService.SaveImageAsync(stafModel.ImageFile);
 			}
-			return stafEdit;
+			return staf;
 		}
 
 		public StafService(IRepository<Staf> stafs, IRepository<StafMovie> stafMovies,
@@ -85,18 +85,18 @@ namespace BusinessLogic.Services
 		public async Task<IEnumerable<MovieDto>> GetMoviesAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<MovieDto>>(await stafMovies.GetListBySpec(new StafMovieSpecs.GetMovieByStafIdInc(id)));
+			return mapper.Map<IEnumerable<MovieDto>>((await stafMovies.GetListBySpec(new StafMovieSpecs.GetMovieByStafIdInc(id))).Select(x=>x.Movie));
 		}
 
 		public async Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafRoleDto>>(await roles.GetListBySpec(new StafStafRolesSpecs.GetByStafIdInc(id)));
+			return mapper.Map<IEnumerable<StafRoleDto>>((await roles.GetListBySpec(new StafStafRolesSpecs.GetByStafIdInc(id))).Select(x=>x.StafRole));
 		}
 
 		public async Task UpdateAsync(StafModel staf)
 		{
-			if (staf == null) throw new HttpException(Errors.NotFoundById, HttpStatusCode.InternalServerError);
+			if (staf == null) throw new HttpException(Errors.InvalidRequestData, HttpStatusCode.BadRequest);
 			stafs.Update(await setData(staf, true));
 			await stafs.SaveAsync();
 		}
@@ -108,7 +108,8 @@ namespace BusinessLogic.Services
 									   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
 			stafs.Delete(staf);
 			await stafs.SaveAsync();
-			imageService.DeleteImageByName(staf.ImageName ?? "");
+			if(staf.ImageName != "nophoto.jpeg.jpg")
+		    	imageService.DeleteImageByName(staf.ImageName ?? "");
 		}
 
 		public async Task CreateAsync(StafModel staf)
