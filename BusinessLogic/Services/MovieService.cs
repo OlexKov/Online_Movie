@@ -17,6 +17,7 @@ namespace BusinessLogic.Services
 		private readonly IRepository<Feedback> feedbacks;
 		private readonly IRepository<StafMovie> stafMovies;
 		private readonly IRepository<MovieGenre> movieGenres;
+		private readonly IRepository<Image> images;
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<MovieModel> validator;
@@ -25,8 +26,8 @@ namespace BusinessLogic.Services
 		{
 			var stafs = await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id));
 			var genres = await movieGenres.GetListBySpec(new MovieGenreSpecs.GetByMovieId(id));
-
-			foreach (var item in stafs)
+			
+		    foreach (var item in stafs)
 				stafMovies.Delete(item);
 			foreach (var item in genres)
 				movieGenres.Delete(item);
@@ -37,7 +38,11 @@ namespace BusinessLogic.Services
 			validator.ValidateAndThrow(movieModel);
 			var movie = mapper.Map<Movie>(movieModel);
 			if (update)
+			{
 				await deleteMovieDependencies(movie.Id);
+				var screensIds = (await images.GetListBySpec(new ImageSpecs.GetByMovieId(movie.Id))).Select(x => x.Id);
+				await imageService.DeleteImegeRangeAsync(screensIds.Except(movieModel.ScreenShots));
+			}
 
 			foreach (var id in movieModel.Stafs)
 				movie.StafMovies.Add(new () { MovieId = movie.Id, StafId = id });
@@ -48,9 +53,9 @@ namespace BusinessLogic.Services
 			
 			if (movieModel.PosterFile != null)
 			{
+			   if (update && movie.Poster != null && movie.Poster != "nophoto.jpeg")
+					imageService.DeleteImageByName(movieModel.Poster ?? "");
 				movie.Poster = await imageService.SaveImageAsync(movieModel.PosterFile);
-				if (update && movieModel.Poster != null && movieModel.Poster != "nophoto.jpeg")
-					imageService.DeleteImageByName(movieModel.Poster);
 			}
 			return movie;
 		}
@@ -60,6 +65,7 @@ namespace BusinessLogic.Services
 			                IRepository<Feedback> feedbacks,
 			                IRepository<StafMovie> stafMovie,
 							IRepository<MovieGenre> movieGenre,
+			                IRepository<Image> images,
 							IMapper mapper,
 							IImageService imageService,
 							IValidator<MovieModel> validator)
@@ -68,6 +74,7 @@ namespace BusinessLogic.Services
 			this.feedbacks = feedbacks;
 			this.stafMovies = stafMovie;
 			this.movieGenres = movieGenre;
+			this.images = images;
 			this.mapper = mapper;
 			this.imageService = imageService;
 			this.validator = validator;

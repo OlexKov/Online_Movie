@@ -9,8 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
-using System;
-using System.Net.Http;
+
 
 namespace BusinessLogic
 {
@@ -27,6 +26,7 @@ namespace BusinessLogic
 				mapperConfiguration.AddProfile(new MovieProfile(urlStr));
 				mapperConfiguration.AddProfile(new StafProfile(urlStr));
 				mapperConfiguration.AddProfile(new ImageProfile(urlStr));
+				mapperConfiguration.AddProfile(new MovieModelProfile(urlStr));
 			},
 			AppDomain.CurrentDomain.GetAssemblies());
 
