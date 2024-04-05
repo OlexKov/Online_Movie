@@ -11,7 +11,7 @@ namespace DataAccess.Data.Entities.EntitiesConfigs
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Name).HasMaxLength(256);
 			builder.Property(x => x.OriginalName).HasMaxLength(256);
-			builder.Property(x => x.Poster).HasDefaultValue("noposter.jpeg");
+			builder.Property(x => x.Poster).HasDefaultValue("noposter.jpg");
 			builder.HasOne(x => x.Quality)
 				   .WithMany(x => x.Movies)
 				   .HasForeignKey(x=>x.QualityId);

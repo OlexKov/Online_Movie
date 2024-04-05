@@ -53,7 +53,7 @@ namespace BusinessLogic.Services
 			
 			if (movieModel.PosterFile != null)
 			{
-			   if (update && movie.Poster != null && movie.Poster != "nophoto.jpeg")
+			   if (update && movie.Poster != null && movie.Poster != "noposter.jpg")
 					imageService.DeleteImageByName(movieModel.Poster ?? "");
 				movie.Poster = await imageService.SaveImageAsync(movieModel.PosterFile);
 			}
@@ -91,8 +91,9 @@ namespace BusinessLogic.Services
 			await movies.SaveAsync();
 			foreach (var item in movie.ScreenShots)
 				imageService.DeleteImageByName(item.Name);
-			imageService.DeleteImageByName(movie.Poster ?? "");
-		}
+			if(movie.Poster != null && movie.Poster != "noposter.jpg")
+			  imageService.DeleteImageByName(movie.Poster);
+		} 
 
 		public async Task<IEnumerable<MovieDto>> GetAllAsync() => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.GetAll()));
 		

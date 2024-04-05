@@ -44,7 +44,7 @@ namespace BusinessLogic.Services
 				staf.StafStafRoles.Add(new StafStafRole() { StafId = staf.Id, StafRoleId = item });
 			if (stafModel.ImageFile != null)
 			{
-			    if (update && staf.ImageName != null && staf.ImageName != "nophoto.jpeg.jpg")
+			    if (update && staf.ImageName != null && staf.ImageName != "nophoto.jpg")
 					imageService.DeleteImageByName(staf.ImageName);
 				staf.ImageName = await imageService.SaveImageAsync(stafModel.ImageFile);
 			}
@@ -108,8 +108,8 @@ namespace BusinessLogic.Services
 									   ?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound);
 			stafs.Delete(staf);
 			await stafs.SaveAsync();
-			if(staf.ImageName != "nophoto.jpeg.jpg")
-		    	imageService.DeleteImageByName(staf.ImageName ?? "");
+			if(staf.ImageName!=null && staf.ImageName != "nophoto.jpg")
+		    	imageService.DeleteImageByName(staf.ImageName);
 		}
 
 		public async Task CreateAsync(StafModel staf)
