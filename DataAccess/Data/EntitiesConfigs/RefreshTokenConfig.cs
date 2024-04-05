@@ -15,7 +15,7 @@ namespace DataAccess.Data.EntitiesConfigs
 		{
 			builder.HasKey(x => x.Id);
 			builder.Property(x => x.Token).HasMaxLength(256);
-			builder.Property(x => x.CreationDate);
+			builder.Property(x => x.ExpirationDate);
 			builder.HasOne(x => x.User)
 				   .WithMany(x => x.RefreshTokens)
 				   .HasForeignKey(x => x.UserId)

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
 {
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="User")]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class UserController : ControllerBase

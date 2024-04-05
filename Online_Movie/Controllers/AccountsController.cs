@@ -14,7 +14,7 @@ namespace Online_Movie.Controllers
 	public class AccountsController : ControllerBase
 	{
 		private readonly IAccountsService accountsService;
-
+		
 		public AccountsController(IAccountsService accountsService)
 		{
 			this.accountsService = accountsService;
@@ -31,11 +31,12 @@ namespace Online_Movie.Controllers
 		[AllowAnonymous]
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] AuthRequest model) => Ok(await accountsService.Login(model));
+		
 
 		[HttpPost("logout")]
-		public async Task<IActionResult> Logout([FromBody] AuthResponse tokens)
+		public async Task<IActionResult> Logout([FromBody] string token)
 		{
-			await accountsService.Logout(tokens);
+			await accountsService.Logout(token);
 			return Ok();
 		}
 
@@ -51,7 +52,7 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpPost("refreshTokens")]
+		[HttpPost("refreshtokens")]
 		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokens(tokens));
 
 
@@ -62,7 +63,6 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = Roles.Admin)]
 		[HttpDelete("delete/{*email}")]
 		public async Task<IActionResult> Delete([FromRoute]string email)
 		{
@@ -70,6 +70,5 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		
 	}
 }

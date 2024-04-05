@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers

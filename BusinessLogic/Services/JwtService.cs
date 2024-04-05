@@ -27,15 +27,16 @@ namespace BusinessLogic.Services
 
 		public async Task<IEnumerable<Claim>> GetClaimsAsync(User user)
 		{
-			var claims = new List<Claim>
+		    var claims = new List<Claim>
 			{
 				new (ClaimTypes.NameIdentifier, user.Id),
-				new (ClaimTypes.Name, user.UserName!),
+				new (ClaimTypes.Name, user.Name!),
+				new (ClaimTypes.Surname, user.Surname!),
+				new (ClaimTypes.Email, user.Email!),
+				new (ClaimTypes.DateOfBirth, user.Birthdate.ToShortDateString())
 			};
-
 			var roles = await userManager.GetRolesAsync(user);
 			claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
-
 			return claims;
 		}
 
@@ -47,6 +48,7 @@ namespace BusinessLogic.Services
 
 		public string CreateToken(IEnumerable<Claim> claims)
 		{
+			var time = DateTime.UtcNow.AddMinutes(jwtOpts.AccessTokenLifeTimeMinutes);
 			var credentials = getCredentials(jwtOpts);
 			var token = new JwtSecurityToken(
 				issuer: jwtOpts.Issuer,
@@ -91,6 +93,8 @@ namespace BusinessLogic.Services
 		}
 
 		public DateTime GetLastValidTokenDate() => DateTime.UtcNow.AddDays(jwtOpts.RefreshTokenLifeTimeDays);
-		
+
+		public int GetRefreshTokenLiveTime() => jwtOpts.RefreshTokenLifeTimeDays;
+	
 	}
 }

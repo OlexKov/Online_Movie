@@ -13,7 +13,7 @@ namespace BusinessLogic.Interfaces
 		Task Delete(User user);
 		Task Delete(string email);
 		Task<AuthResponse> Login(AuthRequest model);
-		Task Logout(AuthResponse tokens);
+		Task Logout(string token);
 		Task<RefreshToken> GetRefreshToken(string rToken);
 		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
 		Task Edit(EditUserModel user);

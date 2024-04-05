@@ -37,7 +37,7 @@ namespace BusinessLogic.Services
 			{
 				Token = refeshToken,
 				UserId = userId,
-				CreationDate = DateTime.UtcNow // Now vs UtcNow
+				ExpirationDate = DateTime.UtcNow.AddDays(jwtService.GetRefreshTokenLiveTime()) // Now vs UtcNow
 			};
 
 			await tokenRepository.InsertAsync(refreshTokenEntity);
@@ -67,9 +67,10 @@ namespace BusinessLogic.Services
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
 		{
+			
 			var token = await tokenRepository.GetItemBySpec(new RefreshTokenSpecs.GetTokenByValue(rToken));
-			if(token == null || token.CreationDate < jwtService.GetLastValidTokenDate())
-				   throw new HttpException(Errors.InvalidToken, HttpStatusCode.BadRequest);
+			if (token == null || token.ExpirationDate < DateTime.UtcNow)
+				   throw new HttpException(Errors.InvalidToken, HttpStatusCode.Unauthorized);
 			return token;
 		}
 
@@ -104,9 +105,9 @@ namespace BusinessLogic.Services
 		}
 
 
-		public async Task Logout(AuthResponse tokens)
+		public async Task Logout(string token)
 		{
-			var rToken = GetRefreshToken(tokens.RefreshToken);
+			var rToken = GetRefreshToken(token);
 			await tokenRepository.DeleteAsync(rToken);
 			await tokenRepository.SaveAsync();
 		}

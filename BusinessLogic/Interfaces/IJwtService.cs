@@ -13,5 +13,7 @@ namespace BusinessLogic.Interfaces
 
 		DateTime GetLastValidTokenDate();
 
+		int GetRefreshTokenLiveTime();
+
 	}
 }

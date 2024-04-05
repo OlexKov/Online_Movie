@@ -18,7 +18,7 @@ namespace BusinessLogic.Specifications
 		{
 			public ByDate(DateTime date)
 			{
-				Query.Where(x => x.CreationDate < date);
+				Query.Where(x => x.ExpirationDate < date);
 			}
 		}
 	}

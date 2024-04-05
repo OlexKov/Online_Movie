@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Online_Movie.Controllers
 {
 	
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = Roles.Admin)]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles ="Admin")]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class MovieController : ControllerBase
@@ -85,14 +85,14 @@ namespace Online_Movie.Controllers
 		{
 			return Ok(await movieService.FindAsync(movieFilter));
 		}
-		[AllowAnonymous]
+		
 		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromForm] MovieModel movie)
 		{
 			await movieService.CreateAsync(movie);
 			return Ok();
 		}
-		[AllowAnonymous]
+		
 		[HttpPut("update")]
 		public async Task<IActionResult> Update([FromForm] MovieModel movie)
 		{
@@ -100,7 +100,6 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[AllowAnonymous]
 		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{

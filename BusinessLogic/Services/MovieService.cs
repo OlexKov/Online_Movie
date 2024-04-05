@@ -150,7 +150,12 @@ namespace BusinessLogic.Services
 			await movies.SaveAsync();
 		}
 
-		public async Task<double> GetRatingAsync(int id) => (await GetFeedbacksAsync(id)).Average(x => x.Rating);
+		public async Task<double> GetRatingAsync(int id) 
+		{
+			var feedbacks = await GetFeedbacksAsync(id);
+			return feedbacks.Count() > 0 ? feedbacks.Average(x => x.Rating) : 0;
+			
+		}
 
 		public async Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(movieFilter)));
 
