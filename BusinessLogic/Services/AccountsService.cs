@@ -31,6 +31,8 @@ namespace BusinessLogic.Services
 		private readonly IJwtService jwtService;
 		private readonly IRepository<RefreshToken> tokenRepository;
 		private readonly IValidator<EditUserModel> userModelValidator;
+		private readonly IConfiguration configuration;
+
 		private async Task<string> CreateRefreshToken(string userId)
 		{
 			var refeshToken = jwtService.CreateRefreshToken();
@@ -54,7 +56,8 @@ namespace BusinessLogic.Services
 								IValidator<ResetPasswordModel> resetModelValidator,
 								IEmailService emailService, IJwtService jwtService,
 								IRepository<RefreshToken> tokenRepository,
-								IValidator<EditUserModel> userModelValidator)
+								IValidator<EditUserModel> userModelValidator,
+			                    IConfiguration configuration)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -64,7 +67,7 @@ namespace BusinessLogic.Services
 			this.jwtService = jwtService;
 			this.tokenRepository = tokenRepository;
 			this.userModelValidator = userModelValidator;
-			
+			this.configuration = configuration;
 		}
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
@@ -119,8 +122,9 @@ namespace BusinessLogic.Services
 			var user = await userManager.FindByEmailAsync(email);
 			if (user != null)
 			{
+				var resetPageUrl = configuration.GetValue<string>( "ResetPasswordPageUrl");
 				var token = await userManager.GeneratePasswordResetTokenAsync(user);
-				await emailService.SendAsync(email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='http://localhost:4200/resetpassword?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
+				await emailService.SendAsync(email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{resetPageUrl}?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
 			}
 		}
 
