@@ -8,15 +8,12 @@ namespace BusinessLogic.Validators
 	{
         public ResetPasswordModelValidator()
         {
-            RuleFor(x=>x.UserId)
-                .NotEmpty()
-				.WithMessage(ValidationErrors.NotEmpty);
+            RuleFor(x => x.UserEmail)
+                .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+                .EmailAddress().WithMessage(ValidationErrors.InvalidEmail);
 			RuleFor(x => x.Password)
                 .MinimumLength(6).WithMessage($"{ValidationErrors.SymbolsCountError} 6 symbols")
-                .Matches("").WithMessage(ValidationErrors.InvalidPassword);
-            RuleFor(x => x.ConfirmPassword)
-                .Must((model, fild) => model.Password == fild)
-                .WithMessage(ValidationErrors.NotMatchPasswordsError);
+                .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?([^\\w\\s]|[_])).{6,}$").WithMessage(ValidationErrors.InvalidPassword);
             RuleFor(x => x.Token)
                 .NotEmpty().WithMessage(ValidationErrors.NotEmpty);
         }

@@ -8,9 +8,11 @@ using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using NETCore.MailKit.Core;
+using System;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -111,24 +113,21 @@ namespace BusinessLogic.Services
 			await tokenRepository.DeleteAsync(rToken);
 			await tokenRepository.SaveAsync();
 		}
-		
-		public async Task<ResetPasswordResponse> ResetPasswordRequest(string email)
+
+		public async Task ResetPasswordRequest(string email)
 		{
-			ResetPasswordResponse rModel = new(); 
 			var user = await userManager.FindByEmailAsync(email);
 			if (user != null)
 			{
-				rModel.Token = await userManager.GeneratePasswordResetTokenAsync(user);
-				rModel.UserId = user.Id;
-				await emailService.SendAsync(email,"Reset password",  $"\"Для сброса пароля пройдите по ссылке: <a href='#'>Reset password</a>\"",true);
+				var token = await userManager.GeneratePasswordResetTokenAsync(user);
+				await emailService.SendAsync(email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='http://localhost:4200/resetpassword?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
 			}
-			return rModel;
 		}
 
 		public async Task ResetPassword(ResetPasswordModel model)
 		{
 			resetModelValidator.ValidateAndThrow(model);
-			var user = await userManager.FindByIdAsync(model.UserId) 
+			var user = await userManager.FindByEmailAsync(model.UserEmail) 
 				?? throw new HttpException(Errors.NotFoundById,HttpStatusCode.NotFound);
 			var result = await userManager.ResetPasswordAsync(user,model.Token,model.Password);
 			if (!result.Succeeded)

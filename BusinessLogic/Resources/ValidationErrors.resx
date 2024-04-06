@@ -132,6 +132,9 @@
   <data name="ImageEmptyError" xml:space="preserve">
     <value>{PropertyName} not be empty then image path is empty</value>
   </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Invalid email address.</value>
+  </data>
   <data name="InvalidPassword" xml:space="preserve">
     <value>Invalid password.</value>
   </data>
