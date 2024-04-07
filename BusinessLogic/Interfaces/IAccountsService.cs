@@ -8,6 +8,7 @@ namespace BusinessLogic.Interfaces
 	public  interface IAccountsService
 	{
 		Task ResetPasswordRequest(string email);
+		Task<string> GetResetToken(string email);
 		Task ResetPassword(ResetPasswordModel model);
 		Task Register(RegisterUserModel model);
 		Task Delete(User user);

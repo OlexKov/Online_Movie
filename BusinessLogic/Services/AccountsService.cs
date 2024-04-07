@@ -128,6 +128,13 @@ namespace BusinessLogic.Services
 			}
 		}
 
+		public async Task<string> GetResetToken(string email) 
+		{
+			var user = await userManager.FindByEmailAsync(email)
+			         ?? throw new HttpException(Errors.UserNotFound, HttpStatusCode.BadRequest);
+			return await userManager.GeneratePasswordResetTokenAsync(user);
+		}
+
 		public async Task ResetPassword(ResetPasswordModel model)
 		{
 			resetModelValidator.ValidateAndThrow(model);

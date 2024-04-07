@@ -50,13 +50,16 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		//[ValidateAntiForgeryToken]
-		[HttpPost("reset")]
+		[HttpPost("resetpasswordemail")]
 		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
 		{
 			await accountsService.ResetPassword(model);
 			return Ok();
 		}
 
+		[HttpGet("getresettoken/{*email}")]
+		public async Task<IActionResult> GetResetToken([FromRoute] string email) => Ok(await accountsService.GetResetToken(email));
+				
 		[AllowAnonymous]
 		[HttpPost("refreshtokens")]
 		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokens(tokens));
