@@ -99,7 +99,7 @@ namespace Online_Movie.Controllers
 			await movieService.UpdateAsync(movie);
 			return Ok();
 		}
-
+		[AllowAnonymous]
 		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{

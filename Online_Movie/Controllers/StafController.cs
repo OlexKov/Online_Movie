@@ -44,15 +44,17 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
+		[AllowAnonymous]
 		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromForm] StafModel staf)
 		{
-			await stafService.CreateAsync(staf);
+		//	await stafService.CreateAsync(staf);
 			return Ok();
 		}
 
-		[Authorize(Roles = Roles.Admin)]
+		//[Authorize(Roles = Roles.Admin)]
+		[AllowAnonymous]
 		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute]int id)
 		{

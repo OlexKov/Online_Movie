@@ -85,7 +85,7 @@ namespace Online_Movie
 				builder =>
 				{
 					builder.WithOrigins(
-										"http://localhost:4200"
+										"http://localhost:3000"
 										)
 										.AllowAnyHeader()
 										.AllowAnyMethod();
