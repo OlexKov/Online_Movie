@@ -84,11 +84,9 @@ namespace Online_Movie
 				options.AddPolicy("AllowAngularOrigins",
 				builder =>
 				{
-					builder.WithOrigins(
-										"http://localhost:3000"
-										)
-										.AllowAnyHeader()
-										.AllowAnyMethod();
+					builder.AllowAnyOrigin()
+						   .AllowAnyHeader()
+						   .AllowAnyMethod();
 				});
 			});
 
