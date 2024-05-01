@@ -16,6 +16,7 @@ namespace BusinessLogic.Validators
                 .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?([^\\w\\s]|[_])).{6,}$").WithMessage(ValidationErrors.InvalidPassword);
             RuleFor(x => x.Token)
                 .NotEmpty().WithMessage(ValidationErrors.NotEmpty);
+
         }
 
     }

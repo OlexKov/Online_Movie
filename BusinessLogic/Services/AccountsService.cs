@@ -1,22 +1,17 @@
 ﻿using AutoMapper;
 using BusinessLogic.Data.Entities;
 using BusinessLogic.Entities;
-using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using NETCore.MailKit.Core;
-using System;
 using System.Data;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
 
@@ -33,8 +28,7 @@ namespace BusinessLogic.Services
 		private readonly IJwtService jwtService;
 		private readonly IRepository<RefreshToken> tokenRepository;
 		private readonly IValidator<EditUserModel> userModelValidator;
-		private readonly IConfiguration configuration;
-		private readonly IHttpContextAccessor contextAccessor;
+		
 
 		private async Task<string> CreateRefreshToken(string userId)
 		{
@@ -59,9 +53,7 @@ namespace BusinessLogic.Services
 								IValidator<ResetPasswordModel> resetModelValidator,
 								IEmailService emailService, IJwtService jwtService,
 								IRepository<RefreshToken> tokenRepository,
-								IValidator<EditUserModel> userModelValidator,
-								IConfiguration configuration,
-								IHttpContextAccessor contextAccessor)
+								IValidator<EditUserModel> userModelValidator)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -71,8 +63,6 @@ namespace BusinessLogic.Services
 			this.jwtService = jwtService;
 			this.tokenRepository = tokenRepository;
 			this.userModelValidator = userModelValidator;
-			this.configuration = configuration;
-			this.contextAccessor = contextAccessor;
 		}
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
@@ -122,15 +112,13 @@ namespace BusinessLogic.Services
 			await tokenRepository.SaveAsync();
 		}
 
-		public async Task ResetPasswordRequest(string email)
+		public async Task ResetPasswordRequest(FogotPasswordModel fogotModel)
 		{
-			var user = await userManager.FindByEmailAsync(email);
+			var user = await userManager.FindByEmailAsync(fogotModel.Email);
 			if (user != null)
 			{
-				var request = contextAccessor.HttpContext?.Request;
-				var resetPageUrl = new Uri($"{request?.Scheme}://{request?.Host.Host}:{request?.Host.Port}/{configuration["ResetPasswordPage"]}").AbsoluteUri;
 				var token = await userManager.GeneratePasswordResetTokenAsync(user);
-				await emailService.SendAsync(email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{resetPageUrl}?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
+				await emailService.SendAsync(fogotModel.Email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{fogotModel.ResetPasswordPage}?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
 			}
 		}
 

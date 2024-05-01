@@ -4,6 +4,7 @@ using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Online_Movie.Controllers
@@ -41,10 +42,10 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpPost("fogot/{*email}")]
-		public async Task<IActionResult> FogotPassword([FromRoute] string email)
+		[HttpPost("fogot")]
+		public async Task<IActionResult> FogotPassword([FromBody] FogotPasswordModel fogotModel)
 		{
-			await accountsService.ResetPasswordRequest(email);
+			await accountsService.ResetPasswordRequest(fogotModel);
 			return Ok();
 		}
 
