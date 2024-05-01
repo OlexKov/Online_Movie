@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-	public class TokenModel
+	public class LogoutModel
 	{
 		public string Token { get; set; }
 	}

@@ -34,7 +34,7 @@ namespace Online_Movie.Controllers
 		
 
 		[HttpPost("logout")]
-		public async Task<IActionResult> Logout([FromBody] TokenModel token)
+		public async Task<IActionResult> Logout([FromBody] LogoutModel token)
 		{
 			await accountsService.Logout(token.Token);
 			return Ok();
