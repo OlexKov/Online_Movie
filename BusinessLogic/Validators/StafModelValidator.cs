@@ -26,10 +26,10 @@ namespace BusinessLogic.Validators
 			RuleFor(x => x.Description)
 				 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
 				 .MinimumLength(20).WithMessage($"{ValidationErrors.SymbolsCountError} 20 symbols");
-		    RuleFor(x => x.ImageFile)
-				  .NotNull()
-				  .When(x => String.IsNullOrEmpty(x.ImageName), ApplyConditionTo.CurrentValidator)
-				  .WithMessage(ValidationErrors.ImageEmptyError);
+		    //RuleFor(x => x.ImageFile)
+				  //.NotNull()
+				  //.When(x => String.IsNullOrEmpty(x.ImageName), ApplyConditionTo.CurrentValidator)
+				  //.WithMessage(ValidationErrors.ImageEmptyError);
 			RuleFor(x => x.IsOscar)
 							 .NotNull().WithMessage(ValidationErrors.NotEmpty);
 		}

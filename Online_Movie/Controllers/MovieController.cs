@@ -85,21 +85,23 @@ namespace Online_Movie.Controllers
 		{
 			return Ok(await movieService.FindAsync(movieFilter));
 		}
-		
+
+		//[AllowAnonymous]
 		[HttpPost("create")]
 		public async Task<IActionResult> Create([FromForm] MovieModel movie)
 		{
 			await movieService.CreateAsync(movie);
 			return Ok();
 		}
-		
+
+		//[AllowAnonymous]
 		[HttpPut("update")]
 		public async Task<IActionResult> Update([FromForm] MovieModel movie)
 		{
 			await movieService.UpdateAsync(movie);
 			return Ok();
 		}
-		[AllowAnonymous]
+		//[AllowAnonymous]
 		[HttpDelete("delete/{id:int}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)
 		{

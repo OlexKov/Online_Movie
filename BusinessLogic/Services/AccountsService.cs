@@ -8,9 +8,11 @@ using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NETCore.MailKit.Core;
 using System;
 using System.Data;
@@ -32,6 +34,7 @@ namespace BusinessLogic.Services
 		private readonly IRepository<RefreshToken> tokenRepository;
 		private readonly IValidator<EditUserModel> userModelValidator;
 		private readonly IConfiguration configuration;
+		private readonly IHttpContextAccessor contextAccessor;
 
 		private async Task<string> CreateRefreshToken(string userId)
 		{
@@ -57,7 +60,8 @@ namespace BusinessLogic.Services
 								IEmailService emailService, IJwtService jwtService,
 								IRepository<RefreshToken> tokenRepository,
 								IValidator<EditUserModel> userModelValidator,
-			                    IConfiguration configuration)
+								IConfiguration configuration,
+								IHttpContextAccessor contextAccessor)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -68,6 +72,7 @@ namespace BusinessLogic.Services
 			this.tokenRepository = tokenRepository;
 			this.userModelValidator = userModelValidator;
 			this.configuration = configuration;
+			this.contextAccessor = contextAccessor;
 		}
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
@@ -112,8 +117,8 @@ namespace BusinessLogic.Services
 
 		public async Task Logout(string token)
 		{
-			var rToken = GetRefreshToken(token);
-			await tokenRepository.DeleteAsync(rToken);
+			var rToken = await GetRefreshToken(token);
+			await tokenRepository.DeleteAsync(rToken.Id);
 			await tokenRepository.SaveAsync();
 		}
 
@@ -122,7 +127,8 @@ namespace BusinessLogic.Services
 			var user = await userManager.FindByEmailAsync(email);
 			if (user != null)
 			{
-				var resetPageUrl = configuration.GetValue<string>( "ResetPasswordPageUrl");
+				var request = contextAccessor.HttpContext?.Request;
+				var resetPageUrl = new Uri($"{request?.Scheme}://{request?.Host.Host}:{request?.Host.Port}/{configuration["ResetPasswordPage"]}").AbsoluteUri;
 				var token = await userManager.GeneratePasswordResetTokenAsync(user);
 				await emailService.SendAsync(email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{resetPageUrl}?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
 			}

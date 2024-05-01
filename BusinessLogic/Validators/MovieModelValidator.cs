@@ -24,10 +24,10 @@ namespace BusinessLogic.Validators
 			   .GreaterThan(0).WithMessage(ValidationErrors.GreaterZeroError);
 			RuleFor(x => x.CountryId)
 			   .GreaterThan(0).WithMessage(ValidationErrors.GreaterZeroError);
-			RuleFor(x => x.PosterFile)
-			   .NotNull().WithMessage(ValidationErrors.NotEmpty)
-			   .When(x => String.IsNullOrEmpty(x.Poster), ApplyConditionTo.CurrentValidator)
-			   .WithMessage(ValidationErrors.ImageEmptyError);
+			//RuleFor(x => x.PosterFile)
+			//   .NotNull().WithMessage(ValidationErrors.NotEmpty)
+			//   .When(x => String.IsNullOrEmpty(x.Poster), ApplyConditionTo.CurrentValidator)
+			//   .WithMessage(ValidationErrors.ImageEmptyError);
 			RuleFor(x => x.MovieUrl)
 			   .NotNull().WithMessage(ValidationErrors.NotEmpty);
 			   //.Must(x => Uri.TryCreate(x, UriKind.Absolute, out _))

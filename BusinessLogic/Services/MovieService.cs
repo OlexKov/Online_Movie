@@ -91,7 +91,7 @@ namespace BusinessLogic.Services
 			await movies.SaveAsync();
 			foreach (var item in movie.ScreenShots)
 				imageService.DeleteImageByName(item.Name);
-			if(movie.Poster != null && movie.Poster != "noposter.jpg")
+			if(movie.Poster != null && movie.Poster != "nophoto.jpg")
 			  imageService.DeleteImageByName(movie.Poster);
 		} 
 

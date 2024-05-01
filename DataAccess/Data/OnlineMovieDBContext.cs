@@ -13,13 +13,14 @@ namespace DataAccess.Data
 		{
 			//Database.EnsureDeleted();
 			//Database.EnsureCreated();
+			Database.Migrate();
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-			DefaultUsers.Initialize(modelBuilder);
-			DefaultData.Initialize(modelBuilder);
+			//DefaultUsers.Initialize(modelBuilder);
+			//DefaultData.Initialize(modelBuilder);
 
 		}
 	}
