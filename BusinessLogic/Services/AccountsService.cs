@@ -118,7 +118,7 @@ namespace BusinessLogic.Services
 			if (user != null)
 			{
 				var token = await userManager.GeneratePasswordResetTokenAsync(user);
-				await emailService.SendAsync(fogotModel.Email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{fogotModel.ResetPasswordPage}?token={token}&id={user.Email}'>Змінити пароль</a>\"", true);
+				await emailService.SendAsync(fogotModel.Email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{fogotModel.ResetPasswordPage}?token={token}&email={user.Email}'>Змінити пароль</a>\"", true);
 			}
 		}
 

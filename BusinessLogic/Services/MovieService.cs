@@ -142,7 +142,6 @@ namespace BusinessLogic.Services
 		{
 			await movies.InsertAsync(await setData(movie, false));
 			await movies.SaveAsync();
-
 		}
 
 		public async Task UpdateAsync(MovieModel movie)
@@ -154,7 +153,7 @@ namespace BusinessLogic.Services
 		public async Task<double> GetRatingAsync(int id) 
 		{
 			var feedbacks = await GetFeedbacksAsync(id);
-			return feedbacks.Count() > 0 ? feedbacks.Average(x => x.Rating) : 0;
+			return feedbacks.Any() ? feedbacks.Average(x => x.Rating) : 0;
 			
 		}
 

@@ -43,10 +43,10 @@ namespace BusinessLogic.Validators
 			   .Must(x => x.Count > 0).WithMessage(ValidationErrors.NotEmpty);
 			RuleFor(x => x.ScreenShots)
 			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
-			   .When(x=>x.Screens == null || x.Screens.Count == 0, ApplyConditionTo.CurrentValidator);
+			   .Must(x=>x != null && x.Count > 0);
 			RuleFor(x => x.Screens)
 			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
-			   .When(x => x.ScreenShots == null || x.ScreenShots.Count == 0, ApplyConditionTo.CurrentValidator);
+			   .Must(x => x != null && x.Count > 0);
 			RuleFor(x => x.Genres)
 			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
 			   .Must(x => x.Count > 0).WithMessage(ValidationErrors.NotEmpty);

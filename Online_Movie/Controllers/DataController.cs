@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Helpers;
+using BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,5 +49,7 @@ namespace Online_Movie.Controllers
 		{
 			return Ok(await dataService.GetAllPremiumsAsync());
 		}
+
+		
 	}
 }

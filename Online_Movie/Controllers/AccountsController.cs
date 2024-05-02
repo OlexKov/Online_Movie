@@ -12,14 +12,9 @@ namespace Online_Movie.Controllers
 	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AccountsController : ControllerBase
+	public class AccountsController(IAccountsService accountsService) : ControllerBase
 	{
-		private readonly IAccountsService accountsService;
-		
-		public AccountsController(IAccountsService accountsService)
-		{
-			this.accountsService = accountsService;
-		}
+		private readonly IAccountsService accountsService = accountsService;
 
 		[AllowAnonymous]
 		[HttpPost("register")]
@@ -51,7 +46,7 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		//[ValidateAntiForgeryToken]
-		[HttpPost("resetpasswordemail")]
+		[HttpPost("resetpassword")]
 		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordModel model)
 		{
 			await accountsService.ResetPassword(model);
