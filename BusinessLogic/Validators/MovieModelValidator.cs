@@ -41,12 +41,17 @@ namespace BusinessLogic.Validators
 			RuleFor(x => x.Stafs)
 			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
 			   .Must(x => x.Count > 0).WithMessage(ValidationErrors.NotEmpty);
-			RuleFor(x => x.ScreenShots)
-			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
-			   .Must(x=>x != null && x.Count > 0);
+			//RuleFor(x => x.ScreenShots)
+			//   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+			//   .Must(x=>x != null && x.Count > 0);
+			//RuleFor(x => x.Screens)
+			//   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
+			//   .Must(x => x != null && x.Count > 0);
 			RuleFor(x => x.Screens)
-			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
-			   .Must(x => x != null && x.Count > 0);
+			   .NotNull()
+			   .Must(x => x != null && x.Count > 0)
+			   .When(x => x.ScreenShots.Count == 0, ApplyConditionTo.CurrentValidator)
+			   .WithMessage(ValidationErrors.ImageEmptyError);
 			RuleFor(x => x.Genres)
 			   .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
 			   .Must(x => x.Count > 0).WithMessage(ValidationErrors.NotEmpty);
