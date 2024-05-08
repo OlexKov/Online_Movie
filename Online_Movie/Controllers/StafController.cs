@@ -62,5 +62,9 @@ namespace Online_Movie.Controllers
 			await stafService.DeleteAsync(id);
 			return Ok();
 		}
+
+		[AllowAnonymous]
+		[HttpGet("take")]
+		public async Task<IActionResult> Take([FromQuery] int skip, int count) => Ok(await stafService.TakeAsync(skip, count));
 	}
 }

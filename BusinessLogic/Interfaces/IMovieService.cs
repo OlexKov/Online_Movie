@@ -7,7 +7,7 @@ namespace BusinessLogic.Interfaces
 {
 	public interface IMovieService
 	{
-		Task<IEnumerable<MovieDto>> TakeAsync(int skip, int count);
+		Task<MovieFindResultModel> TakeAsync(int skip, int count);
 		Task<IEnumerable<MovieDto>> GetAllAsync();
 		Task<IEnumerable<MovieDto>> GetTopByRatingAsync(int count);
 		Task<MovieDto> GetByIdAsync(int id);
@@ -20,5 +20,6 @@ namespace BusinessLogic.Interfaces
 		Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter);
 		Task<IEnumerable<ImageDto>> GetScreensAsync(int id);
 		Task<IEnumerable<GenreDto>> GetGenresAsync(int id);
+		Task<MovieFindResultModel> GetMovieFilteredPaginationAsync(FilteredPaginationModel model);
 	}
 }

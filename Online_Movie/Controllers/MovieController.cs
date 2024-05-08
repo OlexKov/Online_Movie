@@ -108,5 +108,9 @@ namespace Online_Movie.Controllers
 			await movieService.DeleteAsync(id);
 			return Ok();
 		}
-    }
+
+		[AllowAnonymous]
+		[HttpPost("paginatefilter")]
+		public async Task<IActionResult> GetFilteredWithPagination([FromBody] FilteredPaginationModel model) => Ok(await movieService.GetMovieFilteredPaginationAsync(model));
+	}
 }

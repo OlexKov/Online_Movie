@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Data.Entities;
+using BusinessLogic.DTOs;
 using BusinessLogic.Entities;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
@@ -19,5 +20,10 @@ namespace BusinessLogic.Interfaces
 		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
 		Task Edit(EditUserModel user);
 		Task RemoveExpiredRefreshTokens();
+		Task AddRemoveFavourite(string userName, int movieId);
+		Task SetPremium(string userName, int premiumId, int days);
+		Task<PremiumDto?> GetPremium(string userName);
+		Task<IEnumerable<MovieDto>> GetFavourits(string userName);
+		Task<IEnumerable<MovieDto>> GetFavourits(User user);
 	}
 }

@@ -48,16 +48,14 @@ namespace BusinessLogic
 
 			services.AddScoped<IMovieService, MovieService>();
 
-			services.AddScoped<IUserService, UserService>();
-
 			services.AddScoped<IAccountsService, AccountsService>();
 
 			services.AddScoped<IDataService, DataService>();
 
 			services.AddMailKit(optionBuilder =>
 			{
-				MailSettings? settings = configuration.GetSection("UkrNetMailSettings").Get<MailSettings>();
-				if (settings == null) throw new HttpException("Error mail servise configuration",System.Net.HttpStatusCode.InternalServerError);
+				MailSettings? settings = configuration.GetSection("UkrNetMailSettings").Get<MailSettings>()
+				                         ?? throw new HttpException("Error mail servise configuration",System.Net.HttpStatusCode.InternalServerError);
 				optionBuilder.UseMailKit(new MailKitOptions()
 				{
 					Server = settings.Server,

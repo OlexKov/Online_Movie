@@ -3,6 +3,7 @@ using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
@@ -116,6 +117,14 @@ namespace BusinessLogic.Services
 		{
 			await stafs.InsertAsync(await setData(staf, false));
 			await stafs.SaveAsync();
+		}
+
+		public async Task<StafFindResultModel> TakeAsync(int skip, int count)
+		{
+			StafFindResultModel result = new();
+			result.Stafs = mapper.Map<IEnumerable<StafDto>>(await stafs.GetListBySpec(new StafSpecs.Take(skip, count)));
+			result.TotalCount = (await GetAllAsync()).Count();
+			return result;
 		}
 	}
 }

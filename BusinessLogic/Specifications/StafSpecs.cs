@@ -42,5 +42,16 @@ namespace BusinessLogic.Specifications
 			public GetAll() => Query.Include(x => x.Country);
 			
 		}
+
+		public class Take : Specification<Staf>
+		{
+			public Take(int skip, int count)
+			{
+				Query
+					.Skip(skip)
+					.Take(count)
+					.Include(x => x.Country);
+			}
+		}
 	}
 }

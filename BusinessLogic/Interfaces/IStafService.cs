@@ -1,11 +1,13 @@
 ﻿
 using BusinessLogic.DTOs;
 using BusinessLogic.ModelDto;
+using BusinessLogic.Models;
 
 namespace BusinessLogic.Interfaces
 {
 	public interface IStafService
 	{
+		Task<StafFindResultModel> TakeAsync(int skip, int count);
 		Task<StafDto> GetAsync(int id);
 		Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids);
 		Task<IEnumerable<StafDto>> GetAllAsync();

@@ -75,5 +75,22 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
+		[HttpGet("getfavourits/{*email}")]
+		public async Task<IActionResult> GetFavourits([FromRoute] string email) => Ok(await accountsService.GetFavourits(email));
+
+		[HttpGet("getpremium/{*email}")]
+		public async Task<IActionResult> GetPremium([FromRoute] string email)
+		{
+			var prem = await accountsService.GetPremium(email);
+			return Ok(prem);
+		}
+
+		[HttpPost("addremovefavourite")]
+		public async Task<IActionResult> AddRemoveFavourite([FromBody] FavouriteRequestModel model)
+		{
+			await accountsService.AddRemoveFavourite(model.Email, model.FavouriteId);
+			return Ok();
+		}
+
 	}
 }

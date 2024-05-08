@@ -125,7 +125,14 @@ namespace BusinessLogic.Services
 				         .Select(x=>x.Staf));
 		}
 
-		public async Task<IEnumerable<MovieDto>> TakeAsync(int skip ,int count) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Take(skip, count)));
+		public async Task<MovieFindResultModel> TakeAsync(int skip ,int count) 
+		{
+			MovieFindResultModel result = new();
+			result.Movies = mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Take(skip, count)));
+			result.TotalCount = (await GetAllAsync()).Count();
+			return result;
+
+		} 
 		
 		public async Task<IEnumerable<MovieDto>> GetTopByRatingAsync(int count)
 		{
@@ -164,6 +171,32 @@ namespace BusinessLogic.Services
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
 			return mapper.Map<IEnumerable<GenreDto>>((await  movieGenres.GetListBySpec(new MovieGenreSpecs.GetByMovieId(id)))
 				         .Select(x=>x.Genre));
+		}
+
+		public async Task<MovieFindResultModel> GetMovieFilteredPaginationAsync(FilteredPaginationModel model)
+		{
+			MovieFindResultModel result = new();
+			IEnumerable<MovieDto> filteredMovies;
+			if (model.FindModel != null)
+			   filteredMovies = mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(model.FindModel)));
+			else
+				filteredMovies = await GetAllAsync();
+			int movieCount = filteredMovies.Count();
+			result.TotalCount = movieCount;
+			if (model.PageSize > 0)
+			{
+				int PageCount = movieCount / model.PageSize;
+				PageCount = movieCount % model.PageSize > 0 ? PageCount + 1 : PageCount;
+				if (model.PageIndex > PageCount) 
+					model.PageIndex = PageCount;
+			}
+			else
+			{
+				model.PageSize = movieCount;
+			}
+
+			result.Movies = filteredMovies.Skip((model.PageIndex - 1) * model.PageSize).Take(model.PageSize);
+			return result;
 		}
 	}
 }
