@@ -19,8 +19,8 @@ namespace DataAccess.Data
 		{
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-			//DefaultUsers.Initialize(modelBuilder);
-			//DefaultData.Initialize(modelBuilder);
+			DefaultUsers.Initialize(modelBuilder);
+			DefaultData.Initialize(modelBuilder);
 
 		}
 	}

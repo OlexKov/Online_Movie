@@ -26,6 +26,8 @@ namespace Online_Movie.Exstensions
 
 			const string USERNAME = "Admin@gmail.com";
 			const string PASSWORD = "Admin_1";
+			const string NAME = "Петро";
+			const string SURNAME = "Левак";
 
 			var existingUser = await userManager.FindByNameAsync(USERNAME);
 
@@ -34,7 +36,9 @@ namespace Online_Movie.Exstensions
 				var user = new User
 				{
 					UserName = USERNAME,
-					Email = USERNAME
+					Email = USERNAME,
+					Name = NAME,
+					Surname = SURNAME
 				};
 
 				var result = await userManager.CreateAsync(user, PASSWORD);

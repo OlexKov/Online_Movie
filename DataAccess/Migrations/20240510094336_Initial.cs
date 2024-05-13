@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialization : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -365,7 +365,9 @@ namespace DataAccess.Migrations
                     Text = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     Rating = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false)
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    Approved = table.Column<bool>(type: "bit", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -590,11 +592,11 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthdate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PremiumDate", "PremiumId", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "028582c83a914a45b330b5234f4131fb", 0, new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "ce2f2b66-ce7e-44c2-90f7-a74de778f916", "User3@gmail.com", true, false, null, "Олег", "USER3@GMAIL.COM", "USER3@GMAIL.COM", "AQAAAAIAAYagAAAAEPRpIHFSpA/wV2JUkn4Eo5g6wUtVC6U0SILgiiGnoHOKwMkLdOn3KKM/712GGVXqcA==", null, false, new DateTime(2024, 4, 9, 21, 55, 17, 432, DateTimeKind.Utc).AddTicks(7676), 3, "2d4d92b7-0230-44bb-b6f7-5792c2d483b9", "Панасенко", false, "User3@gmail.com" },
-                    { "c86dc56aedf549f6afe5ceb4d414ebf1", 0, new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "c36266c9-6518-4308-8a7c-577234c49e64", "User2@gmail.com", true, false, null, "Петро", "USER2@GMAIL.COM", "USER2@GMAIL.COM", "AQAAAAIAAYagAAAAEFKfl1vEPjKWqH6SxiiB630p8Eo+oTlyH9rNkksHmO/naXp8xFeey/JrpUEJw46qPQ==", null, false, new DateTime(2024, 4, 9, 21, 55, 17, 343, DateTimeKind.Utc).AddTicks(6270), 2, "a309ab83-924a-4dbd-ad2f-7ea993b2b6b8", "Дякуленко", false, "User2@gmail.com" },
-                    { "d1901b2435594da2a255db13fc57509b", 0, new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "62dd49c6-e8b3-4c14-a8ef-dc349ff766ab", "User1@gmail.com", true, false, null, "Iван", "USER1@GMAIL.COM", "USER1@GMAIL.COM", "AQAAAAIAAYagAAAAEGLG8ObZhXzaTSQfQkvFEFiSsg7KqOZ0/wmEASv8Q56Sw65adCSE17a676tPRz6q9g==", null, false, new DateTime(2024, 4, 9, 21, 55, 17, 253, DateTimeKind.Utc).AddTicks(9573), 1, "67ffda98-58de-4a94-ae98-e3e31e08a542", "Калита", false, "User1@gmail.com" },
-                    { "eb05f9548a2c4cf8adcc2be7305fc732", 0, new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "4790d29c-591a-4c57-8e70-e1de7df092a9", "User4@gmail.com", true, false, null, "Тимофій", "USER4@GMAIL.COM", "USER4@GMAIL.COM", "AQAAAAIAAYagAAAAEPav+dnZds9PF4uIBdb8ciMHIRbKZYvTHWvEZagMh0wc0C/HairfEuMVhjK47nuWAQ==", null, false, new DateTime(2024, 4, 9, 21, 55, 17, 521, DateTimeKind.Utc).AddTicks(6809), 2, "43727440-49b4-474e-9e44-f1cfa6dc1af2", "Гнатенко", false, "User4@gmail.com" },
-                    { "f66e492517d7414495e988c4c50fd107", 0, new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "879e305c-7ec1-4f99-97a3-88d4284f9206", "Admin@gmail.com", true, false, null, "Петро", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEMndXU7yj/dqPrJFFG9MZG45XgD76BJ/tAoQbRPKMI1AlQI6b9dmRcKIhWUyBl9Jwg==", null, false, new DateTime(2024, 4, 9, 21, 55, 17, 158, DateTimeKind.Utc).AddTicks(6351), 1, "d06d1237-9c38-4a99-a1bd-6a29bb6060f6", "Левак", false, "Admin@gmail.com" }
+                    { "028582c83a914a45b330b5234f4131fb", 0, new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "6e255074-ddd1-4b42-8f9d-360041f1fbf8", "User3@gmail.com", true, false, null, "Олег", "USER3@GMAIL.COM", "USER3@GMAIL.COM", "AQAAAAIAAYagAAAAEBK0xmw7J3b0YhW+GRTVNI6bP3KyqrgOYKRJ4XuAQ5HOc5Ghf9OLoS1K6ngy5hvRVQ==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 285, DateTimeKind.Utc).AddTicks(4892), 3, "eb9f96be-908d-49e3-85c8-1bf50902e63b", "Панасенко", false, "User3@gmail.com" },
+                    { "c86dc56aedf549f6afe5ceb4d414ebf1", 0, new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "ebd97042-e34c-4a49-898c-efca041ad064", "User2@gmail.com", true, false, null, "Петро", "USER2@GMAIL.COM", "USER2@GMAIL.COM", "AQAAAAIAAYagAAAAEMCKg4O1dniEYS1m8dDarLix7ovCiEPebGQtNdHbYM1PY4Gd+UqjbHFIG40Owymjdw==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 195, DateTimeKind.Utc).AddTicks(1840), 2, "0af6b722-b5c3-4396-b1eb-b21c46ca5297", "Дякуленко", false, "User2@gmail.com" },
+                    { "d1901b2435594da2a255db13fc57509b", 0, new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "50890aa6-18ae-4f66-9bdc-ff3f4fc238fa", "User1@gmail.com", true, false, null, "Iван", "USER1@GMAIL.COM", "USER1@GMAIL.COM", "AQAAAAIAAYagAAAAEI7/7zLOPt5Z6B+6z33K7NNgc5lOn3aIBF/8VdnNoeLTBOyPVZCG0sa7OISwRZY1bA==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 106, DateTimeKind.Utc).AddTicks(2038), 1, "7024d600-b471-48b6-bba9-53466775e096", "Калита", false, "User1@gmail.com" },
+                    { "eb05f9548a2c4cf8adcc2be7305fc732", 0, new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "e6665710-364c-4fdc-aad5-5df7083178ad", "User4@gmail.com", true, false, null, "Тимофій", "USER4@GMAIL.COM", "USER4@GMAIL.COM", "AQAAAAIAAYagAAAAEFm2+jKFkDPmoy/tZgWqoRWk87Kk718bVMuie1pss5FNbXt2IAxSjb3dGEOCQ7csFQ==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 374, DateTimeKind.Utc).AddTicks(7827), 2, "346466af-0bba-47c5-918c-9af65272fdf2", "Гнатенко", false, "User4@gmail.com" },
+                    { "f66e492517d7414495e988c4c50fd107", 0, new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "e681082b-9e9e-4824-9d58-e2ed825c7666", "Admin@gmail.com", true, false, null, "Петро", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEHMbnk1Kt3vlFMM54lkRrFQDfHGH5xyU+kzdi/yt7co37R16PREQGWUWjRA1l2CPxg==", null, false, new DateTime(2024, 5, 12, 9, 43, 34, 990, DateTimeKind.Utc).AddTicks(155), 1, "ce95abbb-12d7-4b0e-9acb-7a209b274b01", "Левак", false, "Admin@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -654,19 +656,19 @@ namespace DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Feedback",
-                columns: new[] { "Id", "MovieId", "Rating", "Text", "UserId" },
+                columns: new[] { "Id", "Approved", "Date", "MovieId", "Rating", "Text", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, 4.0, "Чудовий фільм", "d1901b2435594da2a255db13fc57509b" },
-                    { 2, 1, 4.0, "Фільм дуже сподобався", "c86dc56aedf549f6afe5ceb4d414ebf1" },
-                    { 3, 2, 4.0, "Один з найкащих фільмів", "028582c83a914a45b330b5234f4131fb" },
-                    { 4, 2, 5.0, "Фільм дуже сподобався", "eb05f9548a2c4cf8adcc2be7305fc732" },
-                    { 5, 3, 5.0, "Один з найкащих фільмів", "eb05f9548a2c4cf8adcc2be7305fc732" },
-                    { 6, 3, 5.0, "Фільм дуже сподобався", "d1901b2435594da2a255db13fc57509b" },
-                    { 7, 4, 5.0, "Чудовий фільм", "d1901b2435594da2a255db13fc57509b" },
-                    { 8, 4, 5.0, "Один з найкащих фільмів", "028582c83a914a45b330b5234f4131fb" },
-                    { 9, 5, 5.0, "Фільм дуже сподобався", "c86dc56aedf549f6afe5ceb4d414ebf1" },
-                    { 10, 5, 4.0, "Один з найкащих фільмів", "028582c83a914a45b330b5234f4131fb" }
+                    { 1, true, new DateTime(2017, 7, 22, 12, 28, 0, 0, DateTimeKind.Unspecified), 1, 4.0, "Чудовий фільм", "d1901b2435594da2a255db13fc57509b" },
+                    { 2, true, new DateTime(2021, 5, 3, 15, 40, 0, 0, DateTimeKind.Unspecified), 1, 4.0, "Фільм дуже сподобався", "c86dc56aedf549f6afe5ceb4d414ebf1" },
+                    { 3, true, new DateTime(2022, 1, 12, 16, 16, 0, 0, DateTimeKind.Unspecified), 2, 4.0, "Один з найкащих фільмів", "028582c83a914a45b330b5234f4131fb" },
+                    { 4, true, new DateTime(2020, 2, 20, 0, 8, 0, 0, DateTimeKind.Unspecified), 2, 5.0, "Фільм дуже сподобався", "eb05f9548a2c4cf8adcc2be7305fc732" },
+                    { 5, true, new DateTime(2012, 5, 5, 10, 18, 0, 0, DateTimeKind.Unspecified), 3, 5.0, "Один з найкащих фільмів", "eb05f9548a2c4cf8adcc2be7305fc732" },
+                    { 6, true, new DateTime(2016, 1, 10, 12, 0, 0, 0, DateTimeKind.Unspecified), 3, 5.0, "Фільм дуже сподобався", "d1901b2435594da2a255db13fc57509b" },
+                    { 7, true, new DateTime(2017, 3, 23, 13, 23, 0, 0, DateTimeKind.Unspecified), 4, 5.0, "Чудовий фільм", "d1901b2435594da2a255db13fc57509b" },
+                    { 8, true, new DateTime(2019, 11, 21, 11, 18, 0, 0, DateTimeKind.Unspecified), 4, 5.0, "Один з найкащих фільмів", "028582c83a914a45b330b5234f4131fb" },
+                    { 9, true, new DateTime(2019, 9, 11, 17, 45, 0, 0, DateTimeKind.Unspecified), 5, 5.0, "Фільм дуже сподобався", "c86dc56aedf549f6afe5ceb4d414ebf1" },
+                    { 10, true, new DateTime(2022, 1, 1, 1, 1, 0, 0, DateTimeKind.Unspecified), 5, 4.0, "Один з найкащих фільмів", "028582c83a914a45b330b5234f4131fb" }
                 });
 
             migrationBuilder.InsertData(

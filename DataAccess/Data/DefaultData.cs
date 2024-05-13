@@ -25,16 +25,105 @@ namespace DataAccess.Data
 
 		static readonly Feedback[] Feedbacks =
 		[
-			new() { Id = 1, MovieId = 1, UserId = "d1901b2435594da2a255db13fc57509b", Text="Чудовий фільм",Rating = 4 },
-			new() { Id = 2, MovieId = 1, UserId = "c86dc56aedf549f6afe5ceb4d414ebf1" , Text = "Фільм дуже сподобався", Rating = 4 },
-			new() { Id = 3, MovieId = 2, UserId = "028582c83a914a45b330b5234f4131fb", Text = "Один з найкащих фільмів", Rating = 4 },
-			new() { Id = 4, MovieId = 2, UserId = "eb05f9548a2c4cf8adcc2be7305fc732", Text = "Фільм дуже сподобався", Rating = 5 },
-			new() { Id = 5, MovieId = 3, UserId = "eb05f9548a2c4cf8adcc2be7305fc732", Text = "Один з найкащих фільмів", Rating = 5 },
-			new() { Id = 6, MovieId = 3, UserId = "d1901b2435594da2a255db13fc57509b", Text = "Фільм дуже сподобався", Rating = 5 },
-			new() { Id = 7, MovieId = 4, UserId = "d1901b2435594da2a255db13fc57509b", Text="Чудовий фільм",Rating = 5 },
-			new() { Id = 8, MovieId = 4, UserId = "028582c83a914a45b330b5234f4131fb", Text = "Один з найкащих фільмів", Rating = 5 },
-			new() { Id = 9, MovieId = 5, UserId = "c86dc56aedf549f6afe5ceb4d414ebf1" , Text = "Фільм дуже сподобався", Rating = 5 },
-			new() { Id = 10, MovieId = 5, UserId = "028582c83a914a45b330b5234f4131fb", Text = "Один з найкащих фільмів", Rating = 4 },
+			new() 
+			{
+				Id = 1, 
+				MovieId = 1, 
+				UserId = "d1901b2435594da2a255db13fc57509b",
+				Text="Чудовий фільм",
+				Rating = 4 ,
+				Approved = true  ,
+				Date = new DateTime(2017, 7, 22, 12, 28, 0),
+			},
+			new()
+			{ 
+				Id = 2,
+				MovieId = 1,
+				UserId = "c86dc56aedf549f6afe5ceb4d414ebf1" ,
+				Text = "Фільм дуже сподобався",
+				Rating = 4 ,
+				Approved = true,
+				Date = new DateTime(2021, 5, 3, 15, 40, 0),
+			},
+			new() 
+			{
+				Id = 3,
+				MovieId = 2,
+				UserId = "028582c83a914a45b330b5234f4131fb", 
+				Text = "Один з найкащих фільмів",
+				Rating = 4 ,
+				Approved = true,
+				Date = new DateTime(2022, 1, 12, 16, 16, 0),
+			},
+			new() 
+			{ 
+				Id = 4,
+				MovieId = 2,
+				UserId = "eb05f9548a2c4cf8adcc2be7305fc732",
+				Text = "Фільм дуже сподобався", 
+				Rating = 5 ,
+				Approved = true,
+				Date = new DateTime(2020, 2, 20, 0, 8, 0),
+			},
+			new()
+			{
+				Id = 5,
+				MovieId = 3,
+				UserId = "eb05f9548a2c4cf8adcc2be7305fc732",
+				Text = "Один з найкащих фільмів", 
+				Rating = 5 ,
+				Approved = true,
+				Date = new DateTime(2012, 5, 5, 10, 18, 0),
+			},
+			new() 
+			{
+				Id = 6,
+				MovieId = 3,
+				UserId = "d1901b2435594da2a255db13fc57509b",
+				Text = "Фільм дуже сподобався", 
+				Rating = 5 ,
+				Approved = true,
+				Date = new DateTime(2016, 1, 10, 12, 0, 0),
+			},
+			new() 
+			{ 
+				Id = 7,
+				MovieId = 4, 
+				UserId = "d1901b2435594da2a255db13fc57509b", 
+				Text="Чудовий фільм",
+				Rating = 5 
+				,Approved = true,
+				Date = new DateTime(2017, 3, 23, 13, 23, 0),
+			},
+			new() 
+			{
+				Id = 8, 
+				MovieId = 4, 
+				UserId = "028582c83a914a45b330b5234f4131fb", 
+				Text = "Один з найкащих фільмів", 
+				Rating = 5 ,
+				Approved = true,
+				Date = new DateTime(2019, 11, 21, 11, 18, 0),
+			},
+			new() 
+			{ 
+				Id = 9,
+				MovieId = 5,
+				UserId = "c86dc56aedf549f6afe5ceb4d414ebf1" ,
+				Text = "Фільм дуже сподобався", Rating = 5 ,
+				Approved = true,
+				Date = new DateTime(2019, 9, 11, 17, 45, 0),
+			},
+			new() 
+			{
+				Id = 10,
+				MovieId = 5, 
+				UserId = "028582c83a914a45b330b5234f4131fb",
+				Text = "Один з найкащих фільмів",
+				Rating = 4 ,
+				Approved = true,
+				Date = new DateTime(2022, 1, 1, 1, 1, 0),
+			},
 		];
 
 

@@ -170,6 +170,12 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
@@ -202,6 +208,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
+                            Approved = true,
+                            Date = new DateTime(2017, 7, 22, 12, 28, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 1,
                             Rating = 4.0,
                             Text = "Чудовий фільм",
@@ -210,6 +218,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 2,
+                            Approved = true,
+                            Date = new DateTime(2021, 5, 3, 15, 40, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 1,
                             Rating = 4.0,
                             Text = "Фільм дуже сподобався",
@@ -218,6 +228,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 3,
+                            Approved = true,
+                            Date = new DateTime(2022, 1, 12, 16, 16, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 2,
                             Rating = 4.0,
                             Text = "Один з найкащих фільмів",
@@ -226,6 +238,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 4,
+                            Approved = true,
+                            Date = new DateTime(2020, 2, 20, 0, 8, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 2,
                             Rating = 5.0,
                             Text = "Фільм дуже сподобався",
@@ -234,6 +248,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 5,
+                            Approved = true,
+                            Date = new DateTime(2012, 5, 5, 10, 18, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 3,
                             Rating = 5.0,
                             Text = "Один з найкащих фільмів",
@@ -242,6 +258,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 6,
+                            Approved = true,
+                            Date = new DateTime(2016, 1, 10, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 3,
                             Rating = 5.0,
                             Text = "Фільм дуже сподобався",
@@ -250,6 +268,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 7,
+                            Approved = true,
+                            Date = new DateTime(2017, 3, 23, 13, 23, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 4,
                             Rating = 5.0,
                             Text = "Чудовий фільм",
@@ -258,6 +278,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 8,
+                            Approved = true,
+                            Date = new DateTime(2019, 11, 21, 11, 18, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 4,
                             Rating = 5.0,
                             Text = "Один з найкащих фільмів",
@@ -266,6 +288,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 9,
+                            Approved = true,
+                            Date = new DateTime(2019, 9, 11, 17, 45, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 5,
                             Rating = 5.0,
                             Text = "Фільм дуже сподобався",
@@ -274,6 +298,8 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 10,
+                            Approved = true,
+                            Date = new DateTime(2022, 1, 1, 1, 1, 0, 0, DateTimeKind.Unspecified),
                             MovieId = 5,
                             Rating = 4.0,
                             Text = "Один з найкащих фільмів",
@@ -1812,18 +1838,18 @@ namespace DataAccess.Migrations
                             Id = "f66e492517d7414495e988c4c50fd107",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "879e305c-7ec1-4f99-97a3-88d4284f9206",
+                            ConcurrencyStamp = "e681082b-9e9e-4824-9d58-e2ed825c7666",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Петро",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMndXU7yj/dqPrJFFG9MZG45XgD76BJ/tAoQbRPKMI1AlQI6b9dmRcKIhWUyBl9Jwg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHMbnk1Kt3vlFMM54lkRrFQDfHGH5xyU+kzdi/yt7co37R16PREQGWUWjRA1l2CPxg==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 4, 9, 21, 55, 17, 158, DateTimeKind.Utc).AddTicks(6351),
+                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 34, 990, DateTimeKind.Utc).AddTicks(155),
                             PremiumId = 1,
-                            SecurityStamp = "d06d1237-9c38-4a99-a1bd-6a29bb6060f6",
+                            SecurityStamp = "ce95abbb-12d7-4b0e-9acb-7a209b274b01",
                             Surname = "Левак",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -1833,18 +1859,18 @@ namespace DataAccess.Migrations
                             Id = "d1901b2435594da2a255db13fc57509b",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "62dd49c6-e8b3-4c14-a8ef-dc349ff766ab",
+                            ConcurrencyStamp = "50890aa6-18ae-4f66-9bdc-ff3f4fc238fa",
                             Email = "User1@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Iван",
                             NormalizedEmail = "USER1@GMAIL.COM",
                             NormalizedUserName = "USER1@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGLG8ObZhXzaTSQfQkvFEFiSsg7KqOZ0/wmEASv8Q56Sw65adCSE17a676tPRz6q9g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI7/7zLOPt5Z6B+6z33K7NNgc5lOn3aIBF/8VdnNoeLTBOyPVZCG0sa7OISwRZY1bA==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 4, 9, 21, 55, 17, 253, DateTimeKind.Utc).AddTicks(9573),
+                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 106, DateTimeKind.Utc).AddTicks(2038),
                             PremiumId = 1,
-                            SecurityStamp = "67ffda98-58de-4a94-ae98-e3e31e08a542",
+                            SecurityStamp = "7024d600-b471-48b6-bba9-53466775e096",
                             Surname = "Калита",
                             TwoFactorEnabled = false,
                             UserName = "User1@gmail.com"
@@ -1854,18 +1880,18 @@ namespace DataAccess.Migrations
                             Id = "c86dc56aedf549f6afe5ceb4d414ebf1",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "c36266c9-6518-4308-8a7c-577234c49e64",
+                            ConcurrencyStamp = "ebd97042-e34c-4a49-898c-efca041ad064",
                             Email = "User2@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Петро",
                             NormalizedEmail = "USER2@GMAIL.COM",
                             NormalizedUserName = "USER2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFKfl1vEPjKWqH6SxiiB630p8Eo+oTlyH9rNkksHmO/naXp8xFeey/JrpUEJw46qPQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMCKg4O1dniEYS1m8dDarLix7ovCiEPebGQtNdHbYM1PY4Gd+UqjbHFIG40Owymjdw==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 4, 9, 21, 55, 17, 343, DateTimeKind.Utc).AddTicks(6270),
+                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 195, DateTimeKind.Utc).AddTicks(1840),
                             PremiumId = 2,
-                            SecurityStamp = "a309ab83-924a-4dbd-ad2f-7ea993b2b6b8",
+                            SecurityStamp = "0af6b722-b5c3-4396-b1eb-b21c46ca5297",
                             Surname = "Дякуленко",
                             TwoFactorEnabled = false,
                             UserName = "User2@gmail.com"
@@ -1875,18 +1901,18 @@ namespace DataAccess.Migrations
                             Id = "028582c83a914a45b330b5234f4131fb",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "ce2f2b66-ce7e-44c2-90f7-a74de778f916",
+                            ConcurrencyStamp = "6e255074-ddd1-4b42-8f9d-360041f1fbf8",
                             Email = "User3@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Олег",
                             NormalizedEmail = "USER3@GMAIL.COM",
                             NormalizedUserName = "USER3@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPRpIHFSpA/wV2JUkn4Eo5g6wUtVC6U0SILgiiGnoHOKwMkLdOn3KKM/712GGVXqcA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBK0xmw7J3b0YhW+GRTVNI6bP3KyqrgOYKRJ4XuAQ5HOc5Ghf9OLoS1K6ngy5hvRVQ==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 4, 9, 21, 55, 17, 432, DateTimeKind.Utc).AddTicks(7676),
+                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 285, DateTimeKind.Utc).AddTicks(4892),
                             PremiumId = 3,
-                            SecurityStamp = "2d4d92b7-0230-44bb-b6f7-5792c2d483b9",
+                            SecurityStamp = "eb9f96be-908d-49e3-85c8-1bf50902e63b",
                             Surname = "Панасенко",
                             TwoFactorEnabled = false,
                             UserName = "User3@gmail.com"
@@ -1896,18 +1922,18 @@ namespace DataAccess.Migrations
                             Id = "eb05f9548a2c4cf8adcc2be7305fc732",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "4790d29c-591a-4c57-8e70-e1de7df092a9",
+                            ConcurrencyStamp = "e6665710-364c-4fdc-aad5-5df7083178ad",
                             Email = "User4@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Тимофій",
                             NormalizedEmail = "USER4@GMAIL.COM",
                             NormalizedUserName = "USER4@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPav+dnZds9PF4uIBdb8ciMHIRbKZYvTHWvEZagMh0wc0C/HairfEuMVhjK47nuWAQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFm2+jKFkDPmoy/tZgWqoRWk87Kk718bVMuie1pss5FNbXt2IAxSjb3dGEOCQ7csFQ==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 4, 9, 21, 55, 17, 521, DateTimeKind.Utc).AddTicks(6809),
+                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 374, DateTimeKind.Utc).AddTicks(7827),
                             PremiumId = 2,
-                            SecurityStamp = "43727440-49b4-474e-9e44-f1cfa6dc1af2",
+                            SecurityStamp = "346466af-0bba-47c5-918c-9af65272fdf2",
                             Surname = "Гнатенко",
                             TwoFactorEnabled = false,
                             UserName = "User4@gmail.com"

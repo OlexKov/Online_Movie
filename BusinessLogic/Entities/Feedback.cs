@@ -8,5 +8,7 @@
 		public string UserId { get; set; }
 		public Movie Movie { get; set; }
 		public int MovieId { get; set; }
+		public bool Approved { get; set; }
+        public DateTime Date { get; set; }
 	}
 }
