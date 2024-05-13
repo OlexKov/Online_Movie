@@ -9,7 +9,11 @@ namespace BusinessLogic.Specifications
 	{
 		public class GetByMovieId : Specification<Feedback>
 		{
-			public  GetByMovieId(int id) => Query.Where(x => x.MovieId == id);
+			public GetByMovieId(int id)
+			{
+				Query.Where(x => x.MovieId == id)
+					.Include(x=>x.User);
+			}
 		}
 		public class GetByUserId : Specification<Feedback>
 		{
