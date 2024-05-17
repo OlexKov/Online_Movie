@@ -35,9 +35,6 @@ namespace BusinessLogic.Validators
 			RuleFor(x=>x.Roles)
 				.Must(collection => collection != null && collection.Count != 0)
 	            .WithMessage(ValidationErrors.NotEmpty);
-			RuleFor(x => x.Movies)
-				 .Must(collection => collection != null && collection.Count != 0)
-			     .WithMessage(ValidationErrors.NotEmpty);
 			RuleFor(x => x.CountryId)
 				 .Must(x=>x != null && x > 0)
 				 .WithMessage(ValidationErrors.NotEmpty);

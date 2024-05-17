@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -433,25 +433,31 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StafMovie",
+                name: "StafMovieRole",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StafId = table.Column<int>(type: "int", nullable: false),
-                    MovieId = table.Column<int>(type: "int", nullable: false)
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    StafRoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StafMovie", x => x.Id);
+                    table.PrimaryKey("PK_StafMovieRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StafMovie_Movie_MovieId",
+                        name: "FK_StafMovieRole_Movie_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movie",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StafMovie_Staf_StafId",
+                        name: "FK_StafMovieRole_StafRole_StafRoleId",
+                        column: x => x.StafRoleId,
+                        principalTable: "StafRole",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StafMovieRole_Staf_StafId",
                         column: x => x.StafId,
                         principalTable: "Staf",
                         principalColumn: "Id");
@@ -592,11 +598,11 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Birthdate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PremiumDate", "PremiumId", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "028582c83a914a45b330b5234f4131fb", 0, new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "6e255074-ddd1-4b42-8f9d-360041f1fbf8", "User3@gmail.com", true, false, null, "Олег", "USER3@GMAIL.COM", "USER3@GMAIL.COM", "AQAAAAIAAYagAAAAEBK0xmw7J3b0YhW+GRTVNI6bP3KyqrgOYKRJ4XuAQ5HOc5Ghf9OLoS1K6ngy5hvRVQ==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 285, DateTimeKind.Utc).AddTicks(4892), 3, "eb9f96be-908d-49e3-85c8-1bf50902e63b", "Панасенко", false, "User3@gmail.com" },
-                    { "c86dc56aedf549f6afe5ceb4d414ebf1", 0, new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "ebd97042-e34c-4a49-898c-efca041ad064", "User2@gmail.com", true, false, null, "Петро", "USER2@GMAIL.COM", "USER2@GMAIL.COM", "AQAAAAIAAYagAAAAEMCKg4O1dniEYS1m8dDarLix7ovCiEPebGQtNdHbYM1PY4Gd+UqjbHFIG40Owymjdw==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 195, DateTimeKind.Utc).AddTicks(1840), 2, "0af6b722-b5c3-4396-b1eb-b21c46ca5297", "Дякуленко", false, "User2@gmail.com" },
-                    { "d1901b2435594da2a255db13fc57509b", 0, new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "50890aa6-18ae-4f66-9bdc-ff3f4fc238fa", "User1@gmail.com", true, false, null, "Iван", "USER1@GMAIL.COM", "USER1@GMAIL.COM", "AQAAAAIAAYagAAAAEI7/7zLOPt5Z6B+6z33K7NNgc5lOn3aIBF/8VdnNoeLTBOyPVZCG0sa7OISwRZY1bA==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 106, DateTimeKind.Utc).AddTicks(2038), 1, "7024d600-b471-48b6-bba9-53466775e096", "Калита", false, "User1@gmail.com" },
-                    { "eb05f9548a2c4cf8adcc2be7305fc732", 0, new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "e6665710-364c-4fdc-aad5-5df7083178ad", "User4@gmail.com", true, false, null, "Тимофій", "USER4@GMAIL.COM", "USER4@GMAIL.COM", "AQAAAAIAAYagAAAAEFm2+jKFkDPmoy/tZgWqoRWk87Kk718bVMuie1pss5FNbXt2IAxSjb3dGEOCQ7csFQ==", null, false, new DateTime(2024, 5, 12, 9, 43, 35, 374, DateTimeKind.Utc).AddTicks(7827), 2, "346466af-0bba-47c5-918c-9af65272fdf2", "Гнатенко", false, "User4@gmail.com" },
-                    { "f66e492517d7414495e988c4c50fd107", 0, new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "e681082b-9e9e-4824-9d58-e2ed825c7666", "Admin@gmail.com", true, false, null, "Петро", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEHMbnk1Kt3vlFMM54lkRrFQDfHGH5xyU+kzdi/yt7co37R16PREQGWUWjRA1l2CPxg==", null, false, new DateTime(2024, 5, 12, 9, 43, 34, 990, DateTimeKind.Utc).AddTicks(155), 1, "ce95abbb-12d7-4b0e-9acb-7a209b274b01", "Левак", false, "Admin@gmail.com" }
+                    { "028582c83a914a45b330b5234f4131fb", 0, new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "902ea627-9b59-4467-98cd-aa6d6aa7763e", "User3@gmail.com", true, false, null, "Олег", "USER3@GMAIL.COM", "USER3@GMAIL.COM", "AQAAAAIAAYagAAAAEC5eB7f3bjJPgiYSeEKQNyxfZExWlNynQeBvQE/3RzqWpt0Wq/GIIPJ19j0soOcWUQ==", null, false, new DateTime(2024, 5, 15, 21, 11, 10, 867, DateTimeKind.Utc).AddTicks(7322), 3, "bafc775a-f54a-482b-8860-fc16d1b52303", "Панасенко", false, "User3@gmail.com" },
+                    { "c86dc56aedf549f6afe5ceb4d414ebf1", 0, new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), "2dca72b9-7d9c-406e-8584-5284bd70f7aa", "User2@gmail.com", true, false, null, "Петро", "USER2@GMAIL.COM", "USER2@GMAIL.COM", "AQAAAAIAAYagAAAAEHzXd/4ztUgtX/1/LGm+f5sFKhmbBVN3Kj2dgw4BP5jmJyHMserOSMsZnX19ej7hYQ==", null, false, new DateTime(2024, 5, 15, 21, 11, 10, 778, DateTimeKind.Utc).AddTicks(7971), 2, "d165ddb8-b387-4bbb-a4c4-dee7672b4d53", "Дякуленко", false, "User2@gmail.com" },
+                    { "d1901b2435594da2a255db13fc57509b", 0, new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "7d140a16-10c4-4baa-b27f-1ed6da81b97f", "User1@gmail.com", true, false, null, "Iван", "USER1@GMAIL.COM", "USER1@GMAIL.COM", "AQAAAAIAAYagAAAAEMPs5ho77l/oeiabw/ad7PB4Ckvz0UOECC/vZZg0/KEcdXin7455suqkYlKClPISdw==", null, false, new DateTime(2024, 5, 15, 21, 11, 10, 688, DateTimeKind.Utc).AddTicks(9582), 1, "eb2e2126-5b60-45cf-a763-24bc24b96a32", "Калита", false, "User1@gmail.com" },
+                    { "eb05f9548a2c4cf8adcc2be7305fc732", 0, new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "3343402d-d67b-4fd9-aa83-06b78f7feedb", "User4@gmail.com", true, false, null, "Тимофій", "USER4@GMAIL.COM", "USER4@GMAIL.COM", "AQAAAAIAAYagAAAAEPgtS5/khQAiYYczoiaq3oVDKwqladuGxhHEQ0R2vHzJFw28f6EggYNSC47sOd7DXg==", null, false, new DateTime(2024, 5, 15, 21, 11, 10, 956, DateTimeKind.Utc).AddTicks(5117), 2, "83e74e64-0ede-48cc-a527-e61d578fab6f", "Гнатенко", false, "User4@gmail.com" },
+                    { "f66e492517d7414495e988c4c50fd107", 0, new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "afd9914b-b484-4cc9-9c7a-0eeceadce846", "Admin@gmail.com", true, false, null, "Петро", "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEL1oaIIkn7nobzGesz7TvNaUgDLP1SWDPBOvzCjp5BZSuZ9o/MbMNzrI8PdxOABn3g==", null, false, new DateTime(2024, 5, 15, 21, 11, 10, 586, DateTimeKind.Utc).AddTicks(6524), 1, "79242f73-7f40-4f9a-a73a-5be70c15f6c4", "Левак", false, "Admin@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -730,36 +736,38 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "StafMovie",
-                columns: new[] { "Id", "MovieId", "StafId" },
+                table: "StafMovieRole",
+                columns: new[] { "Id", "MovieId", "StafId", "StafRoleId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 },
-                    { 3, 1, 3 },
-                    { 4, 2, 4 },
-                    { 5, 2, 5 },
-                    { 6, 2, 6 },
-                    { 7, 2, 7 },
-                    { 8, 2, 8 },
-                    { 9, 2, 9 },
-                    { 10, 2, 10 },
-                    { 11, 3, 5 },
-                    { 12, 3, 11 },
-                    { 13, 3, 12 },
-                    { 14, 3, 13 },
-                    { 15, 3, 14 },
-                    { 16, 4, 13 },
-                    { 17, 4, 15 },
-                    { 18, 4, 16 },
-                    { 19, 4, 17 },
-                    { 20, 4, 18 },
-                    { 21, 5, 19 },
-                    { 22, 5, 20 },
-                    { 23, 5, 21 },
-                    { 24, 5, 22 },
-                    { 25, 5, 23 },
-                    { 26, 5, 24 }
+                    { 1, 1, 1, 1 },
+                    { 2, 1, 1, 2 },
+                    { 3, 1, 1, 4 },
+                    { 4, 1, 2, 2 },
+                    { 5, 1, 3, 2 },
+                    { 6, 2, 4, 1 },
+                    { 7, 2, 5, 2 },
+                    { 8, 2, 6, 2 },
+                    { 9, 2, 7, 2 },
+                    { 10, 2, 8, 2 },
+                    { 11, 2, 9, 2 },
+                    { 12, 2, 10, 2 },
+                    { 13, 3, 5, 2 },
+                    { 14, 3, 11, 1 },
+                    { 15, 3, 12, 2 },
+                    { 16, 3, 13, 2 },
+                    { 17, 3, 14, 2 },
+                    { 18, 4, 13, 2 },
+                    { 19, 4, 15, 1 },
+                    { 20, 4, 16, 2 },
+                    { 21, 4, 17, 2 },
+                    { 22, 4, 18, 2 },
+                    { 23, 5, 19, 2 },
+                    { 24, 5, 20, 1 },
+                    { 25, 5, 21, 2 },
+                    { 26, 5, 22, 2 },
+                    { 27, 5, 23, 2 },
+                    { 28, 5, 24, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -916,14 +924,19 @@ namespace DataAccess.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StafMovie_MovieId",
-                table: "StafMovie",
+                name: "IX_StafMovieRole_MovieId",
+                table: "StafMovieRole",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StafMovie_StafId",
-                table: "StafMovie",
+                name: "IX_StafMovieRole_StafId",
+                table: "StafMovieRole",
                 column: "StafId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StafMovieRole_StafRoleId",
+                table: "StafMovieRole",
+                column: "StafRoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StafRole_Name",
@@ -982,7 +995,7 @@ namespace DataAccess.Migrations
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
-                name: "StafMovie");
+                name: "StafMovieRole");
 
             migrationBuilder.DropTable(
                 name: "StafStafRole");

@@ -1330,7 +1330,7 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BusinessLogic.Data.Entities.StafMovie", b =>
+            modelBuilder.Entity("BusinessLogic.Data.Entities.StafMovieRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1344,170 +1344,215 @@ namespace DataAccess.Migrations
                     b.Property<int>("StafId")
                         .HasColumnType("int");
 
+                    b.Property<int>("StafRoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MovieId");
 
                     b.HasIndex("StafId");
 
-                    b.ToTable("StafMovie");
+                    b.HasIndex("StafRoleId");
+
+                    b.ToTable("StafMovieRole");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             MovieId = 1,
-                            StafId = 1
+                            StafId = 1,
+                            StafRoleId = 1
                         },
                         new
                         {
                             Id = 2,
                             MovieId = 1,
-                            StafId = 2
+                            StafId = 1,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 3,
                             MovieId = 1,
-                            StafId = 3
+                            StafId = 1,
+                            StafRoleId = 4
                         },
                         new
                         {
                             Id = 4,
-                            MovieId = 2,
-                            StafId = 4
+                            MovieId = 1,
+                            StafId = 2,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 5,
-                            MovieId = 2,
-                            StafId = 5
+                            MovieId = 1,
+                            StafId = 3,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 6,
                             MovieId = 2,
-                            StafId = 6
+                            StafId = 4,
+                            StafRoleId = 1
                         },
                         new
                         {
                             Id = 7,
                             MovieId = 2,
-                            StafId = 7
+                            StafId = 5,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 8,
                             MovieId = 2,
-                            StafId = 8
+                            StafId = 6,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 9,
                             MovieId = 2,
-                            StafId = 9
+                            StafId = 7,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 10,
                             MovieId = 2,
-                            StafId = 10
+                            StafId = 8,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 11,
-                            MovieId = 3,
-                            StafId = 5
+                            MovieId = 2,
+                            StafId = 9,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 12,
-                            MovieId = 3,
-                            StafId = 11
+                            MovieId = 2,
+                            StafId = 10,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 13,
                             MovieId = 3,
-                            StafId = 12
+                            StafId = 5,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 14,
                             MovieId = 3,
-                            StafId = 13
+                            StafId = 11,
+                            StafRoleId = 1
                         },
                         new
                         {
                             Id = 15,
                             MovieId = 3,
-                            StafId = 14
+                            StafId = 12,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 16,
-                            MovieId = 4,
-                            StafId = 13
+                            MovieId = 3,
+                            StafId = 13,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 17,
-                            MovieId = 4,
-                            StafId = 15
+                            MovieId = 3,
+                            StafId = 14,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 18,
                             MovieId = 4,
-                            StafId = 16
+                            StafId = 13,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 19,
                             MovieId = 4,
-                            StafId = 17
+                            StafId = 15,
+                            StafRoleId = 1
                         },
                         new
                         {
                             Id = 20,
                             MovieId = 4,
-                            StafId = 18
+                            StafId = 16,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 21,
-                            MovieId = 5,
-                            StafId = 19
+                            MovieId = 4,
+                            StafId = 17,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 22,
-                            MovieId = 5,
-                            StafId = 20
+                            MovieId = 4,
+                            StafId = 18,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 23,
                             MovieId = 5,
-                            StafId = 21
+                            StafId = 19,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 24,
                             MovieId = 5,
-                            StafId = 22
+                            StafId = 20,
+                            StafRoleId = 1
                         },
                         new
                         {
                             Id = 25,
                             MovieId = 5,
-                            StafId = 23
+                            StafId = 21,
+                            StafRoleId = 2
                         },
                         new
                         {
                             Id = 26,
                             MovieId = 5,
-                            StafId = 24
+                            StafId = 22,
+                            StafRoleId = 2
+                        },
+                        new
+                        {
+                            Id = 27,
+                            MovieId = 5,
+                            StafId = 23,
+                            StafRoleId = 2
+                        },
+                        new
+                        {
+                            Id = 28,
+                            MovieId = 5,
+                            StafId = 24,
+                            StafRoleId = 2
                         });
                 });
 
@@ -1838,18 +1883,18 @@ namespace DataAccess.Migrations
                             Id = "f66e492517d7414495e988c4c50fd107",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1998, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "e681082b-9e9e-4824-9d58-e2ed825c7666",
+                            ConcurrencyStamp = "afd9914b-b484-4cc9-9c7a-0eeceadce846",
                             Email = "Admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Петро",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHMbnk1Kt3vlFMM54lkRrFQDfHGH5xyU+kzdi/yt7co37R16PREQGWUWjRA1l2CPxg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL1oaIIkn7nobzGesz7TvNaUgDLP1SWDPBOvzCjp5BZSuZ9o/MbMNzrI8PdxOABn3g==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 34, 990, DateTimeKind.Utc).AddTicks(155),
+                            PremiumDate = new DateTime(2024, 5, 15, 21, 11, 10, 586, DateTimeKind.Utc).AddTicks(6524),
                             PremiumId = 1,
-                            SecurityStamp = "ce95abbb-12d7-4b0e-9acb-7a209b274b01",
+                            SecurityStamp = "79242f73-7f40-4f9a-a73a-5be70c15f6c4",
                             Surname = "Левак",
                             TwoFactorEnabled = false,
                             UserName = "Admin@gmail.com"
@@ -1859,18 +1904,18 @@ namespace DataAccess.Migrations
                             Id = "d1901b2435594da2a255db13fc57509b",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1988, 10, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "50890aa6-18ae-4f66-9bdc-ff3f4fc238fa",
+                            ConcurrencyStamp = "7d140a16-10c4-4baa-b27f-1ed6da81b97f",
                             Email = "User1@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Iван",
                             NormalizedEmail = "USER1@GMAIL.COM",
                             NormalizedUserName = "USER1@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI7/7zLOPt5Z6B+6z33K7NNgc5lOn3aIBF/8VdnNoeLTBOyPVZCG0sa7OISwRZY1bA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMPs5ho77l/oeiabw/ad7PB4Ckvz0UOECC/vZZg0/KEcdXin7455suqkYlKClPISdw==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 106, DateTimeKind.Utc).AddTicks(2038),
+                            PremiumDate = new DateTime(2024, 5, 15, 21, 11, 10, 688, DateTimeKind.Utc).AddTicks(9582),
                             PremiumId = 1,
-                            SecurityStamp = "7024d600-b471-48b6-bba9-53466775e096",
+                            SecurityStamp = "eb2e2126-5b60-45cf-a763-24bc24b96a32",
                             Surname = "Калита",
                             TwoFactorEnabled = false,
                             UserName = "User1@gmail.com"
@@ -1880,18 +1925,18 @@ namespace DataAccess.Migrations
                             Id = "c86dc56aedf549f6afe5ceb4d414ebf1",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(2000, 11, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "ebd97042-e34c-4a49-898c-efca041ad064",
+                            ConcurrencyStamp = "2dca72b9-7d9c-406e-8584-5284bd70f7aa",
                             Email = "User2@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Петро",
                             NormalizedEmail = "USER2@GMAIL.COM",
                             NormalizedUserName = "USER2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMCKg4O1dniEYS1m8dDarLix7ovCiEPebGQtNdHbYM1PY4Gd+UqjbHFIG40Owymjdw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHzXd/4ztUgtX/1/LGm+f5sFKhmbBVN3Kj2dgw4BP5jmJyHMserOSMsZnX19ej7hYQ==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 195, DateTimeKind.Utc).AddTicks(1840),
+                            PremiumDate = new DateTime(2024, 5, 15, 21, 11, 10, 778, DateTimeKind.Utc).AddTicks(7971),
                             PremiumId = 2,
-                            SecurityStamp = "0af6b722-b5c3-4396-b1eb-b21c46ca5297",
+                            SecurityStamp = "d165ddb8-b387-4bbb-a4c4-dee7672b4d53",
                             Surname = "Дякуленко",
                             TwoFactorEnabled = false,
                             UserName = "User2@gmail.com"
@@ -1901,18 +1946,18 @@ namespace DataAccess.Migrations
                             Id = "028582c83a914a45b330b5234f4131fb",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(1999, 7, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "6e255074-ddd1-4b42-8f9d-360041f1fbf8",
+                            ConcurrencyStamp = "902ea627-9b59-4467-98cd-aa6d6aa7763e",
                             Email = "User3@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Олег",
                             NormalizedEmail = "USER3@GMAIL.COM",
                             NormalizedUserName = "USER3@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBK0xmw7J3b0YhW+GRTVNI6bP3KyqrgOYKRJ4XuAQ5HOc5Ghf9OLoS1K6ngy5hvRVQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC5eB7f3bjJPgiYSeEKQNyxfZExWlNynQeBvQE/3RzqWpt0Wq/GIIPJ19j0soOcWUQ==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 285, DateTimeKind.Utc).AddTicks(4892),
+                            PremiumDate = new DateTime(2024, 5, 15, 21, 11, 10, 867, DateTimeKind.Utc).AddTicks(7322),
                             PremiumId = 3,
-                            SecurityStamp = "eb9f96be-908d-49e3-85c8-1bf50902e63b",
+                            SecurityStamp = "bafc775a-f54a-482b-8860-fc16d1b52303",
                             Surname = "Панасенко",
                             TwoFactorEnabled = false,
                             UserName = "User3@gmail.com"
@@ -1922,18 +1967,18 @@ namespace DataAccess.Migrations
                             Id = "eb05f9548a2c4cf8adcc2be7305fc732",
                             AccessFailedCount = 0,
                             Birthdate = new DateTime(2001, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "e6665710-364c-4fdc-aad5-5df7083178ad",
+                            ConcurrencyStamp = "3343402d-d67b-4fd9-aa83-06b78f7feedb",
                             Email = "User4@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Тимофій",
                             NormalizedEmail = "USER4@GMAIL.COM",
                             NormalizedUserName = "USER4@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFm2+jKFkDPmoy/tZgWqoRWk87Kk718bVMuie1pss5FNbXt2IAxSjb3dGEOCQ7csFQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPgtS5/khQAiYYczoiaq3oVDKwqladuGxhHEQ0R2vHzJFw28f6EggYNSC47sOd7DXg==",
                             PhoneNumberConfirmed = false,
-                            PremiumDate = new DateTime(2024, 5, 12, 9, 43, 35, 374, DateTimeKind.Utc).AddTicks(7827),
+                            PremiumDate = new DateTime(2024, 5, 15, 21, 11, 10, 956, DateTimeKind.Utc).AddTicks(5117),
                             PremiumId = 2,
-                            SecurityStamp = "346466af-0bba-47c5-918c-9af65272fdf2",
+                            SecurityStamp = "83e74e64-0ede-48cc-a527-e61d578fab6f",
                             Surname = "Гнатенко",
                             TwoFactorEnabled = false,
                             UserName = "User4@gmail.com"
@@ -2257,23 +2302,31 @@ namespace DataAccess.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("BusinessLogic.Data.Entities.StafMovie", b =>
+            modelBuilder.Entity("BusinessLogic.Data.Entities.StafMovieRole", b =>
                 {
                     b.HasOne("BusinessLogic.Data.Entities.Movie", "Movie")
-                        .WithMany("StafMovies")
+                        .WithMany("StafMovieRoles")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusinessLogic.Data.Entities.Staf", "Staf")
-                        .WithMany("StafMovies")
+                        .WithMany("StafMovieRoles")
                         .HasForeignKey("StafId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessLogic.Data.Entities.StafRole", "StafRole")
+                        .WithMany("StafMovieRoles")
+                        .HasForeignKey("StafRoleId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Movie");
 
                     b.Navigation("Staf");
+
+                    b.Navigation("StafRole");
                 });
 
             modelBuilder.Entity("BusinessLogic.Data.Entities.StafStafRole", b =>
@@ -2405,7 +2458,7 @@ namespace DataAccess.Migrations
 
                     b.Navigation("ScreenShots");
 
-                    b.Navigation("StafMovies");
+                    b.Navigation("StafMovieRoles");
 
                     b.Navigation("UserMovies");
                 });
@@ -2424,13 +2477,15 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("BusinessLogic.Data.Entities.Staf", b =>
                 {
-                    b.Navigation("StafMovies");
+                    b.Navigation("StafMovieRoles");
 
                     b.Navigation("StafStafRoles");
                 });
 
             modelBuilder.Entity("BusinessLogic.Data.Entities.StafRole", b =>
                 {
+                    b.Navigation("StafMovieRoles");
+
                     b.Navigation("StafStafRoles");
                 });
 

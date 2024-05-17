@@ -9,7 +9,7 @@
 		public int CountryId { get; set; }
 		public DateTime Birthdate { get; set; }
 		public bool IsOscar { get; set; }
-		public ICollection<StafMovie> StafMovies { get; set; } = new HashSet<StafMovie>();
+		public ICollection<StafMovieRole> StafMovieRoles { get; set; } = new HashSet<StafMovieRole>();
 		public ICollection<StafStafRole> StafStafRoles { get; set; } = new HashSet<StafStafRole>();
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLogic.Models;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogic.ModelDto
@@ -17,7 +18,7 @@ namespace BusinessLogic.ModelDto
 		public string? MovieUrl { get; set; }
 		public string? TrailerUrl { get; set; }
 		public int PremiumId { get; set; }
-		public List<int> Stafs { get; set; } = [];
+		public List<string> Stafs { get; set; } = [];
 		public List<int> ScreenShots { get; set; } = [];
 		public List<int> Genres { get; set; } = [];
 		public List<IFormFile> Screens { get; set; } = [];

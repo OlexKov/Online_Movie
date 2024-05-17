@@ -16,7 +16,7 @@ namespace DataAccess.Data
 			modelBuilder.Entity<Staf>().HasData(Stafs);
 			modelBuilder.Entity<Feedback>().HasData(Feedbacks);
 			modelBuilder.Entity<Movie>().HasData(Movies);
-			modelBuilder.Entity<StafMovie>().HasData(StafMovies);
+			modelBuilder.Entity<StafMovieRole>().HasData(StafMovies);
 			modelBuilder.Entity<StafStafRole>().HasData(StafStafRoles);
 			modelBuilder.Entity<MovieGenre>().HasData(MovieGenres);
 			modelBuilder.Entity<Image>().HasData(Images);
@@ -225,38 +225,40 @@ namespace DataAccess.Data
 
 		];
 
-		static readonly StafMovie[] StafMovies =
+		static readonly StafMovieRole[] StafMovies =
 		[
-			new() { Id = 1, MovieId = 1, StafId = 1 },
-			new() { Id = 2, MovieId = 1, StafId = 2 },
-			new() { Id = 3, MovieId = 1, StafId = 3 },
+			new() { Id = 1, MovieId = 1, StafId = 1 , StafRoleId = 1},
+			new() { Id = 2, MovieId = 1, StafId = 1 , StafRoleId = 2},
+			new() { Id = 3, MovieId = 1, StafId = 1 , StafRoleId = 4},
+			new() { Id = 4, MovieId = 1, StafId = 2 , StafRoleId = 2},
+			new() { Id = 5, MovieId = 1, StafId = 3 , StafRoleId = 2},
 			//Inception staf
-			new() { Id = 4, MovieId = 2, StafId = 4 },
-			new() { Id = 5, MovieId = 2, StafId = 5 },
-			new() { Id = 6, MovieId = 2, StafId = 6 },
-			new() { Id = 7, MovieId = 2, StafId = 7 },
-			new() { Id = 8, MovieId = 2, StafId = 8 },
-			new() { Id = 9, MovieId = 2, StafId = 9 },
-			new() { Id = 10, MovieId = 2, StafId = 10 },
+			new() { Id = 6, MovieId = 2, StafId = 4 , StafRoleId = 1},
+			new() { Id = 7, MovieId = 2, StafId = 5 , StafRoleId = 2},
+			new() { Id = 8, MovieId = 2, StafId = 6 , StafRoleId = 2},
+			new() { Id = 9, MovieId = 2, StafId = 7 , StafRoleId = 2},
+			new() { Id = 10, MovieId = 2, StafId = 8 , StafRoleId = 2},
+			new() { Id = 11, MovieId = 2, StafId = 9 , StafRoleId = 2},
+			new() { Id = 12, MovieId = 2, StafId = 10 , StafRoleId = 2},
 			//Shutter Island staf
-			new() { Id = 11, MovieId = 3, StafId = 5 },
-			new() { Id = 12, MovieId = 3, StafId = 11 },
-			new() { Id = 13, MovieId = 3, StafId = 12 },
-			new() { Id = 14, MovieId = 3, StafId = 13 },
-			new() { Id = 15, MovieId = 3, StafId = 14 },
+			new() { Id = 13, MovieId = 3, StafId = 5 , StafRoleId = 2},
+			new() { Id = 14, MovieId = 3, StafId = 11 , StafRoleId = 1},
+			new() { Id = 15, MovieId = 3, StafId = 12 , StafRoleId = 2},
+			new() { Id = 16, MovieId = 3, StafId = 13 , StafRoleId = 2},
+			new() { Id = 17, MovieId = 3, StafId = 14 , StafRoleId = 2},
 			//Prince of Persia staf
-			new() { Id = 16, MovieId = 4, StafId = 13 },
-			new() { Id = 17, MovieId = 4, StafId = 15 },
-			new() { Id = 18, MovieId = 4, StafId = 16 },
-			new() { Id = 19, MovieId = 4, StafId = 17 },
-			new() { Id = 20, MovieId = 4, StafId = 18 },
+			new() { Id = 18, MovieId = 4, StafId = 13 , StafRoleId = 2},
+			new() { Id = 19, MovieId = 4, StafId = 15 , StafRoleId = 1},
+			new() { Id = 20, MovieId = 4, StafId = 16 , StafRoleId = 2},
+			new() { Id = 21, MovieId = 4, StafId = 17 , StafRoleId = 2},
+			new() { Id = 22, MovieId = 4, StafId = 18 , StafRoleId = 2},
 			//Sherlok Holms staf
-			new() { Id = 21, MovieId = 5, StafId = 19 },
-			new() { Id = 22, MovieId = 5, StafId = 20 },
-			new() { Id = 23, MovieId = 5, StafId = 21 },
-			new() { Id = 24, MovieId = 5, StafId = 22 },
-			new() { Id = 25, MovieId = 5, StafId = 23 },
-			new() { Id = 26, MovieId = 5, StafId = 24 },
+			new() { Id = 23, MovieId = 5, StafId = 19 , StafRoleId = 2},
+			new() { Id = 24, MovieId = 5, StafId = 20 , StafRoleId = 1},
+			new() { Id = 25, MovieId = 5, StafId = 21 , StafRoleId = 2},
+			new() { Id = 26, MovieId = 5, StafId = 22 , StafRoleId = 2},
+			new() { Id = 27, MovieId = 5, StafId = 23 , StafRoleId = 2},
+			new() { Id = 28, MovieId = 5, StafId = 24 , StafRoleId = 2},
 		];
 
 

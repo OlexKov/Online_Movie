@@ -13,7 +13,6 @@ namespace BusinessLogic.ModelDto
 		public int? CountryId { get; set; }
 		public DateTime? Birthdate { get; set; }
 		public bool? IsOscar { get; set; }
-		public List<int> Movies { get; set; } = [];
 		public List<int> Roles { get; set; } = [];
 	}
 }

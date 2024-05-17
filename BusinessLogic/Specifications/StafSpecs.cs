@@ -22,7 +22,7 @@ namespace BusinessLogic.Specifications
 			{
 				Query
 					.Where(x => x.Id == id)
-					.Include(x => x.StafMovies)
+					.Include(x => x.StafMovieRoles)
 					.Include(x => x.StafStafRoles);
 			}
 		}

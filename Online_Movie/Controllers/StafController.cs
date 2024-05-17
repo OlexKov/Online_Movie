@@ -36,6 +36,10 @@ namespace Online_Movie.Controllers
 		[HttpGet("getroles/{id:int}")]
 		public async Task<IActionResult> GetRoles([FromRoute] int id) => Ok(await stafService.GetRolesAsync(id));
 
+		[AllowAnonymous]
+		[HttpGet("getmovieroles/{stafId:int}/{movieId:int}")]
+		public async Task<IActionResult> GetMovieRoles([FromRoute] int stafId,int movieId) => Ok(await stafService.GetMovieRolesAsync(stafId, movieId));
+
 		[Authorize(Roles = Roles.Admin)]
 		//[AllowAnonymous]
 		[HttpPut("update")]
@@ -64,7 +68,7 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("take")]
-		public async Task<IActionResult> Take([FromQuery] int skip, int count) => Ok(await stafService.TakeAsync(skip, count));
+		[HttpGet("getstafpagination")]
+		public async Task<IActionResult> GetStafWithPagination([FromQuery] int pageSize, int pageIndex) => Ok(await stafService.GetStafWithPaginationAsync(pageSize,pageIndex));
 	}
 }

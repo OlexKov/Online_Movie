@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
@@ -8,6 +9,8 @@ using BusinessLogic.Resources;
 using BusinessLogic.Specifications;
 using FluentValidation;
 using System.Net;
+using System.Text.Json;
+
 
 namespace BusinessLogic.Services
 {
@@ -15,7 +18,7 @@ namespace BusinessLogic.Services
 	{
 		private readonly IRepository<Movie> movies;
 		private readonly IRepository<Feedback> feedbacks;
-		private readonly IRepository<StafMovie> stafMovies;
+		private readonly IRepository<StafMovieRole> stafMovies;
 		private readonly IRepository<MovieGenre> movieGenres;
 		private readonly IRepository<Image> images;
 		private readonly IMapper mapper;
@@ -24,7 +27,7 @@ namespace BusinessLogic.Services
 		
 		private async Task deleteMovieDependencies(int id)
 		{
-			var stafs = await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id));
+			var stafs = await stafMovies.GetListBySpec(new StafMovieRoleSpecs.GetStafsByMovieId(id));
 			var genres = await movieGenres.GetListBySpec(new MovieGenreSpecs.GetByMovieId(id));
 			
 		    foreach (var item in stafs)
@@ -43,9 +46,18 @@ namespace BusinessLogic.Services
 				var screensIds = (await images.GetListBySpec(new ImageSpecs.GetByMovieId(movie.Id))).Select(x => x.Id);
 				await imageService.DeleteImegeRangeAsync(screensIds.Except(movieModel.ScreenShots));
 			}
-
-			foreach (var id in movieModel.Stafs)
-				movie.StafMovies.Add(new () { MovieId = movie.Id, StafId = id });
+			List<MovieStaf> movieStafs = [];
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true
+			};
+			foreach (var jsonStr in movieModel.Stafs)
+				movieStafs.Add(JsonSerializer.Deserialize<MovieStaf>(jsonStr, options)! );
+			foreach (var movieStaf in movieStafs)
+			{
+				foreach(var role in movieStaf.MovieRoles)
+			    	movie.StafMovieRoles.Add(new() { MovieId = movie.Id, StafId = movieStaf.StafId, StafRoleId = role });
+			}
 			foreach (var id in movieModel.Genres)
 				movie.MovieGenres.Add(new() { MovieId = movie.Id, GenreId = id });
 			foreach (var item in movieModel.Screens)
@@ -53,7 +65,7 @@ namespace BusinessLogic.Services
 			
 			if (movieModel.PosterFile != null)
 			{
-			   if (update && movie.Poster != null && movie.Poster != "noposter.jpg")
+			   if (update && movie.Poster != null && movie.Poster != "nophoto.jpg")
 					imageService.DeleteImageByName(movieModel.Poster ?? "");
 				movie.Poster = await imageService.SaveImageAsync(movieModel.PosterFile);
 			}
@@ -63,7 +75,7 @@ namespace BusinessLogic.Services
 
 		public MovieService(IRepository<Movie> movies,
 			                IRepository<Feedback> feedbacks,
-			                IRepository<StafMovie> stafMovie,
+			                IRepository<StafMovieRole> stafMovie,
 							IRepository<MovieGenre> movieGenre,
 			                IRepository<Image> images,
 							IMapper mapper,
@@ -121,8 +133,9 @@ namespace BusinessLogic.Services
 		public async Task<IEnumerable<StafDto>> GetStafAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<StafDto>>((await stafMovies.GetListBySpec(new StafMovieSpecs.GetByMovieId(id)))
-				         .Select(x=>x.Staf));
+			return mapper.Map<IEnumerable<StafDto>>((await stafMovies.GetListBySpec(new StafMovieRoleSpecs.GetStafsByMovieId(id)))
+				         .Select(x=>x.Staf)
+						 .Distinct());
 		}
 
 		public async Task<MovieFindResultModel> TakeAsync(int skip ,int count) 
@@ -175,28 +188,11 @@ namespace BusinessLogic.Services
 
 		public async Task<MovieFindResultModel> GetMovieFilteredPaginationAsync(FilteredPaginationModel model)
 		{
-			MovieFindResultModel result = new();
-			IEnumerable<MovieDto> filteredMovies;
-			if (model.FindModel != null)
-			   filteredMovies = mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(model.FindModel)));
-			else
-				filteredMovies = await GetAllAsync();
-			int movieCount = filteredMovies.Count();
-			result.TotalCount = movieCount;
-			if (model.PageSize > 0)
-			{
-				int PageCount = movieCount / model.PageSize;
-				PageCount = movieCount % model.PageSize > 0 ? PageCount + 1 : PageCount;
-				if (model.PageIndex > PageCount) 
-					model.PageIndex = PageCount;
-			}
-			else
-			{
-				model.PageSize = movieCount;
-			}
-
-			result.Movies = filteredMovies.Skip((model.PageIndex - 1) * model.PageSize).Take(model.PageSize);
-			return result;
+			IEnumerable<MovieDto> filteredMovies = model.FindModel != null 
+				                  ? mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(model.FindModel)))
+								  : await GetAllAsync();
+			var list = new PaginatedList<MovieDto>(filteredMovies,model.PageIndex,model.PageSize);
+			return new MovieFindResultModel() { TotalCount = list.TotalCount,Movies = list};
 		}
 	}
 }

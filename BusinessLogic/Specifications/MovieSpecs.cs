@@ -16,7 +16,7 @@ namespace BusinessLogic.Specifications
 					.Where(x => x.Id == id)
 					.Include(x => x.Feedbacks)
 					.Include(x => x.MovieGenres)
-					.Include(x => x.StafMovies)
+					.Include(x => x.StafMovieRoles)
 					.Include(x => x.UserMovies)
 					.Include(x => x.ScreenShots);
 			}
@@ -98,8 +98,8 @@ namespace BusinessLogic.Specifications
 				Expression<Func<Movie, bool>> YearExpr    = x => movieFindFilter.Years.Contains(x.Date.Year);
 				Expression<Func<Movie, bool>> QualityExpr = x => movieFindFilter.Qualities.Contains(x.QualityId);
 				Expression<Func<Movie, bool>> CountryExpr = x => movieFindFilter.Countries.Contains(x.CountryId);
-				Expression<Func<Movie, bool>> AllStafExpr = x => movieFindFilter.Stafs.All(z => x.StafMovies.Any(y => y.StafId == z));
-				Expression<Func<Movie, bool>> StafExpr    = x => x.StafMovies.Any(x => movieFindFilter.Stafs.Contains(x.StafId));
+				Expression<Func<Movie, bool>> AllStafExpr = x => movieFindFilter.Stafs.All(z => x.StafMovieRoles.Any(y => y.StafId == z));
+				Expression<Func<Movie, bool>> StafExpr    = x => x.StafMovieRoles.Any(x => movieFindFilter.Stafs.Contains(x.StafId));
 				Expression<Func<Movie, bool>> AllGenresExpr = x => movieFindFilter.Genres.All(z => x.MovieGenres.Any(y => y.GenreId == z));
 				Expression<Func<Movie, bool>> GenresExpr  = x => x.MovieGenres.Any(x => movieFindFilter.Genres.Contains(x.GenreId));
 

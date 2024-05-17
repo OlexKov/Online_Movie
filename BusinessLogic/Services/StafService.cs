@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
@@ -16,21 +17,19 @@ namespace BusinessLogic.Services
 	internal class StafService : IStafService
 	{
 		private readonly IRepository<Staf> stafs;
-		private readonly IRepository<StafMovie> stafMovies;
+		private readonly IRepository<StafMovieRole> stafMovies;
 		private readonly IRepository<StafStafRole> roles;
+		private readonly IRepository<StafMovieRole> movieRoles;
 		private readonly IMapper mapper;
 		private readonly IImageService imageService;
 		private readonly IValidator<StafModel> validator;
 
 		private async Task deleteStafDependencies(int id)
 		{
-			var stafMovies = await this.stafMovies.GetListBySpec(new StafMovieSpecs.GetByStafId(id));
 			var stafRoles = await roles.GetListBySpec(new StafStafRolesSpecs.GetByStafId(id));
 
 			foreach (var item in stafRoles)
 				roles.Delete(item);
-			foreach (var item in stafMovies)
-				this.stafMovies.Delete(item);
 		}
 		private async Task<Staf> setData(StafModel stafModel, bool update)
 		{
@@ -39,8 +38,6 @@ namespace BusinessLogic.Services
 			if (update)
 				await deleteStafDependencies(stafModel.Id);
 			
-			foreach (var item in stafModel.Movies)
-				staf.StafMovies.Add(new StafMovie() { StafId = staf.Id, MovieId = item });
 			foreach (var item in stafModel.Roles)
 				staf.StafStafRoles.Add(new StafStafRole() { StafId = staf.Id, StafRoleId = item });
 			if (stafModel.ImageFile != null)
@@ -52,13 +49,14 @@ namespace BusinessLogic.Services
 			return staf;
 		}
 
-		public StafService(IRepository<Staf> stafs, IRepository<StafMovie> stafMovies,
-			               IRepository<StafStafRole> roles, IMapper mapper,
+		public StafService(IRepository<Staf> stafs, IRepository<StafMovieRole> stafMovies,
+			               IRepository<StafStafRole> roles, IRepository<StafMovieRole> movieRoles, IMapper mapper,
 						   IImageService imageService,IValidator<StafModel> validator)
         {
 			this.stafs = stafs;
 			this.stafMovies = stafMovies;
 			this.roles = roles;
+			this.movieRoles = movieRoles;
 			this.mapper = mapper;
 			this.imageService = imageService;
 			this.validator = validator;
@@ -86,7 +84,7 @@ namespace BusinessLogic.Services
 		public async Task<IEnumerable<MovieDto>> GetMoviesAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<MovieDto>>((await stafMovies.GetListBySpec(new StafMovieSpecs.GetMovieByStafIdInc(id))).Select(x=>x.Movie));
+			return mapper.Map<IEnumerable<MovieDto>>((await stafMovies.GetListBySpec(new StafMovieRoleSpecs.GetMovieByStafIdInc(id))).Select(x=>x.Movie));
 		}
 
 		public async Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id)
@@ -119,12 +117,16 @@ namespace BusinessLogic.Services
 			await stafs.SaveAsync();
 		}
 
-		public async Task<StafFindResultModel> TakeAsync(int skip, int count)
+		public async Task<StafFindResultModel> GetStafWithPaginationAsync(int pageSize, int pageIndex)
 		{
-			StafFindResultModel result = new();
-			result.Stafs = mapper.Map<IEnumerable<StafDto>>(await stafs.GetListBySpec(new StafSpecs.Take(skip, count)));
-			result.TotalCount = (await GetAllAsync()).Count();
-			return result;
+			var stafList = new PaginatedList<StafDto>(await GetAllAsync(), pageIndex, pageSize);
+			return new StafFindResultModel() { Stafs = stafList, TotalCount = stafList.TotalCount };
+		}
+
+		public async Task<IEnumerable<StafRoleDto>> GetMovieRolesAsync(int stafId, int movieId)
+		{
+			if (stafId < 0 || movieId < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
+			return mapper.Map<IEnumerable<StafRoleDto>>((await movieRoles.GetListBySpec(new StafMovieRoleSpecs.GetMovieRoles(stafId, movieId))).Select(x => x.StafRole));
 		}
 	}
 }
