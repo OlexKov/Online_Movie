@@ -10,7 +10,6 @@ namespace BusinessLogic.DTOs
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public int MovieId { get; set; }
-		public bool Approved { get; set; }
 		public DateTime Date { get; set; }
 	}
 }

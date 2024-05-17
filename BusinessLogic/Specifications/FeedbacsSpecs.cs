@@ -9,9 +9,9 @@ namespace BusinessLogic.Specifications
 	{
 		public class GetByMovieId : Specification<Feedback>
 		{
-			public GetByMovieId(int id)
+			public GetByMovieId(int id,bool approved)
 			{
-				Query.Where(x => x.MovieId == id)
+				Query.Where(x => x.MovieId == id && x.Approved == approved)
 					.Include(x=>x.User);
 			}
 		}

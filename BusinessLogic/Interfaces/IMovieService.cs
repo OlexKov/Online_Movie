@@ -12,7 +12,7 @@ namespace BusinessLogic.Interfaces
 		Task<IEnumerable<MovieDto>> GetTopByRatingAsync(int count);
 		Task<MovieDto> GetByIdAsync(int id);
 		Task<IEnumerable<StafDto>> GetStafAsync(int id);
-		Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id);
+		Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id,bool approved);
 		Task<double> GetRatingAsync(int id);
 		Task UpdateAsync(MovieModel movie);
 		Task CreateAsync(MovieModel movie);

@@ -60,10 +60,11 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		[HttpGet("getfeedbacks/{id:int}")]
-		public async Task<IActionResult> GetFeedbacks([FromRoute] int id)
-		{
-			return Ok(await movieService.GetFeedbacksAsync(id));
-		}
+		public async Task<IActionResult> GetFeedbacks([FromRoute] int id) => Ok(await movieService.GetFeedbacksAsync(id, true));
+		
+		[HttpGet("getnafeedbacks/{id:int}")]
+		public async Task<IActionResult> GetNotApprovedFeedbacks([FromRoute] int id) => Ok(await movieService.GetFeedbacksAsync(id, false));
+		
 
 		[AllowAnonymous]
 		[HttpGet("getrating/{id:int}")]

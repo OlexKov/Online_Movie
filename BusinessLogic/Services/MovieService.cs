@@ -118,10 +118,10 @@ namespace BusinessLogic.Services
 				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound));
 		}
 
-		public async Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id)
+		public async Task<IEnumerable<FeedbackDto>> GetFeedbacksAsync(int id,bool approved)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetListBySpec(new FeedbacsSpecs.GetByMovieId(id)));
+			return mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetListBySpec(new FeedbacsSpecs.GetByMovieId(id,approved)));
 		}
 
 		public async Task<IEnumerable<ImageDto>> GetScreensAsync(int id)
@@ -172,7 +172,7 @@ namespace BusinessLogic.Services
 
 		public async Task<double> GetRatingAsync(int id) 
 		{
-			var feedbacks = await GetFeedbacksAsync(id);
+			var feedbacks = await GetFeedbacksAsync(id,true);
 			return feedbacks.Any() ? feedbacks.Average(x => x.Rating) : 0;
 			
 		}
