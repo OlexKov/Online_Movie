@@ -5,6 +5,7 @@ using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Printing;
 
 namespace Online_Movie.Controllers
 {
@@ -59,11 +60,11 @@ namespace Online_Movie.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("getfeedbacks/{id:int}")]
-		public async Task<IActionResult> GetFeedbacks([FromRoute] int id) => Ok(await movieService.GetFeedbacksAsync(id, true));
+		[HttpGet("getfeedbacks/{id:int}/{pageIndex:int}/{pageSize:int}")]
+		public async Task<IActionResult> GetFeedbacks([FromRoute] int id ,int pageIndex,int pageSize) => Ok(await movieService.GetFeedbacksAsync(id, true, pageIndex, pageSize));
 		
-		[HttpGet("getnafeedbacks/{id:int}")]
-		public async Task<IActionResult> GetNotApprovedFeedbacks([FromRoute] int id) => Ok(await movieService.GetFeedbacksAsync(id, false));
+		[HttpGet("getfeedbacks/notapproved/{id:int}/{pageIndex:int}/{pageSize:int}")]
+		public async Task<IActionResult> GetNotApprovedFeedbacks([FromRoute] int id, int pageIndex, int pageSize) => Ok(await movieService.GetFeedbacksAsync(id, false, pageIndex, pageSize));
 		
 
 		[AllowAnonymous]

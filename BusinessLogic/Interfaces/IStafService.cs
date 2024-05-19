@@ -8,7 +8,7 @@ namespace BusinessLogic.Interfaces
 {
 	public interface IStafService
 	{
-		Task<StafFindResultModel> GetStafWithPaginationAsync(int pageSize, int pageIndex);
+		Task<FindResultModel<StafDto>> GetStafWithPaginationAsync(int pageSize, int pageIndex);
 		Task<StafDto> GetAsync(int id);
 		Task<IEnumerable<StafDto>> GetAsync(IEnumerable<int> ids);
 		Task<IEnumerable<StafDto>> GetAllAsync();

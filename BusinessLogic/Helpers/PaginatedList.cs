@@ -16,6 +16,7 @@ namespace BusinessLogic.Helpers
 					  pageIndex = totalPages;
 			}
 			else pageSize = TotalCount;
+			pageIndex = pageIndex <= 0 ? 1 : pageIndex;
 			this.AddRange(items.Skip((pageIndex - 1) * pageSize).Take(pageSize));
 		}
 	}

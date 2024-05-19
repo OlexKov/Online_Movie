@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-	public class MovieFindResultModel
+	public class FindResultModel<T> where T: class
 	{
-		public IEnumerable<MovieDto> Movies { get; set; } = [];
+		public IEnumerable<T> Elements { get; set; } = [];
 		public int TotalCount { get; set; }
-
 	}
 }
