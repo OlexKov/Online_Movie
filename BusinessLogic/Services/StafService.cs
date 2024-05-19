@@ -84,7 +84,7 @@ namespace BusinessLogic.Services
 		public async Task<IEnumerable<MovieDto>> GetMoviesAsync(int id)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
-			return mapper.Map<IEnumerable<MovieDto>>((await stafMovies.GetListBySpec(new StafMovieRoleSpecs.GetMovieByStafIdInc(id))).Select(x=>x.Movie));
+			return mapper.Map<IEnumerable<MovieDto>>((await stafMovies.GetListBySpec(new StafMovieRoleSpecs.GetMovieByStafIdInc(id))).Select(x=>x.Movie).Distinct());
 		}
 
 		public async Task<IEnumerable<StafRoleDto>> GetRolesAsync(int id)

@@ -46,7 +46,7 @@ namespace BusinessLogic.Specifications
 			public GetMovieByStafIdInc(int id)
 			{
 				Query
-					.Where(x => x.StafId == id)
+					.Where(x => x.StafId == id)s
 					.Include(x => x.Movie)
 					.ThenInclude(x => x.Country)
 					.Include(x => x.Movie)
