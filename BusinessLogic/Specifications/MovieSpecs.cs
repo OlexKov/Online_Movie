@@ -144,5 +144,5 @@ namespace BusinessLogic.Specifications
 					.Include(x => x.Premium);
 			}
 		}
-	}
+    }
 }

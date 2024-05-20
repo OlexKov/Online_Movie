@@ -34,7 +34,8 @@ namespace BusinessLogic.Services
 				new (ClaimTypes.Surname, user.Surname!),
 				new (ClaimTypes.Email, user.Email!),
 				new (ClaimTypes.DateOfBirth, user.Birthdate.ToShortDateString()),
-				new (ClaimTypes.HomePhone, user.PhoneNumber ?? "No phone number")
+				new (ClaimTypes.HomePhone, user.PhoneNumber ?? "No phone number"),
+				new (ClaimTypes.UserData,user.PremiumId.ToString() ?? "1")
 			};
 			var roles = await userManager.GetRolesAsync(user);
 			claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));

@@ -117,12 +117,8 @@ namespace BusinessLogic.Services
 			await stafs.SaveAsync();
 		}
 
-		public async Task<FindResultModel<StafDto>> GetStafWithPaginationAsync(int pageSize, int pageIndex)
-		{
-			var stafList = new PaginatedList<StafDto>(await GetAllAsync(), pageIndex, pageSize);
-			return new FindResultModel<StafDto>() { Elements = stafList, TotalCount = stafList.TotalCount };
-		}
-
+		public async Task<PaginationResultModel<StafDto>> GetStafWithPaginationAsync(int pageSize, int pageIndex) => new PaginationResultModel<StafDto>(await GetAllAsync(), pageIndex, pageSize);
+		
 		public async Task<IEnumerable<StafRoleDto>> GetMovieRolesAsync(int stafId, int movieId)
 		{
 			if (stafId < 0 || movieId < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);

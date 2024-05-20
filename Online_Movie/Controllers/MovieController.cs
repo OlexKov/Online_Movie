@@ -29,10 +29,7 @@ namespace Online_Movie.Controllers
 			return Ok(await movieService.GetAllAsync());
 		}
 
-		[AllowAnonymous]
-		[HttpGet("take")]
-		public async Task<IActionResult> Take([FromQuery] int skip,int count) => Ok(await movieService.TakeAsync(skip, count));
-		
+				
 		[AllowAnonymous]
 		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute] int id) => Ok(await movieService.GetByIdAsync(id));
@@ -114,5 +111,9 @@ namespace Online_Movie.Controllers
 		[AllowAnonymous]
 		[HttpPost("paginatefilter")]
 		public async Task<IActionResult> GetFilteredWithPagination([FromBody] FilteredPaginationModel model) => Ok(await movieService.GetMovieFilteredPaginationAsync(model));
+
+		[AllowAnonymous]
+		[HttpGet("hasfeedback")]
+		public async Task<IActionResult> HasFeedback([FromQuery] int movieId,string userId) => Ok(await movieService.HasFeedbackAsync(movieId,userId));
 	}
 }

@@ -1,11 +1,6 @@
 ﻿using Ardalis.Specification;
 using BusinessLogic.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace BusinessLogic.Specifications
 {
@@ -46,7 +41,7 @@ namespace BusinessLogic.Specifications
 			public GetMovieByStafIdInc(int id)
 			{
 				Query
-					.Where(x => x.StafId == id)s
+					.Where(x => x.StafId == id)
 					.Include(x => x.Movie)
 					.ThenInclude(x => x.Country)
 					.Include(x => x.Movie)

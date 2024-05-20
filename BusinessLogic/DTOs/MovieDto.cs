@@ -14,6 +14,7 @@
 		public string? MovieUrl { get; set; }
 		public string? TrailerUrl { get; set; }
 		public int PremiumId { get; set; }
+		public int PremiumRate { get; set; }
 		public string? PremiumName { get; set; }
 	}
 }

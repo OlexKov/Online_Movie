@@ -118,12 +118,11 @@ namespace BusinessLogic.Services
 				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound));
 		}
 
-		public async Task<FindResultModel<FeedbackDto>> GetFeedbacksAsync(int id,bool approved, int pageIndex, int pageSize)
+		public async Task<PaginationResultModel<FeedbackDto>> GetFeedbacksAsync(int id,bool approved, int pageIndex, int pageSize)
 		{
 			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
 			var feedBacks = mapper.Map<IEnumerable<FeedbackDto>>(await feedbacks.GetListBySpec(new FeedbacsSpecs.GetByMovieId(id, approved)));
-			PaginatedList<FeedbackDto> result = new(feedBacks, pageIndex, pageSize);
-			return new FindResultModel<FeedbackDto>() { Elements = result, TotalCount = result.TotalCount };
+			return new PaginationResultModel<FeedbackDto>(feedBacks, pageIndex, pageSize);
 		}
 
 		public async Task<IEnumerable<ImageDto>> GetScreensAsync(int id)
@@ -139,15 +138,6 @@ namespace BusinessLogic.Services
 				         .Select(x=>x.Staf)
 						 .Distinct());
 		}
-
-		public async Task<FindResultModel<MovieDto>> TakeAsync(int skip ,int count) 
-		{
-			FindResultModel<MovieDto> result = new();
-			result.Elements = mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Take(skip, count)));
-			result.TotalCount = (await GetAllAsync()).Count();
-			return result;
-
-		} 
 		
 		public async Task<IEnumerable<MovieDto>> GetTopByRatingAsync(int count)
 		{
@@ -188,13 +178,19 @@ namespace BusinessLogic.Services
 				         .Select(x=>x.Genre));
 		}
 
-		public async Task<FindResultModel<MovieDto>> GetMovieFilteredPaginationAsync(FilteredPaginationModel model)
+		public async Task<PaginationResultModel<MovieDto>> GetMovieFilteredPaginationAsync(FilteredPaginationModel model)
 		{
 			IEnumerable<MovieDto> filteredMovies = model.FindModel != null 
 				                  ? mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(model.FindModel)))
 								  : await GetAllAsync();
-			var list = new PaginatedList<MovieDto>(filteredMovies,model.PageIndex,model.PageSize);
-			return new FindResultModel<MovieDto>() { TotalCount = list.TotalCount,Elements = list};
+			return new PaginationResultModel<MovieDto>(filteredMovies, model.PageIndex, model.PageSize);
 		}
+
+		public async Task<bool> HasFeedbackAsync(int movieId, string userId)
+		{
+			var res = await feedbacks.GetItemBySpec(new FeedbacsSpecs.HasFeedback(movieId, userId));
+			return res != null;
+		} 
+		
 	}
 }

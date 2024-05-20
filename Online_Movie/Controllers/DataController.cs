@@ -50,6 +50,13 @@ namespace Online_Movie.Controllers
 			return Ok(await dataService.GetAllPremiumsAsync());
 		}
 
-		
+		[AllowAnonymous]
+		[HttpGet("getpremium/{id:int}")]
+		public async Task<IActionResult> GetPremiumsById([FromRoute]int id)
+		{
+			return Ok(await dataService.GetPremiumsByIdAsync(id));
+		}
+
+
 	}
 }

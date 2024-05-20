@@ -10,6 +10,7 @@ namespace BusinessLogic.Interfaces
 		Task<IEnumerable<GenreDto>> GetAllGenresAsync();
 		Task<IEnumerable<QualityDto>> GetAllQualitiesAsync();
 		Task<IEnumerable<PremiumDto>> GetAllPremiumsAsync();
+		Task<PremiumDto> GetPremiumsByIdAsync(int id);
 
 	}
 }

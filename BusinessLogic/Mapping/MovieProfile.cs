@@ -19,7 +19,8 @@ namespace BusinessLogic.Mapping
 				.ForMember(x => x.Duration, opt => opt.MapFrom(x => TimeOnly.FromDateTime(x.Date)))
 				.ForMember(x => x.QualityName, opt => opt.MapFrom(x => x.Quality.Name))
 				.ForMember(x => x.CountryName, opt => opt.MapFrom(x => x.Country.Name))
-				.ForMember(x => x.PremiumName, opt => opt.MapFrom(x => x.Premium.Name));
+				.ForMember(x => x.PremiumName, opt => opt.MapFrom(x => x.Premium.Name))
+				.ForMember(x => x.PremiumRate, opt => opt.MapFrom(x => x.Premium.Rate));
 
 			CreateMap<MovieDto, Movie>()
 				.ForMember(x => x.Date, opt => opt.MapFrom(x => x.Date.ToDateTime(x.Duration)))

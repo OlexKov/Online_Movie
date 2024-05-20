@@ -59,5 +59,8 @@ namespace BusinessLogic.Services
 		{
 			return mapper.Map<IEnumerable<StafRoleDto>>(await roleRepository.GetListBySpec(new RolesSpecs.GetAll()));
 		}
+
+		public async Task<PremiumDto> GetPremiumsByIdAsync(int id) => mapper.Map<PremiumDto>(await premiumRepository.GetItemBySpec(new PremiumSpecs.GetById(id)));
+		
 	}
 }

@@ -15,6 +15,11 @@ namespace BusinessLogic.Specifications
 		{
 			public GetAll() => Query.Where(x => true);
 		}
-		
+
+		public class GetById : Specification<Premium>
+		{
+			public GetById(int id) => Query.Where(x => x.Id == id);
+		}
+
 	}
 }

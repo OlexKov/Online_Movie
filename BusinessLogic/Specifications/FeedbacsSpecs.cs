@@ -19,6 +19,11 @@ namespace BusinessLogic.Specifications
 		{
 			public GetByUserId(string id) => Query.Where(x => x.UserId == id);
 		}
+
+		public class HasFeedback : Specification<Feedback>
+		{
+			public HasFeedback(int movieId,string userId) => Query.Where(x => x.UserId == userId && x.MovieId == movieId);
+		}
 		public class GetAll : Specification<Feedback>
 		{
 			public GetAll()
