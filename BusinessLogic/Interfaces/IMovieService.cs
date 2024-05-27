@@ -22,5 +22,10 @@ namespace BusinessLogic.Interfaces
 		Task<PaginationResultModel<MovieDto>> GetMovieFilteredPaginationAsync(FilteredPaginationModel model);
 
 		Task<bool> HasFeedbackAsync(int movieId,string userId);
+		Task AddFeedbackAsync(FeedbackCreationModel model);
+		Task DeleteFeedbackAsync(int feedbackId);
+		Task ApproveFeedbackAsync(int feedbackId);
+		Task<PaginationResultModel<MovieDto>> GetMoviesWithNotApprovedFeedbacksAsync(int pageIndex, int pageSize);
+		Task<int> GetNotApprovedFeedbacksCount();
 	}
 }

@@ -66,6 +66,15 @@ namespace BusinessLogic.Specifications
 			}
 		}
 
+		public class GetWithNotApprovedFeedbacks : Specification<Movie>
+		{
+			public GetWithNotApprovedFeedbacks()
+			{
+				Query.Include(x => x.Feedbacks)
+					.Where(x=>x.Feedbacks.Any(z=>!z.Approved));
+			}
+		}
+
 		public class GetAllIncFeedbacks : Specification<Movie>
 		{
 			public GetAllIncFeedbacks()

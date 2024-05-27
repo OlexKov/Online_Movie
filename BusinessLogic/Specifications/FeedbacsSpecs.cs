@@ -15,6 +15,23 @@ namespace BusinessLogic.Specifications
 					.Include(x=>x.User);
 			}
 		}
+
+		public class GetNotApproved : Specification<Feedback>
+		{
+			public GetNotApproved()
+			{
+				Query.Where(x => !x.Approved);
+	     	}
+		}
+
+		public class GetById : Specification<Feedback>
+		{
+			public GetById(int id)
+			{
+				Query.Where(x => x.Id == id);
+			}
+		}
+
 		public class GetByUserId : Specification<Feedback>
 		{
 			public GetByUserId(string id) => Query.Where(x => x.UserId == id);
