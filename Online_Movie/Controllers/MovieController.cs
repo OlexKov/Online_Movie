@@ -29,7 +29,15 @@ namespace Online_Movie.Controllers
 			return Ok(await movieService.GetAllAsync());
 		}
 
-				
+		[Authorize(Roles = "Admin")]
+		[HttpGet("getmovies/withnotapproved/{pageIndex:int}/{pageSize:int}")]
+		public async Task<IActionResult> GetMoviesWithNotApprovedFeedbacks([FromRoute] int pageIndex, int pageSize) => Ok(await movieService.GetMoviesWithNotApprovedFeedbacksAsync(pageIndex, pageSize));
+
+		[AllowAnonymous]
+		//[Authorize(Roles = "Admin")]
+		[HttpGet("get/notapproved/count")]
+		public async Task<IActionResult> GetNotApprovedFeedbacksCount() => Ok(await movieService.GetNotApprovedFeedbacksCount());
+
 		[AllowAnonymous]
 		[HttpGet("get/{id:int}")]
 		public async Task<IActionResult> Get([FromRoute] int id) => Ok(await movieService.GetByIdAsync(id));
@@ -64,7 +72,10 @@ namespace Online_Movie.Controllers
 		[Authorize(Roles = "Admin")]
 		[HttpGet("getfeedbacks/notapproved/{id:int}/{pageIndex:int}/{pageSize:int}")]
 		public async Task<IActionResult> GetNotApprovedFeedbacks([FromRoute] int id, int pageIndex, int pageSize) => Ok(await movieService.GetFeedbacksAsync(id, false, pageIndex, pageSize));
-		
+
+		[AllowAnonymous]
+		[HttpGet("hasfeedback")]
+		public async Task<IActionResult> HasFeedback([FromQuery] int movieId, string userId) => Ok(await movieService.HasFeedbackAsync(movieId, userId));
 
 		[AllowAnonymous]
 		[HttpGet("getrating/{id:int}")]
@@ -95,29 +106,9 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[Authorize(Roles = "Admin")]
-		[HttpPut("update")]
-		public async Task<IActionResult> Update([FromForm] MovieModel movie)
-		{
-			await movieService.UpdateAsync(movie);
-			return Ok();
-		}
-
-		[Authorize(Roles = "Admin")]
-		[HttpDelete("delete/{id:int}")]
-		public async Task<IActionResult> Delete([FromRoute] int id)
-		{
-			await movieService.DeleteAsync(id);
-			return Ok();
-		}
-
 		[AllowAnonymous]
 		[HttpPost("paginatefilter")]
 		public async Task<IActionResult> GetFilteredWithPagination([FromBody] FilteredPaginationModel model) => Ok(await movieService.GetMovieFilteredPaginationAsync(model));
-
-		[AllowAnonymous]
-		[HttpGet("hasfeedback")]
-		public async Task<IActionResult> HasFeedback([FromQuery] int movieId,string userId) => Ok(await movieService.HasFeedbackAsync(movieId,userId));
 
 		[Authorize(Roles = "User")]
 		[HttpPost("addfeedback")]
@@ -128,10 +119,10 @@ namespace Online_Movie.Controllers
 		}
 
 		[Authorize(Roles = "Admin")]
-		[HttpDelete("deletefeedback/{feedbackId:int}")]
-		public async Task<IActionResult> DeleteFeedback([FromRoute] int feedbackId)
+		[HttpPut("update")]
+		public async Task<IActionResult> Update([FromForm] MovieModel movie)
 		{
-			await movieService.DeleteFeedbackAsync(feedbackId);
+			await movieService.UpdateAsync(movie);
 			return Ok();
 		}
 
@@ -144,12 +135,20 @@ namespace Online_Movie.Controllers
 		}
 
 		[Authorize(Roles = "Admin")]
-		[HttpGet("getmovies/withnotapproved/{pageIndex:int}/{pageSize:int}")]
-		public async Task<IActionResult> GetMoviesWithNotApprovedFeedbacks([FromRoute] int pageIndex,int pageSize) => Ok(await movieService.GetMoviesWithNotApprovedFeedbacksAsync(pageIndex,  pageSize));
-		[AllowAnonymous]
-		//[Authorize(Roles = "Admin")]
-		[HttpGet("get/notapproved/count")]
-		public async Task<IActionResult> GetNotApprovedFeedbacksCount() => Ok(await movieService.GetNotApprovedFeedbacksCount());
+		[HttpDelete("delete/{id:int}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			await movieService.DeleteAsync(id);
+			return Ok();
+		}
+
+		[Authorize(Roles = "Admin")]
+		[HttpDelete("deletefeedback/{feedbackId:int}")]
+		public async Task<IActionResult> DeleteFeedback([FromRoute] int feedbackId)
+		{
+			await movieService.DeleteFeedbackAsync(feedbackId);
+			return Ok();
+		}
 
 	}
 }

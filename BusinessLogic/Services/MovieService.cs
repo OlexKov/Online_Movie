@@ -227,6 +227,7 @@ namespace BusinessLogic.Services
 		}
 
 		public async Task<int> GetNotApprovedFeedbacksCount() => (await feedbacks.GetListBySpec(new FeedbacsSpecs.GetNotApproved())).Count();
+
 		
 	}
 }

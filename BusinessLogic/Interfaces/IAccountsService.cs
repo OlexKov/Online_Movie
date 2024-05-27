@@ -20,10 +20,11 @@ namespace BusinessLogic.Interfaces
 		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
 		Task Edit(EditUserModel user);
 		Task RemoveExpiredRefreshTokens();
-		Task AddRemoveFavourite(string userName, int movieId);
+		Task<bool> AddRemoveFavourite(string userName, int movieId);
+		Task<bool> IsMovieFauvorite(int movieId, string userId);
 		Task SetPremium(string userName, int premiumId, int days);
 		Task<PremiumDto?> GetPremium(string userName);
-		Task<IEnumerable<MovieDto>> GetFavourits(string userName);
-		Task<IEnumerable<MovieDto>> GetFavourits(User user);
+		Task<IEnumerable<MovieDto>> GetFavouritesAsync(string userName);
+		Task<IEnumerable<MovieDto>> GetFavouritesAsync(User user);
 	}
 }

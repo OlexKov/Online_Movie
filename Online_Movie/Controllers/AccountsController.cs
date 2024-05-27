@@ -1,11 +1,16 @@
-﻿using BusinessLogic.Helpers;
+﻿using BusinessLogic.Data.Entities;
+using BusinessLogic;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
+using BusinessLogic.Specifications;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net;
 
 namespace Online_Movie.Controllers
 {
@@ -16,6 +21,23 @@ namespace Online_Movie.Controllers
 	{
 		private readonly IAccountsService accountsService = accountsService;
 
+		[HttpGet("getresettoken/{*email}")]
+		public async Task<IActionResult> GetResetToken([FromRoute] string email) => Ok(await accountsService.GetResetToken(email));
+
+		[HttpGet("getfavourites")]
+		public async Task<IActionResult> GetFavourites([FromQuery] string email) => Ok(await accountsService.GetFavouritesAsync(email));
+
+		[HttpGet("getpremium/{*email}")]
+		public async Task<IActionResult> GetPremium([FromRoute] string email)
+		{
+			var prem = await accountsService.GetPremium(email);
+			return Ok(prem);
+		}
+
+		[HttpGet("ismoviefauvorite")]
+		public async Task<IActionResult> IsMovieFauvorite([FromQuery] int movieId, string userId) => Ok(await accountsService.IsMovieFauvorite(movieId, userId));
+		
+
 		[AllowAnonymous]
 		[HttpPost("register")]
 		public async Task<IActionResult> Register([FromBody] RegisterUserModel model)
@@ -23,6 +45,10 @@ namespace Online_Movie.Controllers
 			await accountsService.Register(model);
 			return Ok();
 		}
+
+		[HttpPost("addremovefavourite")]
+		public async Task<IActionResult> AddRemoveFavourite([FromBody] FavouriteRequestModel model) => Ok(await accountsService.AddRemoveFavourite(model.Email, model.MovieId));
+		
 
 		[AllowAnonymous]
 		[HttpPost("login")]
@@ -52,9 +78,6 @@ namespace Online_Movie.Controllers
 			await accountsService.ResetPassword(model);
 			return Ok();
 		}
-
-		[HttpGet("getresettoken/{*email}")]
-		public async Task<IActionResult> GetResetToken([FromRoute] string email) => Ok(await accountsService.GetResetToken(email));
 				
 		[AllowAnonymous]
 		[HttpPost("refreshtokens")]
@@ -74,23 +97,5 @@ namespace Online_Movie.Controllers
 			await accountsService.Delete(email);
 			return Ok();
 		}
-
-		[HttpGet("getfavourits/{*email}")]
-		public async Task<IActionResult> GetFavourits([FromRoute] string email) => Ok(await accountsService.GetFavourits(email));
-
-		[HttpGet("getpremium/{*email}")]
-		public async Task<IActionResult> GetPremium([FromRoute] string email)
-		{
-			var prem = await accountsService.GetPremium(email);
-			return Ok(prem);
-		}
-
-		[HttpPost("addremovefavourite")]
-		public async Task<IActionResult> AddRemoveFavourite([FromBody] FavouriteRequestModel model)
-		{
-			await accountsService.AddRemoveFavourite(model.Email, model.FavouriteId);
-			return Ok();
-		}
-
 	}
 }

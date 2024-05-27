@@ -216,10 +216,17 @@ namespace BusinessLogic.Services
 			await tokenRepository.SaveAsync();
 		}
 
-		public async Task AddRemoveFavourite(string userName, int movieId)
+		public async Task<bool> IsMovieFauvorite(int movieId, string userId)
+		{
+			if (movieId < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
+			if (String.IsNullOrWhiteSpace(userId)) throw new HttpException(Errors.UserNotFound, HttpStatusCode.BadRequest);
+			return (await userMovieRepository.GetItemBySpec(new UserMovieSpecs.GetUserMovieByMovieId(userId,movieId))) != null;
+		}
+
+		public async Task<bool> AddRemoveFavourite(string userName, int movieId)
 		{
 			if (await movieRepository.GetByIDAsync(movieId) == null)
-				throw new HttpException(Errors.NotFoundById, System.Net.HttpStatusCode.BadRequest);
+				throw new HttpException(Errors.NotFoundById,HttpStatusCode.BadRequest);
 			var user = await getUser(userName);
 			var favourite = await userMovieRepository.GetItemBySpec(new UserMovieSpecs.GetUserMovieByMovieId(user.Id, movieId));
 			if (favourite == null)
@@ -232,12 +239,12 @@ namespace BusinessLogic.Services
 				userMovieRepository.Delete(favourite);
 				await userMovieRepository.SaveAsync();
 			}
-
+			return favourite == null;
 		}
 
-		public async Task<IEnumerable<MovieDto>> GetFavourits(string userName) => await GetFavourits(await getUser(userName));
+		public async Task<IEnumerable<MovieDto>> GetFavouritesAsync(string userName) => await GetFavouritesAsync(await getUser(userName));
 
-		public async Task<IEnumerable<MovieDto>> GetFavourits(User user)
+		public async Task<IEnumerable<MovieDto>> GetFavouritesAsync(User user)
 		{
 			var movies = (await userMovieRepository.GetListBySpec(new UserMovieSpecs.GetByUserId(user.Id)))
 																   .Select(x => x.Movie);

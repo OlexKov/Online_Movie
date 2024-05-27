@@ -16,7 +16,9 @@ namespace BusinessLogic.Specifications
 		}
 		public class GetByUserId : Specification<UserMovie>
 		{
-			public GetByUserId(string id) => Query.Where(x => x.UserId == id).Include(x=>x.Movie);
+			public GetByUserId(string id) => Query.Where(x => x.UserId == id)
+				                                  .Include(x=>x.Movie)
+				                                  .ThenInclude(x=>x.Quality);
 		}
 
 		public class GetUserMovieByMovieId : Specification<UserMovie>

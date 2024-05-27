@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DTOs;
+﻿using BusinessLogic.Data.Entities;
+using BusinessLogic.DTOs;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
 
@@ -27,5 +28,6 @@ namespace BusinessLogic.Interfaces
 		Task ApproveFeedbackAsync(int feedbackId);
 		Task<PaginationResultModel<MovieDto>> GetMoviesWithNotApprovedFeedbacksAsync(int pageIndex, int pageSize);
 		Task<int> GetNotApprovedFeedbacksCount();
+		
 	}
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Models
 {
-	public class FavouriteRequestModel
+	public class IsMovieFauvorite
 	{
-		public string Email { get; set; }
 		public int MovieId { get; set; }
+		public string UserId { get; set; }
 	}
 }
