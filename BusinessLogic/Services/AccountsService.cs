@@ -252,10 +252,10 @@ namespace BusinessLogic.Services
 			return moviesDtos;
 		}
 
-		public async Task<PremiumDto?> GetPremium(string userName)
+		public async Task<PremiumDto?> GetPremium(string email)
 		{
 			PremiumDto? premium = null;
-			var user = await userRepository.GetItemBySpec(new UserSpecs.GetByNameInc(userName))
+			var user = await userRepository.GetItemBySpec(new UserSpecs.GetByEmailInc(email))
 				 ?? throw new HttpException(Errors.UserNotFound, System.Net.HttpStatusCode.BadRequest);
 			if (user.Premium != null)
 			{

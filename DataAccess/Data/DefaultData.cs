@@ -625,10 +625,10 @@ namespace DataAccess.Data
 
 		static readonly Premium[] Premiums =
 		[
-			new() { Id = 1, Name = "Free",Rate = 0 },
-			new() { Id = 2, Name = "Light", Rate = 20 },
-			new() { Id = 3, Name = "Midle", Rate = 40 },
-			new() { Id = 5, Name = "Full", Rate = 60 },
+			new() { Id = 1, Name = "Free",Rate = 0 ,Price = 0},
+			new() { Id = 2, Name = "Light", Rate = 20 ,Price = 100},
+			new() { Id = 3, Name = "Middle", Rate = 40 ,Price = 200},
+			new() { Id = 5, Name = "Full", Rate = 60 ,Price = 350},
 		];
 
 		static readonly Quality[] Qualities =

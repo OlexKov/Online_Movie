@@ -9,10 +9,10 @@ namespace BusinessLogic.Mapping
 	{
 		public PremiumProfile()
 		{
-			CreateMap<Premium, PremiumDto>()
-				.ForMember(x => x.MovieIds, arg => arg.MapFrom(x => x.Movies.Select(x => x.Id).ToList()))
-				.ForMember(x => x.UserIds, arg => arg.MapFrom(x => x.Users.Select(x => x.Id).ToList()));
-			CreateMap<PremiumDto, Premium>();
+			CreateMap<Premium, PremiumDto>().ReverseMap();
+			//	.ForMember(x => x.MovieIds, arg => arg.MapFrom(x => x.Movies.Select(x => x.Id).ToList()))
+			//	.ForMember(x => x.UserIds, arg => arg.MapFrom(x => x.Users.Select(x => x.Id).ToList()));
+			//CreateMap<PremiumDto, Premium>();
 		}
 	}
 }

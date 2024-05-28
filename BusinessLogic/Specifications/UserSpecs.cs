@@ -5,12 +5,12 @@ namespace BusinessLogic.Specifications
 {
 	public static class UserSpecs
 	{
-		public class GetByNameInc : Specification<User>
+		public class GetByEmailInc : Specification<User>
 		{
-			public GetByNameInc(string name)
+			public GetByEmailInc(string email)
 			{
 				Query
-					.Where(x => x.UserName == name)
+					.Where(x => x.UserName == email)
 					.Include(x => x.Premium)
 					.Include(x => x.UserMovies)
 					.Include(x => x.Feedbacks);

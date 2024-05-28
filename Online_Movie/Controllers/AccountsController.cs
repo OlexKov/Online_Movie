@@ -27,8 +27,8 @@ namespace Online_Movie.Controllers
 		[HttpGet("getfavourites")]
 		public async Task<IActionResult> GetFavourites([FromQuery] string email) => Ok(await accountsService.GetFavouritesAsync(email));
 
-		[HttpGet("getpremium/{*email}")]
-		public async Task<IActionResult> GetPremium([FromRoute] string email)
+		[HttpGet("getpremium")]
+		public async Task<IActionResult> GetPremium([FromQuery] string email)
 		{
 			var prem = await accountsService.GetPremium(email);
 			return Ok(prem);
@@ -97,5 +97,7 @@ namespace Online_Movie.Controllers
 			await accountsService.Delete(email);
 			return Ok();
 		}
+
+
 	}
 }
