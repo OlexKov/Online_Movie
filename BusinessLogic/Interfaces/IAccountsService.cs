@@ -18,12 +18,12 @@ namespace BusinessLogic.Interfaces
 		Task Logout(string token);
 		Task<RefreshToken> GetRefreshToken(string rToken);
 		Task<AuthResponse> RefreshTokens(AuthResponse tokens);
-		Task Edit(EditUserModel user);
+		Task EditAsync(EditUserModel user);
 		Task RemoveExpiredRefreshTokens();
 		Task<bool> AddRemoveFavourite(string userName, int movieId);
 		Task<bool> IsMovieFauvorite(int movieId, string userId);
-		Task SetPremium(string userName, int premiumId, int days);
-		Task<PremiumDto?> GetPremium(string userName);
+		Task SetPremiumAsync(string userName, int premiumId, int days);
+		Task<PremiumDto?> GetPremiumAsync(string userName);
 		Task<IEnumerable<MovieDto>> GetFavouritesAsync(string userName);
 		Task<IEnumerable<MovieDto>> GetFavouritesAsync(User user);
 	}

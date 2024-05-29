@@ -30,7 +30,7 @@ namespace Online_Movie.Controllers
 		[HttpGet("getpremium")]
 		public async Task<IActionResult> GetPremium([FromQuery] string email)
 		{
-			var prem = await accountsService.GetPremium(email);
+			var prem = await accountsService.GetPremiumAsync(email);
 			return Ok(prem);
 		}
 
@@ -87,7 +87,14 @@ namespace Online_Movie.Controllers
 		[HttpPut("edit")]
 		public async Task<IActionResult> Edit([FromBody] EditUserModel user)
 		{
-			await accountsService.Edit(user);
+			await accountsService.EditAsync(user);
+			return Ok();
+		}
+
+		[HttpPut("setpremium")]
+		public async Task<IActionResult> SetUserPremium([FromQuery] string email , int premiumId,int days)
+		{
+			await accountsService.SetPremiumAsync(email, premiumId,days);
 			return Ok();
 		}
 

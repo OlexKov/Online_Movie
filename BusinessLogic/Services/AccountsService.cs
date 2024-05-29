@@ -39,7 +39,7 @@ namespace BusinessLogic.Services
 
 		private void clearPremium(User user)
 		{
-			user.PremiumId = null;
+			user.PremiumId = 1;
 			user.Premium = null;
 		}
 		private async Task<string> CreateRefreshToken(string userId)
@@ -190,7 +190,7 @@ namespace BusinessLogic.Services
 			return userTokens;
 		}
 
-		public async Task Edit(EditUserModel model)
+		public async Task EditAsync(EditUserModel model)
 		{
 			userModelValidator.ValidateAndThrow(model);
 
@@ -252,7 +252,7 @@ namespace BusinessLogic.Services
 			return moviesDtos;
 		}
 
-		public async Task<PremiumDto?> GetPremium(string email)
+		public async Task<PremiumDto?> GetPremiumAsync(string email)
 		{
 			PremiumDto? premium = null;
 			var user = await userRepository.GetItemBySpec(new UserSpecs.GetByEmailInc(email))
@@ -270,9 +270,9 @@ namespace BusinessLogic.Services
 			return premium;
 		}
 
-		public async Task SetPremium(string userName, int premiumId, int days)
+		public async Task SetPremiumAsync(string email, int premiumId, int days)
 		{
-			var user = await getUser(userName);
+			var user = await getUser(email);
 			if (await premRepository.GetByIDAsync(premiumId) == null)
 				throw new HttpException(Errors.NotFoundById, System.Net.HttpStatusCode.BadRequest);
 			if (days <= 0)
