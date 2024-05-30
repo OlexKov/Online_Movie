@@ -138,6 +138,9 @@
   <data name="InvalidPassword" xml:space="preserve">
     <value>Invalid password.</value>
   </data>
+  <data name="InvalidPhoneNumber" xml:space="preserve">
+    <value>Invalid phone number</value>
+  </data>
   <data name="InvalidUrl" xml:space="preserve">
     <value>Invalid {PropertyName} URL.</value>
   </data>

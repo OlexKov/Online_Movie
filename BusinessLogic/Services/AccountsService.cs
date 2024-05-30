@@ -10,6 +10,7 @@ using BusinessLogic.Specifications;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NETCore.MailKit.Core;
 using System.Data;
@@ -33,6 +34,7 @@ namespace BusinessLogic.Services
 		private readonly IRepository<Premium> premRepository;
 		private readonly IRepository<User> userRepository;
 		private readonly IRepository<Movie> movieRepository;
+		private readonly IHttpContextAccessor httpContext;
 
 		private async Task<User> getUser(string name) => await userManager.FindByNameAsync(name)
 				 ?? throw new HttpException(Errors.UserNotFound, System.Net.HttpStatusCode.BadRequest);
@@ -41,6 +43,11 @@ namespace BusinessLogic.Services
 		{
 			user.PremiumId = 1;
 			user.Premium = null;
+		}
+		private async Task<string> UpdateAccessTokensAsync(User user)
+		{
+			var claims = await jwtService.GetClaimsAsync(user);
+			return jwtService.CreateToken(claims);
 		}
 		private async Task<string> CreateRefreshToken(string userId)
 		{
@@ -69,7 +76,8 @@ namespace BusinessLogic.Services
 								IRepository<UserMovie> userMovieRepository, 
 								IRepository<Premium> premRepository,
 						        IRepository<User> userRepository,
-								IRepository<Movie> movieRepository)
+								IRepository<Movie> movieRepository,
+								IHttpContextAccessor httpContext)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -83,6 +91,7 @@ namespace BusinessLogic.Services
 			this.premRepository = premRepository;
 			this.userRepository = userRepository;
 			this.movieRepository = movieRepository;
+			this.httpContext = httpContext;
 		}
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
@@ -159,7 +168,7 @@ namespace BusinessLogic.Services
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
 		}
 
-		public async Task Delete(User user)
+		public async Task DeleteAsync(User user)
 		{
 			if(user == null) throw new HttpException(Errors.NullReference, HttpStatusCode.BadRequest);
 			var result = await userManager.DeleteAsync(user);
@@ -168,12 +177,15 @@ namespace BusinessLogic.Services
 
 		public async Task Delete(string email)
 		{
-			var user = await userManager.FindByEmailAsync(email) 
+			var user = await userManager.Users.Include(user=>user.Feedbacks)
+				                                   .Include(user=>user.RefreshTokens)
+												   .Include(user => user.UserMovies)
+												   .FirstOrDefaultAsync(x=>x.Email == email) 
 				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.BadRequest);
-			await Delete(user);
+			await DeleteAsync(user);
 		}
-
-		public async Task<AuthResponse> RefreshTokens(AuthResponse tokens)
+		
+		public async Task<AuthResponse> RefreshTokensAsync(AuthResponse tokens)
 		{
 			var refrestToken = await GetRefreshToken(tokens.RefreshToken);
 			var claims = jwtService.GetClaimsFromExpiredToken(tokens.AccessToken);
@@ -190,18 +202,40 @@ namespace BusinessLogic.Services
 			return userTokens;
 		}
 
-		public async Task EditAsync(EditUserModel model)
+		public async Task<string> EditAsync(EditUserModel model)
 		{
 			userModelValidator.ValidateAndThrow(model);
 
 			var user = await userManager.FindByIdAsync(model.Id) 
 				 ?? throw new HttpException(Errors.EmailExists, HttpStatusCode.BadRequest);
-			user.Name = model.Name;
-			user.Surname = model.Surname;
-			user.Birthdate = model.Birthdate;
+
+			if (user.Name!= model.Name) user.Name = model.Name;
+			if (user.Surname != model.Surname) user.Surname = model.Surname;
+			if (user.Birthdate != model.Birthdate) user.Birthdate = model.Birthdate;
+			if (user.PhoneNumber != model.PhoneNumber)
+			{ 
+				var res = await userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+				if(!res.Succeeded)
+					throw new HttpException(string.Join(" ", res.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+			}
+			if (user.Email != model.Email)
+			{
+				var res = await userManager.SetEmailAsync(user, model.Email);
+				if (!res.Succeeded)
+					throw new HttpException(string.Join(" ", res.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+			}
+
+			if (!String.IsNullOrEmpty(model.NewPassword))
+			{
+				var res = await userManager.ChangePasswordAsync(user, model.Password,model.NewPassword);
+				if (!res.Succeeded)
+					throw new HttpException(string.Join(" ", res.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+			}
+
 			var result = await userManager.UpdateAsync(user);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
+			return await UpdateAccessTokensAsync(user);
 		}
 
 		public async Task RemoveExpiredRefreshTokens()

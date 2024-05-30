@@ -81,15 +81,12 @@ namespace Online_Movie.Controllers
 				
 		[AllowAnonymous]
 		[HttpPost("refreshtokens")]
-		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokens(tokens));
+		public async Task<IActionResult> RefreshTokens([FromBody] AuthResponse tokens ) => Ok(await accountsService.RefreshTokensAsync(tokens));
 
 
 		[HttpPut("edit")]
-		public async Task<IActionResult> Edit([FromBody] EditUserModel user)
-		{
-			await accountsService.EditAsync(user);
-			return Ok();
-		}
+		public async Task<IActionResult> Edit([FromForm] EditUserModel user) => Ok(await accountsService.EditAsync(user));
+		
 
 		[HttpPut("setpremium")]
 		public async Task<IActionResult> SetUserPremium([FromQuery] string email , int premiumId,int days)
@@ -98,8 +95,8 @@ namespace Online_Movie.Controllers
 			return Ok();
 		}
 
-		[HttpDelete("delete/{*email}")]
-		public async Task<IActionResult> Delete([FromRoute]string email)
+		[HttpDelete("delete")]
+		public async Task<IActionResult> Delete([FromQuery]string email)
 		{
 			await accountsService.Delete(email);
 			return Ok();
