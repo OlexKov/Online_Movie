@@ -102,8 +102,8 @@ namespace BusinessLogic.Specifications
 			private Expression<Func<Movie, bool>> findMovie(MovieFindFilterModel movieFindFilter)
 			{
 				Expression<Func<Movie, bool>> ResultExp   = x => true;
-				Expression<Func<Movie, bool>> NameExpr    = x => x.Name.ToLower() == movieFindFilter.Name.ToLower();
-				Expression<Func<Movie, bool>> OrNameExpr  = x => x.OriginalName.ToLower() == movieFindFilter.OriginalName.ToLower();
+				Expression<Func<Movie, bool>> NameExpr    = x => x.Name.ToLower().Contains(movieFindFilter.Name.ToLower());
+				Expression<Func<Movie, bool>> OrNameExpr  = x => x.OriginalName.ToLower().Contains(movieFindFilter.OriginalName.ToLower());
 				Expression<Func<Movie, bool>> YearExpr    = x => movieFindFilter.Years.Contains(x.Date.Year);
 				Expression<Func<Movie, bool>> QualityExpr = x => movieFindFilter.Qualities.Contains(x.QualityId);
 				Expression<Func<Movie, bool>> CountryExpr = x => movieFindFilter.Countries.Contains(x.CountryId);
@@ -111,6 +111,7 @@ namespace BusinessLogic.Specifications
 				Expression<Func<Movie, bool>> StafExpr    = x => x.StafMovieRoles.Any(x => movieFindFilter.Stafs.Contains(x.StafId));
 				Expression<Func<Movie, bool>> AllGenresExpr = x => movieFindFilter.Genres.All(z => x.MovieGenres.Any(y => y.GenreId == z));
 				Expression<Func<Movie, bool>> GenresExpr  = x => x.MovieGenres.Any(x => movieFindFilter.Genres.Contains(x.GenreId));
+				Expression<Func<Movie, bool>> PremExpr = x => movieFindFilter.Premiums.Contains(x.PremiumId);
 
 				if (!string.IsNullOrEmpty(movieFindFilter.Name))
 					ResultExp = ResultExp.AndAlso(NameExpr);
@@ -120,6 +121,8 @@ namespace BusinessLogic.Specifications
 					ResultExp = ResultExp.AndAlso(YearExpr);
 				if (movieFindFilter.Qualities.Count != 0)
 					ResultExp = ResultExp.AndAlso(QualityExpr);
+				if (movieFindFilter.Premiums.Count != 0)
+					ResultExp = ResultExp.AndAlso(PremExpr);
 				if (movieFindFilter.Countries.Count != 0)
 					ResultExp = ResultExp.AndAlso(CountryExpr);
 				if (movieFindFilter.Stafs.Count != 0)

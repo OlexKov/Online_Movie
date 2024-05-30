@@ -11,6 +11,7 @@ namespace BusinessLogic.Models
 		public string Name { get; set; }
 		public string OriginalName { get; set; }
 		public List<int> Years { get; set; } = [];
+		public List<int> Premiums { get; set; } = [];
 		public List<int> Qualities { get; set; } = [];
 		public List<int> Countries { get; set; } = [];
 		public List<int> Stafs { get; set; } = [];

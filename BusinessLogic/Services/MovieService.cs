@@ -180,6 +180,7 @@ namespace BusinessLogic.Services
 
 		public async Task<PaginationResultModel<MovieDto>> GetMovieFilteredPaginationAsync(FilteredPaginationModel model)
 		{
+			if (model==null) throw new HttpException(Errors.NullReference, HttpStatusCode.BadRequest);
 			IEnumerable<MovieDto> filteredMovies = model.FindModel != null
 								  ? mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(model.FindModel)))
 								  : await GetAllAsync();
