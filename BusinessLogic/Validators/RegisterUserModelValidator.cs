@@ -25,9 +25,6 @@ namespace BusinessLogic.Validators
 			RuleFor(x => x.Email)
 					 .NotEmpty().WithMessage(ValidationErrors.NotEmpty)
 					 .EmailAddress();
-			RuleFor(x => x.PremiumId)
-				     .NotNull().WithMessage(ValidationErrors.NotEmpty)
-				     .GreaterThanOrEqualTo(0).WithMessage(ValidationErrors.GreaterZeroError);
 		}
         
 	}

@@ -2,6 +2,7 @@
 using BusinessLogic.Data.Entities;
 using BusinessLogic.DTOs;
 using BusinessLogic.Entities;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
@@ -37,7 +38,7 @@ namespace BusinessLogic.Services
 		
 
 		private async Task<User> getUser(string name) => await userManager.FindByNameAsync(name)
-				 ?? throw new HttpException(Errors.UserNotFound, System.Net.HttpStatusCode.BadRequest);
+				 ?? throw new HttpException(Errors.UserNotFound, HttpStatusCode.BadRequest);
 
 		
 		private async Task<string> UpdateAccessTokensAsync(User user)
@@ -88,7 +89,7 @@ namespace BusinessLogic.Services
 			this.movieRepository = movieRepository;
 		}
 
-		public async Task<RefreshToken> GetRefreshToken(string rToken)
+		public async Task<RefreshToken> GetRefreshTokenAsync(string rToken)
 		{
 			
 			var token = await tokenRepository.GetItemBySpec(new RefreshTokenSpecs.GetTokenByValue(rToken));
@@ -97,7 +98,7 @@ namespace BusinessLogic.Services
 			return token;
 		}
 
-		public async Task Register(RegisterUserModel model)
+		private async Task RegisterAsync(RegisterUserModel model,string role)
 		{
 			registerValidator.ValidateAndThrow(model);
 
@@ -105,15 +106,18 @@ namespace BusinessLogic.Services
 				throw new HttpException(Errors.EmailExists, HttpStatusCode.BadRequest);
 
 			var user = mapper.Map<User>(model);
-
+			user.PremiumId = 1;
 			var result = await userManager.CreateAsync(user, model.Password);
 			if (!result.Succeeded)
 				throw new HttpException(string.Join(" ", result.Errors.Select(x => x.Description)), HttpStatusCode.BadRequest);
-			await userManager.AddToRoleAsync(user, model.Role);
-			
+			await userManager.AddToRoleAsync(user, role);
 		}
 
-		public async Task<AuthResponse> Login(AuthRequest model)
+		public async Task RegisterUserAsync(RegisterUserModel model) => await RegisterAsync(model, "User");
+
+		public async Task RegisterAdminAsync(RegisterUserModel model) => await RegisterAsync(model, "Admin");
+
+		public async Task<AuthResponse> LoginAsync(AuthRequest model)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
 
@@ -128,9 +132,9 @@ namespace BusinessLogic.Services
 		}
 
 
-		public async Task Logout(string token)
+		public async Task LogoutAsync(string token)
 		{
-			var rToken = await GetRefreshToken(token);
+			var rToken = await GetRefreshTokenAsync(token);
 			await tokenRepository.DeleteAsync(rToken.Id);
 			await tokenRepository.SaveAsync();
 		}
@@ -143,13 +147,6 @@ namespace BusinessLogic.Services
 				var token = await userManager.GeneratePasswordResetTokenAsync(user);
 				await emailService.SendAsync(fogotModel.Email, "Reset password", $"\"Для зміни пароля перейдіть за посиланням: <a href='{fogotModel.ResetPasswordPage}?token={token}&email={user.Email}'>Змінити пароль</a>\"", true);
 			}
-		}
-
-		public async Task<string> GetResetToken(string email) 
-		{
-			var user = await userManager.FindByEmailAsync(email)
-			         ?? throw new HttpException(Errors.UserNotFound, HttpStatusCode.BadRequest);
-			return await userManager.GeneratePasswordResetTokenAsync(user);
 		}
 
 		public async Task ResetPassword(ResetPasswordModel model)
@@ -176,12 +173,19 @@ namespace BusinessLogic.Services
 												   .Include(user => user.UserMovies)
 												   .FirstOrDefaultAsync(x=>x.Email == email) 
 				?? throw new HttpException(Errors.NotFoundById, HttpStatusCode.BadRequest);
+			var userRoles = await userManager.GetRolesAsync(user);
+			if (userRoles.Contains("Admin"))
+			{
+				var adminCounts = (await userManager.GetUsersInRoleAsync("Admin")).Count;
+				if(adminCounts == 1)
+					 throw new HttpException(Errors.CantDeleteLastAdmin, HttpStatusCode.Forbidden);
+			}
 			await DeleteAsync(user);
 		}
 		
 		public async Task<AuthResponse> RefreshTokensAsync(AuthResponse tokens)
 		{
-			var refrestToken = await GetRefreshToken(tokens.RefreshToken);
+			var refrestToken = await GetRefreshTokenAsync(tokens.RefreshToken);
 			var claims = jwtService.GetClaimsFromExpiredToken(tokens.AccessToken);
 			var newAccessToken = jwtService.CreateToken(claims);
 			var newRefreshToken = jwtService.CreateRefreshToken();
@@ -295,7 +299,7 @@ namespace BusinessLogic.Services
 			return mapper.Map<PremiumDto>(user.Premium);
 		}
 
-		public async Task SetPremiumAsync(string email, int premiumId, int days)
+		public async Task<string> SetPremiumAsync(string email, int premiumId, int days)
 		{
 			var user = await getUser(email);
 			if (await premRepository.GetByIDAsync(premiumId) == null)
@@ -308,6 +312,7 @@ namespace BusinessLogic.Services
 				user.PremiumEndDate = DateTime.UtcNow.AddDays(days);
 			}
 			await userManager.UpdateAsync(user);
+			return await UpdateAccessTokensAsync(user);
 		}
 	}
 }

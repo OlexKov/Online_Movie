@@ -61,6 +61,15 @@ namespace BusinessLogic.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The last admin cannot be removed.
+        /// </summary>
+        internal static string CantDeleteLastAdmin {
+            get {
+                return ResourceManager.GetString("CantDeleteLastAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Email is already exists..
         /// </summary>
         internal static string EmailExists {

@@ -1,16 +1,10 @@
 ﻿using BusinessLogic.Data.Entities;
-using BusinessLogic;
-using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.ModelDto;
 using BusinessLogic.Models;
-using BusinessLogic.Specifications;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Net;
 
 namespace Online_Movie.Controllers
 {
@@ -20,9 +14,6 @@ namespace Online_Movie.Controllers
 	public class AccountsController(IAccountsService accountsService) : ControllerBase
 	{
 		private readonly IAccountsService accountsService = accountsService;
-
-		[HttpGet("getresettoken/{*email}")]
-		public async Task<IActionResult> GetResetToken([FromRoute] string email) => Ok(await accountsService.GetResetToken(email));
 
 		[HttpGet("getfavourites")]
 		public async Task<IActionResult> GetFavourites([FromQuery] string email) => Ok(await accountsService.GetFavouritesAsync(email));
@@ -39,10 +30,18 @@ namespace Online_Movie.Controllers
 		
 
 		[AllowAnonymous]
-		[HttpPost("register")]
-		public async Task<IActionResult> Register([FromBody] RegisterUserModel model)
+		[HttpPost("user/register")]
+		public async Task<IActionResult> UserRegister([FromBody] RegisterUserModel model)
 		{
-			await accountsService.Register(model);
+			await accountsService.RegisterUserAsync(model);
+			return Ok();
+		}
+
+		[Authorize(Roles = "Admin")]
+		[HttpPost("admin/register")]
+		public async Task<IActionResult> AdminRegister([FromBody] RegisterUserModel model)
+		{
+			await accountsService.RegisterAdminAsync(model);
 			return Ok();
 		}
 
@@ -52,13 +51,13 @@ namespace Online_Movie.Controllers
 
 		[AllowAnonymous]
 		[HttpPost("login")]
-		public async Task<IActionResult> Login([FromBody] AuthRequest model) => Ok(await accountsService.Login(model));
+		public async Task<IActionResult> Login([FromBody] AuthRequest model) => Ok(await accountsService.LoginAsync(model));
 		
 
 		[HttpPost("logout")]
 		public async Task<IActionResult> Logout([FromBody] LogoutModel token)
 		{
-			await accountsService.Logout(token.Token);
+			await accountsService.LogoutAsync(token.Token);
 			return Ok();
 		}
 
@@ -89,11 +88,8 @@ namespace Online_Movie.Controllers
 		
 
 		[HttpPut("setpremium")]
-		public async Task<IActionResult> SetUserPremium([FromQuery] string email , int premiumId,int days)
-		{
-			await accountsService.SetPremiumAsync(email, premiumId,days);
-			return Ok();
-		}
+		public async Task<IActionResult> SetUserPremium([FromQuery] string email , int premiumId,int days) => Ok(await accountsService.SetPremiumAsync(email, premiumId, days));
+
 
 		[HttpDelete("delete")]
 		public async Task<IActionResult> Delete([FromQuery]string email)
