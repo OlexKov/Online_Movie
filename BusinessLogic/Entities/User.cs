@@ -9,7 +9,7 @@ namespace BusinessLogic.Data.Entities
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public DateTime Birthdate { get; set; }
-		public DateTime? PremiumDate { get; set; }
+		public DateTime PremiumEndDate { get; set; }
 		public Premium? Premium { get; set; }
 		public int? PremiumId { get; set; }
 		public ICollection<UserMovie> UserMovies { get; set; } = new HashSet<UserMovie>();

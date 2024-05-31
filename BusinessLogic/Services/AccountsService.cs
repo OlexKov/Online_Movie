@@ -34,16 +34,12 @@ namespace BusinessLogic.Services
 		private readonly IRepository<Premium> premRepository;
 		private readonly IRepository<User> userRepository;
 		private readonly IRepository<Movie> movieRepository;
-		private readonly IHttpContextAccessor httpContext;
+		
 
 		private async Task<User> getUser(string name) => await userManager.FindByNameAsync(name)
 				 ?? throw new HttpException(Errors.UserNotFound, System.Net.HttpStatusCode.BadRequest);
 
-		private void clearPremium(User user)
-		{
-			user.PremiumId = 1;
-			user.Premium = null;
-		}
+		
 		private async Task<string> UpdateAccessTokensAsync(User user)
 		{
 			var claims = await jwtService.GetClaimsAsync(user);
@@ -73,11 +69,10 @@ namespace BusinessLogic.Services
 								IEmailService emailService, IJwtService jwtService,
 								IRepository<RefreshToken> tokenRepository,
 								IValidator<EditUserModel> userModelValidator,
-								IRepository<UserMovie> userMovieRepository, 
+								IRepository<UserMovie> userMovieRepository,
 								IRepository<Premium> premRepository,
-						        IRepository<User> userRepository,
-								IRepository<Movie> movieRepository,
-								IHttpContextAccessor httpContext)
+								IRepository<User> userRepository,
+								IRepository<Movie> movieRepository)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -91,7 +86,6 @@ namespace BusinessLogic.Services
 			this.premRepository = premRepository;
 			this.userRepository = userRepository;
 			this.movieRepository = movieRepository;
-			this.httpContext = httpContext;
 		}
 
 		public async Task<RefreshToken> GetRefreshToken(string rToken)
@@ -288,33 +282,30 @@ namespace BusinessLogic.Services
 
 		public async Task<PremiumDto?> GetPremiumAsync(string email)
 		{
-			PremiumDto? premium = null;
 			var user = await userRepository.GetItemBySpec(new UserSpecs.GetByEmailInc(email))
-				 ?? throw new HttpException(Errors.UserNotFound, System.Net.HttpStatusCode.BadRequest);
-			if (user.Premium != null)
+				 ?? throw new HttpException(Errors.UserNotFound, HttpStatusCode.BadRequest);
+			if (user.Premium != null )
 			{
-				if (user.PremiumDate > DateTime.UtcNow)
-					premium = mapper.Map<PremiumDto>(user.Premium);
-				else
+				if (user.PremiumId != 1 && user.PremiumEndDate < DateTime.UtcNow)
 				{
-					clearPremium(user);
+					user.PremiumId = 1;
 					await userManager.UpdateAsync(user);
 				}
 			}
-			return premium;
+			return mapper.Map<PremiumDto>(user.Premium);
 		}
 
 		public async Task SetPremiumAsync(string email, int premiumId, int days)
 		{
 			var user = await getUser(email);
 			if (await premRepository.GetByIDAsync(premiumId) == null)
-				throw new HttpException(Errors.NotFoundById, System.Net.HttpStatusCode.BadRequest);
+				throw new HttpException(Errors.NotFoundById, HttpStatusCode.BadRequest);
 			if (days <= 0)
-				clearPremium(user);
+				user.PremiumId = 1;
 			else
 			{
 				user.PremiumId = premiumId;
-				user.PremiumDate = DateTime.UtcNow.AddDays(days);
+				user.PremiumEndDate = DateTime.UtcNow.AddDays(days);
 			}
 			await userManager.UpdateAsync(user);
 		}
