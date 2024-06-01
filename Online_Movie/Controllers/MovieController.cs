@@ -5,6 +5,7 @@ using BusinessLogic.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto;
 using System.Drawing.Printing;
 
 namespace Online_Movie.Controllers
@@ -91,6 +92,10 @@ namespace Online_Movie.Controllers
 			return Ok(await movieService.GetGenresAsync(id));
 		}
 
+		[AllowAnonymous]
+		[HttpPost("getratings")]
+		public async Task<IActionResult> GetRatings([FromBody] int[] ids) => Ok(await movieService.GetRatingsAsync(ids));
+		
 		[AllowAnonymous]
 		[HttpPost("find")]
 		public async Task<IActionResult> Find([FromForm] MovieFindFilterModel movieFilter)

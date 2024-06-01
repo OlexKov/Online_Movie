@@ -40,7 +40,8 @@ namespace BusinessLogic.Specifications
 					.Where(x => x.Id == id)
 					.Include(x => x.Country)
 					.Include(x => x.Quality)
-					.Include(x => x.Premium);
+					.Include(x => x.Premium)
+					.Include(x=>x.Feedbacks);
 			}
 		}
 		public class GetByIdsInc : Specification<Movie>
@@ -51,7 +52,8 @@ namespace BusinessLogic.Specifications
 					.Where(x => ids.Contains(x.Id))
 					.Include(x => x.Country)
 					.Include(x => x.Quality)
-					.Include(x => x.Premium);
+					.Include(x => x.Premium)
+					.Include(x=>x.Feedbacks);
 			}
 		}
 

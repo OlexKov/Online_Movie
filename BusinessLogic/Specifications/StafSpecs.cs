@@ -12,7 +12,9 @@ namespace BusinessLogic.Specifications
 			{
 				Query
 					.Where(x => x.Id == id)
-					.Include(x => x.Country);
+					.Include(x => x.Country)
+					.Include(x => x.StafMovieRoles)
+					.Include(x => x.StafStafRoles);
 			}
 		}
 
@@ -22,6 +24,7 @@ namespace BusinessLogic.Specifications
 			{
 				Query
 					.Where(x => x.Id == id)
+					.Include(x => x.Country)
 					.Include(x => x.StafMovieRoles)
 					.Include(x => x.StafStafRoles);
 			}
@@ -33,13 +36,18 @@ namespace BusinessLogic.Specifications
 			{
 				Query
 					.Where(x => ids.Contains(x.Id))
-					.Include(x => x.Country);
+					.Include(x => x.Country)
+					.Include(x => x.StafMovieRoles)
+					.Include(x => x.StafStafRoles); 
 			}
 		}
 
 		public class GetAll : Specification<Staf>
 		{
-			public GetAll() => Query.Include(x => x.Country);
+			public GetAll() => Query
+				    .Include(x => x.Country)
+				    .Include(x => x.StafMovieRoles)
+					.Include(x => x.StafStafRoles);
 			
 		}
 
@@ -50,7 +58,9 @@ namespace BusinessLogic.Specifications
 				Query
 					.Skip(skip)
 					.Take(count)
-					.Include(x => x.Country);
+					.Include(x => x.Country)
+					.Include(x => x.StafMovieRoles)
+					.Include(x => x.StafStafRoles);
 			}
 		}
 	}

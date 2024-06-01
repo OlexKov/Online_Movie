@@ -28,6 +28,6 @@ namespace BusinessLogic.Interfaces
 		Task ApproveFeedbackAsync(int feedbackId);
 		Task<PaginationResultModel<MovieDto>> GetMoviesWithNotApprovedFeedbacksAsync(int pageIndex, int pageSize);
 		Task<int> GetNotApprovedFeedbacksCount();
-		
+		Task<IEnumerable<MovieRatingModel>> GetRatingsAsync(int[] ids);
 	}
 }

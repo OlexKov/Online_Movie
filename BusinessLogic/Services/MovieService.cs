@@ -164,9 +164,10 @@ namespace BusinessLogic.Services
 
 		public async Task<double> GetRatingAsync(int id)
 		{
-			var feedbacks = await GetFeedbacksAsync(id, true, 0, 0);
-			return feedbacks.Elements.Any() ? feedbacks.Elements.Average(x => x.Rating) : 0;
-
+			if (id < 0) throw new HttpException(Errors.NegativeId, HttpStatusCode.BadRequest);
+			var movie = await movies.GetItemBySpec(new MovieSpecs.GetByIdInc(id)) ??
+				throw new HttpException(Errors.NotFoundById, HttpStatusCode.NotFound); 
+			return  movie.Feedbacks.Average(x => x.Rating);
 		}
 
 		public async Task<IEnumerable<MovieDto>> FindAsync(MovieFindFilterModel movieFilter) => mapper.Map<IEnumerable<MovieDto>>(await movies.GetListBySpec(new MovieSpecs.Find(movieFilter)));
@@ -229,6 +230,16 @@ namespace BusinessLogic.Services
 
 		public async Task<int> GetNotApprovedFeedbacksCount() => (await feedbacks.GetListBySpec(new FeedbacsSpecs.GetNotApproved())).Count();
 
-		
+		public async Task<IEnumerable<MovieRatingModel>> GetRatingsAsync(int[] ids)
+		{
+			List<MovieRatingModel> result = [];
+			var movies = await this.movies.GetListBySpec(new MovieSpecs.GetByIdsInc(ids));
+			if (movies.Any())
+			{
+				foreach (var item in movies)
+				   result.Add(new() { MovieId = item.Id, Rating = item.Feedbacks.Average(x => x.Rating) });
+			}
+			return result;
+		}
 	}
 }
