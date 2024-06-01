@@ -10,7 +10,7 @@ namespace BusinessLogic.Interfaces
 		Task<string> AddImageAsync(IFormFile image);
 		void DeleteImageByName(string name);
 		Task DeleteImegeByIdAsync(int id);
-		Task DeleteImegeRangeAsync(IEnumerable<int> ids);
+		Task DeleteImageRangeAsync(IEnumerable<int> ids);
 		Task<IEnumerable<ImageDto>> GetByIds(IEnumerable<int> ids);
 		Task<IEnumerable<ImageDto>> GetByMovieId(int movieId);
 	}

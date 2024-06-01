@@ -51,7 +51,7 @@ namespace BusinessLogic.Services
 			DeleteImageByName(image.Name);
 		}
 
-		public async Task DeleteImegeRangeAsync(IEnumerable<int> ids)
+		public async Task DeleteImageRangeAsync(IEnumerable<int> ids)
 		{
 			var imageNames = await images.GetListBySpec(new ImageSpecs.GetByIds(ids));
 			foreach (var item in ids)

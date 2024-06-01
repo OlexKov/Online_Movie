@@ -44,7 +44,7 @@ namespace BusinessLogic.Services
 			{
 				await deleteMovieDependencies(movie.Id);
 				var screensIds = (await images.GetListBySpec(new ImageSpecs.GetByMovieId(movie.Id))).Select(x => x.Id);
-				await imageService.DeleteImegeRangeAsync(screensIds.Except(movieModel.ScreenShots));
+				await imageService.DeleteImageRangeAsync(screensIds.Except(movieModel.ScreenShots));
 			}
 			List<MovieStaf> movieStafs = [];
 			var options = new JsonSerializerOptions
@@ -66,7 +66,7 @@ namespace BusinessLogic.Services
 			if (movieModel.PosterFile != null)
 			{
 				if (update && movie.Poster != null && movie.Poster != "nophoto.jpg")
-					imageService.DeleteImageByName(movieModel.Poster ?? "");
+					imageService.DeleteImageByName(Path.GetFileName(movieModel.Poster)??"");
 				movie.Poster = await imageService.SaveImageAsync(movieModel.PosterFile);
 			}
 			return movie;
